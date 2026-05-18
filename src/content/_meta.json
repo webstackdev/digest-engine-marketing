@@ -1,0 +1,10 @@
+{
+  "docs": {
+    "title": "Documentation",
+    "type": "page"
+  },
+  "blog": {
+    "title": "Blog",
+    "type": "page"
+  }
+}
