@@ -1,28 +1,20 @@
 version: 2
 updates:
-  - package-ecosystem: "pip"
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     ignore:
-      - dependency-name: "cryptography"
+      # Hold Next.js at 16.1.7 until the upstream regression is resolved.
+      # https://github.com/vercel/next.js/issues/91396
+      # https://github.com/vercel/next.js/pull/91704
+      - dependency-name: "next"
         versions:
-          - ">=47"
-      - dependency-name: "websockets"
+          - ">=16.2.0"
+      - dependency-name: "@next/third-parties"
         versions:
-          - ">=16"
-    groups:
-      python-dependencies:
-        patterns:
-          - "*"
-
-  - package-ecosystem: "npm"
-    directory: "/frontend"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
-    ignore:
+          - ">=16.2.0"
       # eslint 10 is blocked until eslint-config-next adds support for it.
       - dependency-name: "eslint"
         update-types:
@@ -31,7 +23,7 @@ updates:
         update-types:
           - "version-update:semver-major"
     groups:
-      frontend-dependencies:
+      npm-dependencies:
         patterns:
           - "*"
 

@@ -1,4 +1,4 @@
-export default {
+const stylelintConfig = {
   extends: ["stylelint-config-standard"],
   ignoreFiles: [
     "**/.next/**",
@@ -44,4 +44,6 @@ export default {
     "rule-empty-line-before": null,
     "value-keyword-case": null,
   },
-}
+};
+
+export default stylelintConfig;
