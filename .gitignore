@@ -2,6 +2,7 @@ __pycache__/
 .cache/
 .coverage
 .env
+.next/
 .pytest_cache/
 .ruff_cache/
 .turbo/
@@ -16,6 +17,7 @@ celerybeat-schedule*
 coverage/
 db.sqlite3
 docs/_internal_only/
+out/
 
 frontend/.env.local
 frontend/.next/
@@ -32,10 +34,7 @@ marketing/node_modules/
 marketing/out/
 
 node_modules/
-
-packages/*/.next/
-packages/*/coverage/
-packages/*/node_modules/
+*.tsbuildinfo
 
 staticfiles/
 storybook-static

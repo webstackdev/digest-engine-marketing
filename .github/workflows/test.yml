@@ -21,21 +21,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
         with:
-          version: "0.8.17"
-          enable-cache: true
-
-      - name: Install Python 3.13
-        run: uv python install 3.13
-
-      - name: Initialize Pants
-        uses: pantsbuild/actions/init-pants@v10
-        with:
-          gha-cache-key: cache0-py313
-          named-caches-hash: ${{ hashFiles('3rdparty/python/default.lock', 'pants.toml') }}
-          pants-ci-config: ""
+          version: 11.1.0
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -44,14 +33,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install just
-        uses: extractions/setup-crate@7577c1bdf2d95e6d65d532788f35ed79d4b1dda2 # v2
-        with:
-          repo: casey/just@1.50.0
-          github-token: ${{ github.token }}
-
-      - name: Bootstrap dependencies
-        run: just install
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests
-        run: just test
+        run: pnpm run test:run

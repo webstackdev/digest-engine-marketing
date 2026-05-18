@@ -23,7 +23,6 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@digestengine/tailwind-config": "workspace:*",
     "@heroicons/react": "^2.2.0",
     "@microsoft/clarity": "^1.0.2",
     "@next/third-parties": "^16.2.6",
@@ -43,7 +42,7 @@
     "postcss": "^8.5.14",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "react-hook-form": "^7.75.0",
+    "react-hook-form": "^7.76.0",
     "tailwind-merge": "^3.6.0",
     "three": "^0.184.0"
   },
@@ -53,7 +52,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "25.8.0",
+    "@types/node": "25.9.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.184.1",

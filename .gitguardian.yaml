@@ -1,4 +1,0 @@
-version: 2
-secret:
-  ignored_paths:
-    - "frontend/src/lib/__tests__/api.test.ts"
