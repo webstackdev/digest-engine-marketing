@@ -9,13 +9,13 @@ const FAQ: FC<IHomePageFaqProps> = ({ eyebrow, title, description, items }) => {
   return (
     <PageSection id="faq" classes="px-6 py-8 sm:px-8 sm:py-10">
       <div className="w-full">
-        <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
+        <p className="font-semibold uppercase tracking-widest text-content-offset">
           {eyebrow}
         </p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl">
           {title}
         </h2>
-        <p className="mt-3 text-base leading-7 text-content-offset">
+        <p className="mt-3 text-base leading-7 text-primary">
           {description}
         </p>
       </div>
@@ -24,10 +24,10 @@ const FAQ: FC<IHomePageFaqProps> = ({ eyebrow, title, description, items }) => {
         {items.map((item) => (
           <details
             key={item.question}
-            className="group block w-full rounded-3xl border border-trim-offset bg-page-base px-5 py-4 shadow-card transition-colors open:bg-secondary"
+            className="group block w-full rounded-3xl border border-trim-offset bg-page-base px-5 py-4 shadow-card transition-colors open:bg-secondary/10"
           >
             <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
-              <span className="text-lg font-semibold tracking-tight text-content-active">
+              <span className="text-lg font-semibold tracking-tight text-primary">
                 {item.question}
               </span>
               <ChevronDown

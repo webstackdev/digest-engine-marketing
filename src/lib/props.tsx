@@ -208,19 +208,11 @@ export const PricingProps: IPricingProps = {
   annualDiscount: 20,
   plans: [
     {
-      name: "Open Source",
-      monthlyPrice: 0,
-      description: "For teams that want full control and are happy to run the stack themselves.",
-      features: ["Unlimited projects", "Docker Compose setup", "Bring your own models", "Community support"],
-      buttonLabel: "Start self-hosting",
-      buttonVariant: "outline",
-      isPopular: false,
-    },
-    {
       name: "Team",
       monthlyPrice: 149,
       description: "A shared editorial workspace for small newsletter teams shipping every week.",
       features: ["3 editor seats", "Review queue tooling", "Reference corpus training", "Priority updates"],
+      link: "/signup",
       buttonLabel: "Request access",
       buttonVariant: "outline",
       isPopular: false,
@@ -230,6 +222,7 @@ export const PricingProps: IPricingProps = {
       monthlyPrice: 399,
       description: "Managed infrastructure for editors who want the workflow without running the ops layer.",
       features: ["Managed upgrades", "Inbound newsletter parsing", "Team collaboration", "Email support"],
+      link: "/signup",
       buttonLabel: "Join waitlist",
       buttonVariant: "default",
       isPopular: true,
@@ -239,7 +232,18 @@ export const PricingProps: IPricingProps = {
       monthlyPrice: 1499,
       description: "Private deployment, custom plugins, and security review for larger media or research orgs.",
       features: ["VPC or on-prem", "Custom source plugins", "SLA-backed support", "Migration help"],
+      link: "/signup",
       buttonLabel: "Contact Sales",
+      buttonVariant: "outline",
+      isPopular: false,
+    },
+    {
+      name: "Open Source",
+      monthlyPrice: 0,
+      description: "For teams that want full control and are happy to run the stack themselves.",
+      features: ["Unlimited projects", "Docker Compose setup", "Bring your own models", "Community support"],
+      link: "https://github.com/webstackdev/digest-engine",
+      buttonLabel: "Start self-hosting",
       buttonVariant: "outline",
       isPopular: false,
     },
@@ -252,19 +256,6 @@ export const HomePageFaqProps: IHomePageFaqProps = {
   description:
     "Straight answers about models, hosting, hallucinations, plugins, and what the system is actually doing under the hood.",
   items: [
-    {
-      question: "Is this just ChatGPT wrapped in a UI?",
-      answer: (
-        <>
-          <p>
-            No. The core curation logic is deterministic vector similarity against your project&apos;s reference corpus. LLMs are only used to break ties in an explicit confidence band, to summarize, to extract entities, and to detect themes, each as a swappable, model-agnostic skill.
-          </p>
-          <p className="mt-3">
-            If every LLM API went dark tomorrow, you&apos;d still get ranked shortlists.
-          </p>
-        </>
-      ),
-    },
     {
       question: "How is this different from Feedly / UpContent / ContentStudio?",
       answer: (
@@ -286,44 +277,6 @@ export const HomePageFaqProps: IHomePageFaqProps = {
           </p>
         </>
       ),
-    },
-    {
-      question: "Do I need to know what a vector database is?",
-      answer:
-        "No. You connect sources, flag reference articles, thumbs-up things you like. The vector database, the embedding pipeline, and the LangGraph orchestration are implementation details. The UI is built for editors, not ML engineers.",
-    },
-    {
-      question: "What about hallucinations?",
-      answer: (
-        <>
-          <p>
-            Summarization is grounded in the article text and the article text only. Relevance scoring is deterministic vector math, with LLMs only used in an explicit ambiguity band, and every score traces back to specific reference articles you flagged.
-          </p>
-          <p className="mt-3">
-            Entity extraction surfaces low-confidence matches to a human review queue rather than silently writing bad data. Every skill invocation is logged with model, latency, and confidence.
-          </p>
-        </>
-      ),
-    },
-    {
-      question: "Which LLM do you use?",
-      answer:
-        "Whichever you want. Skills are model-agnostic and tested across Claude, GPT, Qwen, Llama, DeepSeek, Gemma, and Command R+. We recommend specific models per skill based on quality and cost, but you can override per skill. In production you can run everything locally via Ollama for zero marginal LLM cost.",
-    },
-    {
-      question: "Can I self-host?",
-      answer:
-        "Yes. Docker Compose for the MVP path, Kubernetes-ready (Helm + ArgoCD) for scale. The license is AGPLv3.",
-    },
-    {
-      question: "How much does it cost to run in development?",
-      answer:
-        "If you use OpenRouter as a unified gateway across the recommended dev models, you'll spend roughly $2.30/month for a single active project. Self-hosted with Ollama, the marginal LLM cost is $0.",
-    },
-    {
-      question: "Does my content get sent to OpenAI / Anthropic / etc.?",
-      answer:
-        "Only if you configure it to. The default development setup uses OpenRouter. The default production-recommended setup uses Ollama on your own infrastructure. No data flows to a third party unless you point a skill at a third-party model.",
     },
     {
       question: "I don't run a newsletter. I just want to curate a Slack channel / internal digest / research feed. Does this work?",
@@ -349,18 +302,27 @@ export const HomePageFaqProps: IHomePageFaqProps = {
       ),
     },
     {
-      question: "What if a skill fails mid-pipeline?",
+      question: "Does my content get sent to OpenAI / Anthropic / etc.?",
       answer:
-        "The pipeline is a LangGraph state machine with checkpoints. A failed step records its failure status, the graph either gracefully degrades or routes the item to the review queue. Nothing silently corrupts. Re-runs resume from the failed checkpoint.",
+        "Only if you configure it to. The default development setup uses OpenRouter. The default production-recommended setup uses Ollama on your own infrastructure. No data flows to a third party unless you point a skill at a third-party model.",
     },
     {
-      question: "Is there a hosted version?",
-      answer:
-        "Soon. Join the waitlist if you want to hear when hosted access opens.",
+      question: "Is this just ChatGPT wrapped in a UI?",
+      answer: (
+        <>
+          <p>
+            No. The core curation logic is deterministic vector similarity against your project&apos;s reference corpus. LLMs are only used to break ties in an explicit confidence band, to summarize, to extract entities, and to detect themes, each as a swappable, model-agnostic skill.
+          </p>
+          <p className="mt-3">
+            If every LLM API went dark tomorrow, you&apos;d still get ranked shortlists.
+          </p>
+        </>
+      ),
     },
     {
-      question: "License?",
-      answer: "GNU AGPLv3 or later. Source is on GitHub.",
+      question: "Can I self-host?",
+      answer:
+        "Yes. Docker Compose for the MVP path, Kubernetes-ready (Helm + ArgoCD) for scale. The license is AGPLv3.",
     },
   ],
 };

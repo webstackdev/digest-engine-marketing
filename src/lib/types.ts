@@ -112,6 +112,7 @@ export interface IPricingPlan {
   monthlyPrice: number;
   description: string;
   features: string[];
+  link: string;
   buttonLabel: string;
   buttonVariant: "default" | "outline";
   isPopular: boolean;

@@ -47,7 +47,7 @@ const Features: FC<IFeaturesProps> = ({ title, description, items }) => {
         <h2 className="font-semibold tracking-tight text-4xl sm:text-5xl text-secondary">
           {title}
         </h2>
-        <p className="text-base leading-7 text-content-offset">
+        <p className="text-base leading-7 text-primary">
           {description}
         </p>
       </div>

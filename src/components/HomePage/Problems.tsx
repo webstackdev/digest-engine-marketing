@@ -34,10 +34,10 @@ const Problems = ({
             <p className="text-base font-semibold uppercase tracking-wider text-secondary">
               {eyebrow}
             </p>
-            <h2 className="max-w-3xl font-semibold tracking-tight text-3xl sm:text-4xl">
+            <h2 className="max-w-3xl font-semibold tracking-tight text-secondary text-3xl sm:text-4xl">
               {title}
             </h2>
-            <p className="max-w-3xl text-lg leading-8 text-content-offset sm:text-xl">
+            <p className="max-w-3xl text-lg leading-8 text-primary sm:text-xl">
               {description}
             </p>
           </div>
@@ -66,10 +66,10 @@ const Problems = ({
                   <p className="text-sm font-semibold uppercase tracking-wider text-secondary">
                     Gap 0{index + 1}
                   </p>
-                  <h4 className="mt-4 text-2xl font-semibold tracking-tight">
+                  <h4 className="mt-4 text-2xl font-semibold tracking-tight text-secondary">
                     {item.title}
                   </h4>
-                  <p className="mt-3 leading-7 text-content-offset">
+                  <p className="mt-3 leading-7 text-primary">
                     {item.description}
                   </p>
                 </li>
