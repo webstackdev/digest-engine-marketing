@@ -1,36 +1,84 @@
 import Link from "next/link";
 
+import type { ICtaProps } from "@/lib/types";
+
 import { PageSection } from "../Section";
 import { Button } from "../shared/button";
 
-export const CTA = () => {
+export const CTA = ({
+  title,
+  description,
+  badges,
+  primaryAction,
+  highlights,
+}: ICtaProps) => {
   return (
     <PageSection
       id="cta"
       aria-label="Homepage call to action"
       classes="px-6 py-8 sm:px-8 sm:py-10"
     >
-      <div className="relative flex w-full flex-col items-center justify-center gap-4 text-center">
-        <span className="rounded-full border border-trim-offset bg-secondary px-3 py-1 text-xs font-semibold uppercase tracking-widest text-content-offset shadow-soft backdrop-blur-[18px]">
-          Start your first project
-        </span>
-        <h2 className="w-full text-3xl font-semibold tracking-tight text-content-active sm:text-4xl md:text-5xl">
-          Turn scattered feeds into a shortlist you can trust.
-        </h2>
-        <p className="w-full text-base leading-7 text-content-offset sm:text-lg">
-          Connect the sources you already trust, train one project on your
-          editorial taste, and let the next issue start with ranked content,
-          summaries, and a draft outline instead of a pile of tabs.
-        </p>
-        <Button
-          asChild
-          className="mt-2 h-12 rounded-full bg-primary px-7 text-base font-semibold text-primary-inverse transition-colors hover:bg-primary"
-        >
-          <Link href="/signup">Start Your First Project</Link>
-        </Button>
-        <p className="text-sm text-content-offset">
-          Open source. Self-hostable. Hosted access coming soon.
-        </p>
+      <div className="relative isolate overflow-hidden rounded-4xl border border-trim-offset bg-page-base px-6 py-8 shadow-soft sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+        <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-end">
+          <div className="flex flex-col items-start gap-6 text-left lg:self-center">
+            <div className="space-y-4">
+              <h2 className="max-w-3xl text-3xl font-semibold tracking-tight text-secondary sm:text-4xl lg:text-5xl">
+                {title}
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-content-offset sm:text-lg">
+                {description}
+              </p>
+            </div>
+
+            <ul className="m-0 flex flex-wrap gap-3 p-0 text-sm text-content-offset">
+              {badges.map((badge) => (
+                <li
+                  key={badge}
+                  className="list-none rounded-full border border-trim-offset bg-page-offset px-3 py-1.5 shadow-soft"
+                >
+                  {badge}
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+              <Button
+                asChild
+                className="h-12 rounded-full bg-accent px-7 text-base font-semibold text-primary-inverse transition-colors hover:bg-accent-offset"
+              >
+                <Link href={primaryAction.link}>{primaryAction.text}</Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:pb-1">
+            {highlights.map((highlight, index) => (
+              <article
+                key={highlight.step}
+                className={[
+                  "rounded-3xl border border-trim-offset px-5 py-5",
+                  index === 1 ? "bg-secondary/20 lg:translate-x-6" : "bg-page-offset",
+                  index === 2 ? "lg:-translate-x-4" : "",
+                ].join(" ")}
+              >
+                <div className="flex items-start gap-4">
+                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-trim-offset bg-page-base text-sm font-semibold tracking-widest text-content-active">
+                    {highlight.step}
+                  </span>
+
+                  <div className="space-y-2">
+                    <p className="m-0 text-lg font-semibold tracking-tight text-content-active">
+                      {highlight.title}
+                    </p>
+                    <p className="m-0 text-sm leading-6 text-content-offset">
+                      {highlight.description}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </PageSection>
   );

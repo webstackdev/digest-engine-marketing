@@ -6,7 +6,7 @@ import { CTA } from "@/components/HomePage/CTA";
 import Pricing from "@/components/Pricing";
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
-import { brand, PricingPageProps, PricingProps } from "@/lib/props";
+import { brand, CtaProps, PricingPageProps, PricingProps } from "@/lib/props";
 
 export const metadata: Metadata = {
   title: `${brand.name} Pricing`,
@@ -190,7 +190,7 @@ export default function PricingPage() {
         </div>
       </PageSection>
 
-      <CTA />
+      <CTA {...CtaProps} />
     </main>
   );
 }

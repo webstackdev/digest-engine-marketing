@@ -71,6 +71,26 @@ export interface IClientsProps {
   items: IIntegrationItem[];
 }
 
+export interface ICtaAction {
+  text: string;
+  link: string;
+}
+
+export interface ICTAHighlight {
+  step: string;
+  title: string;
+  description: string;
+}
+
+export interface ICtaProps {
+  eyebrow: string;
+  title: string;
+  description: string;
+  badges: string[];
+  primaryAction: ICtaAction;
+  highlights: ICTAHighlight[];
+}
+
 export interface IHomePageFaqItem {
   question: string;
   answer: ReactNode;

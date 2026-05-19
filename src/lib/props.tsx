@@ -13,6 +13,7 @@ import solutionImage03 from "@/assets/images/solutions-03.jpg";
 import solutionImage04 from "@/assets/images/solutions-04.jpg";
 
 import {
+  ICtaProps,
   IFeaturesProps,
   IClientsProps,
   IHomePageFaqProps,
@@ -37,6 +38,42 @@ export const HeroProps: IHeroProps = {
     text: "Start Your First Project",
     link: "/signup",
   },
+};
+
+export const CtaProps: ICtaProps = {
+  eyebrow: "Start your first project",
+  title: "Turn scattered feeds into a shortlist you can trust.",
+  description:
+    "Connect the sources you already trust, train one project on your editorial taste, and let the next issue start with ranked content, summaries, and a draft outline instead of a pile of tabs.",
+  badges: [
+    "Project-scoped ranking",
+    "Editorial memory",
+    "Draft-ready research",
+  ],
+  primaryAction: {
+    text: "Start Your First Project",
+    link: "/signup",
+  },
+  highlights: [
+    {
+      step: "01",
+      title: "Rank the signal",
+      description:
+        "Pull your sources into one project and get a shortlist shaped by what your editorial team actually trusts.",
+    },
+    {
+      step: "02",
+      title: "Keep the context",
+      description:
+        "Entity summaries, source history, and authority cues stay attached so every candidate story arrives with useful framing.",
+    },
+    {
+      step: "03",
+      title: "Start from a draft",
+      description:
+        "Move from ranked research to a draft outline without rebuilding the same judgment call from scratch every week.",
+    },
+  ],
 };
 
 export const ProblemsProps: IProblemsProps = {

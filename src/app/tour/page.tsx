@@ -14,7 +14,7 @@ import {
 import { CTA } from "@/components/HomePage/CTA";
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
-import { brand } from "@/lib/props";
+import { brand, CtaProps } from "@/lib/props";
 
 const tourSteps = [
   {
@@ -218,7 +218,7 @@ export default function TourPage() {
         </div>
       </PageSection>
 
-      <CTA />
+      <CTA {...CtaProps} />
     </main>
   );
 }

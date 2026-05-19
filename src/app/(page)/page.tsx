@@ -9,6 +9,7 @@ import Pricing from "@/components/Pricing";
 import Problems from "@/components/HomePage/Problems";
 import { CTA } from "@/components/HomePage/CTA";
 import {
+  CtaProps,
   //ClientsProps,
   FeatureItems,
   HomePageFaqProps,
@@ -28,7 +29,7 @@ export default function Home() {
       <Features {...FeatureItems} />
       <Pricing {...PricingProps} />
       <FAQ {...HomePageFaqProps} />
-      <CTA />
+      <CTA {...CtaProps} />
     </main>
   );
 }
