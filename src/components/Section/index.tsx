@@ -19,7 +19,7 @@ export const PageSection = <T extends SectionTag = "section">({
     <Component
       id={id}
       className={cn(
-        "relative overflow-hidden",
+        "relative w-full overflow-hidden",
         "mx-auto max-w-6xl px-4 sm:px-6",
         "rounded-4xl bg-page-offset",
         shadowClass,

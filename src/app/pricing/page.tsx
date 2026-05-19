@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Check, Minus } from "lucide-react";
 
 import { CTA } from "@/components/HomePage/CTA";
 import Pricing from "@/components/Pricing";
@@ -13,6 +14,28 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
+  const renderMatrixValue = (value: string) => {
+    if (value === "Included") {
+      return (
+        <span className="inline-flex items-center gap-2 rounded-full border border-trim-offset bg-secondary px-3 py-1.5 text-sm font-semibold text-content-active">
+          <Check aria-hidden="true" className="size-4 text-primary" />
+          {value}
+        </span>
+      );
+    }
+
+    if (value === "Custom") {
+      return (
+        <span className="inline-flex items-center gap-2 rounded-full border border-trim-offset bg-page-offset px-3 py-1.5 text-sm font-semibold text-content-active">
+          <Minus aria-hidden="true" className="size-4 text-content-offset" />
+          {value}
+        </span>
+      );
+    }
+
+    return <span className="text-base leading-7 text-content-active">{value}</span>;
+  };
+
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
       <PageSection id="pricing-page-hero" classes="px-6 py-10 sm:px-10 sm:py-12">
@@ -83,17 +106,26 @@ export default function PricingPage() {
           </p>
         </div>
 
-        <div className="mt-8 overflow-x-auto rounded-4xl border border-trim-offset bg-page-base shadow-card">
-          <table aria-label="Pricing feature matrix" className="min-w-full border-collapse text-left">
+        <div className="mt-8 overflow-x-auto border border-trim-offset bg-page-base shadow-card">
+          <table aria-label="Pricing feature matrix" className="min-w-full table-fixed border-separate border-spacing-0 text-left">
+            <colgroup>
+              <col className="w-[28%]" />
+              {PricingPageProps.matrixColumns.map((column) => (
+                <col key={column} className="w-[18%]" />
+              ))}
+            </colgroup>
             <thead>
-              <tr className="border-b border-trim-offset">
-                <th className="px-5 py-4 text-sm font-semibold text-content-offset" scope="col">
+              <tr>
+                <th
+                  className="border-b border-trim-offset bg-page-base px-6 py-5 align-bottom text-sm font-semibold uppercase tracking-widest text-content-offset"
+                  scope="col"
+                >
                   Feature
                 </th>
                 {PricingPageProps.matrixColumns.map((column) => (
                   <th
                     key={column}
-                    className="px-5 py-4 text-sm font-semibold text-content-active"
+                    className="border-b border-trim-offset bg-page-base px-6 py-5 text-base font-semibold tracking-tight text-content-active sm:text-lg"
                     scope="col"
                   >
                     {column}
@@ -102,14 +134,23 @@ export default function PricingPage() {
               </tr>
             </thead>
             <tbody>
-              {PricingPageProps.matrixRows.map((row) => (
-                <tr key={row.feature} className="border-b border-trim-offset last:border-b-0">
-                  <th className="px-5 py-4 text-sm font-semibold text-content-active" scope="row">
+              {PricingPageProps.matrixRows.map((row, rowIndex) => (
+                <tr
+                  key={row.feature}
+                  className={rowIndex % 2 === 0 ? "bg-page-base" : "bg-page-offset"}
+                >
+                  <th
+                    className="border-b border-trim-offset px-6 py-5 align-top text-base font-semibold tracking-tight text-content-active last:border-b-0"
+                    scope="row"
+                  >
                     {row.feature}
                   </th>
                   {row.values.map((value, index) => (
-                    <td key={`${row.feature}-${index}`} className="px-5 py-4 text-sm text-content-offset">
-                      {value}
+                    <td
+                      key={`${row.feature}-${index}`}
+                      className="border-b border-trim-offset px-6 py-5 align-top text-base last:border-b-0"
+                    >
+                      {renderMatrixValue(value)}
                     </td>
                   ))}
                 </tr>

@@ -27,4 +27,10 @@ describe("FAQ", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("License?")).toBeInTheDocument();
   });
+
+  it("uses the shared page section width contract", () => {
+    const { container } = render(<FAQ {...HomePageFaqProps} />);
+
+    expect(container.firstElementChild).toHaveClass("w-full");
+  });
 });

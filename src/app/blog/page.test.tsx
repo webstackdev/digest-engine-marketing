@@ -42,5 +42,7 @@ describe("Blog home page", () => {
     expect(markup).toContain("Authority-Aware Ranking");
     expect(markup).toContain('href="/blog/authority-aware-ranking"');
     expect(markup).toContain("Read article");
+    expect(markup).toContain("relative w-full overflow-hidden mx-auto max-w-6xl rounded-4xl");
+    expect(markup).toContain("mx-auto grid w-full max-w-6xl gap-6 overflow-hidden");
   });
 });

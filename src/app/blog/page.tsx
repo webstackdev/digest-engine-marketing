@@ -9,6 +9,7 @@ import { ArrowRight, Newspaper } from "lucide-react";
 import { blogPreviewImages } from "@/content/blog/images";
 
 import { brand } from "@/lib/props";
+import { PageSection } from "@/components/Section";
 
 type BlogCard = {
   href: string;
@@ -82,8 +83,11 @@ export default async function BlogHomePage() {
   const posts = buildBlogCards(pageMap);
 
   return (
-    <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-16 pt-24 sm:px-6 lg:px-8">
-      <section className="overflow-hidden rounded-4xl border border-slate-200 bg-linear-to-br from-orange-50 via-white to-amber-50 px-6 py-10 shadow-[0_30px_80px_-48px_rgba(146,64,14,0.6)] sm:px-10 sm:py-12">
+    <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 pb-16 pt-24">
+      <PageSection
+        classes="border border-slate-200 bg-linear-to-br from-orange-50 via-white to-amber-50 px-6 py-10 sm:px-10 sm:py-12"
+        shadowClass="shadow-[0_30px_80px_-48px_rgba(146,64,14,0.6)]"
+      >
         <div className="max-w-3xl space-y-5">
           <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white px-4 py-2 text-sm font-medium text-orange-700 shadow-sm">
             <Newspaper className="h-4 w-4" aria-hidden="true" />
@@ -96,9 +100,9 @@ export default async function BlogHomePage() {
             This route stays visually independent from the docs area. Each post can bring its own imagery, voice, and long-form layout while the index page stays optimized for browsing.
           </p>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <section className="relative mx-auto grid w-full max-w-6xl gap-6 overflow-hidden md:grid-cols-2 xl:grid-cols-3">
         {posts.map((post) => (
           <Link
             key={post.href}

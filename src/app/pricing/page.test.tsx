@@ -10,6 +10,8 @@ describe("PricingPage", () => {
     expect(markup).toContain("Pricing that fits the way your newsroom actually works");
     expect(markup).toContain('aria-label="Pricing feature matrix"');
     expect(markup).toContain("Compare plans at a glance");
+    expect(markup).toContain("Open Source");
+    expect(markup).toContain("Enterprise");
     expect(markup).toContain("Pricing FAQ");
     expect(markup).toContain('href="/signup"');
   });
