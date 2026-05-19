@@ -21,7 +21,7 @@ export interface IHeroProps {
 }
 
 export interface IProblemsCard {
-  title: string;
+  title: ReactNode;
   description: string;
 }
 

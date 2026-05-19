@@ -4,7 +4,6 @@ import Image, { type StaticImageData } from "next/image";
 import canvaLogo from "@/assets/clients/canva.svg";
 import carrefourLogo from "@/assets/clients/carrefour.svg";
 import cocaColaLogo from "@/assets/clients/coca-cola.svg";
-import holtLogo from "@/assets/clients/holt.svg";
 import lionsgateLogo from "@/assets/clients/lionsgate.svg";
 import universalLogo from "@/assets/clients/universal.svg";
 import vistraLogo from "@/assets/clients/vistra.svg";
@@ -17,7 +16,6 @@ const clientLogos: Record<string, StaticImageData> = {
   Canva: canvaLogo,
   Carrefour: carrefourLogo,
   "Coca-Cola": cocaColaLogo,
-  Holt: holtLogo,
   Lionsgate: lionsgateLogo,
   Universal: universalLogo,
   Vistra: vistraLogo,
@@ -29,8 +27,10 @@ const clientLogos: Record<string, StaticImageData> = {
  */
 
 const Clients: FC<IClientsProps> = ({ items }) => {
+  const itemsWithLogos = items.filter((item) => clientLogos[item.label]);
+
   const renderLogoGroup = (keyPrefix: string) =>
-    items.map((item) => {
+    itemsWithLogos.map((item) => {
       const logo = clientLogos[item.label];
 
       return (
@@ -38,19 +38,15 @@ const Clients: FC<IClientsProps> = ({ items }) => {
           key={`${keyPrefix}-${item.label}`}
           className="flex h-24 w-40 shrink-0 items-center justify-center rounded-3xl border border-trim-offset bg-page-base px-6 shadow-soft backdrop-blur-[18px] sm:h-28 sm:w-48 sm:px-8"
         >
-          {logo ? (
-            <div className="relative h-10 w-full">
-              <Image
-                src={logo}
-                alt={`${item.label} logo`}
-                fill
-                sizes="(min-width: 640px) 192px, 160px"
-                className="object-contain"
-              />
-            </div>
-          ) : (
-            <span className="sr-only">{item.label}</span>
-          )}
+          <div className="relative h-10 w-full">
+            <Image
+              src={logo}
+              alt={`${item.label} logo`}
+              fill
+              sizes="(min-width: 640px) 192px, 160px"
+              className="object-contain"
+            />
+          </div>
         </li>
       );
     });

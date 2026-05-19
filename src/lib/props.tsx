@@ -50,7 +50,7 @@ export const ProblemsProps: IProblemsProps = {
     "Existing curation tools like Feedly, UpContent, ContentStudio, and generic AI content discovery products rank by generic clicks. They do not know who you trust, they cannot tell you when three peer newsletters in your niche already covered a topic this week, and they have no concept of authority or your point of view.",
   toolFailures: [
     {
-      title: "Global popularity is not niche authority",
+      title: <>Global popularity&nbsp;&ne;&nbsp;niche authority</>,
       description:
         "They rank content by generic clicks instead of weighting the people and publications you actually trust.",
     },

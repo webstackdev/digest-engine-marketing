@@ -10,29 +10,29 @@ const FeatureCard: FC<IFeatureItem> = ({ title, image, description, link }) => {
   return (
     <Link href={link} className="block h-full">
       <article className="group relative flex h-full flex-col gap-5 rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card transition-transform duration-200 hover:-translate-y-1">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-6">
           <Image
             src={image}
             alt="Feature illustration"
             width={90}
             height={90}
-            className="h-[90px] w-[90px] rounded-2xl border border-trim-offset object-cover shadow-soft"
+            className="h-22.5 w-22.5 rounded-2xl border border-trim-offset object-cover shadow-soft"
           />
-          <span className="text-xs font-semibold uppercase tracking-widest text-content-offset">
-            Feature
-          </span>
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+              Feature
+            </span>
+            <h3 className="text-xl font-semibold tracking-tight text-secondary sm:text-2xl">
+              {title}
+            </h3>
+          </div>
         </div>
 
-        <div className="space-y-3">
-          <h3 className="text-xl font-semibold tracking-tight text-content-active sm:text-2xl">
-            {title}
-          </h3>
-          <p className="m-0 text-base leading-7 text-content-offset">
-            {description}
-          </p>
-        </div>
+        <p className="m-0 text-base leading-7 text-content-offset">
+          {description}
+        </p>
 
-        <div className="mt-auto pt-2 text-sm font-semibold text-primary">
+        <div className="mt-auto text-sm font-semibold text-primary">
           Explore capability
         </div>
       </article>
@@ -43,14 +43,11 @@ const FeatureCard: FC<IFeatureItem> = ({ title, image, description, link }) => {
 const Features: FC<IFeaturesProps> = ({ title, description, items }) => {
   return (
     <PageSection id="features" classes="px-6 py-8 sm:px-8 sm:py-10">
-      <div className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
-          Capabilities
-        </p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+      <div className="flex flex-col gap-4">
+        <h2 className="font-semibold tracking-tight text-4xl sm:text-5xl text-secondary">
           {title}
         </h2>
-        <p className="mt-3 text-base leading-7 text-content-offset">
+        <p className="text-base leading-7 text-content-offset">
           {description}
         </p>
       </div>

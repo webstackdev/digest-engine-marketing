@@ -3,6 +3,7 @@
 import "@testing-library/jest-dom/vitest";
 
 import { render, screen, within } from "@testing-library/react";
+import { Fragment } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import type { IProblemsProps } from "@/lib/types";
@@ -11,8 +12,10 @@ import Problems from "./Problems";
 
 vi.mock("next/image", () => ({
   default: ({ alt, className, src }: { alt: string; className?: string; src: string }) =>
-    // eslint-disable-next-line @next/next/no-img-element
-    <img alt={alt} className={className} src={src} />,
+    (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img alt={alt} className={className} height={300} src={src} width={300} />
+    ),
 }));
 
 const problemsProps: IProblemsProps = {
@@ -50,6 +53,37 @@ describe("Problems", () => {
       }),
     ).toBeInTheDocument();
     expect(within(gapList).getAllByRole("listitem")).toHaveLength(3);
-    expect(screen.getByRole("img")).toBeInTheDocument();
+
+    const illustration = screen.getByRole("img", {
+      name: "Editorial workflow comparison illustration",
+    });
+
+    expect(illustration).toHaveAttribute("width", "300");
+    expect(illustration).toHaveAttribute("height", "300");
+  });
+
+  it("renders entity markup supplied through TSX props as decoded text", () => {
+    render(
+      <Problems
+        {...problemsProps}
+        toolFailures={[
+          {
+            title: (
+              <Fragment>
+                Global popularity &ne; niche authority
+              </Fragment>
+            ),
+            description: "Generic popularity is not the same as niche authority.",
+          },
+        ]}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        level: 4,
+        name: "Global popularity ≠ niche authority",
+      }),
+    ).toBeInTheDocument();
   });
 });

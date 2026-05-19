@@ -55,18 +55,38 @@ const clientsProps: IClientsProps = {
   ],
 };
 
+const clientLabelsWithLogo = [
+  "Canva",
+  "Carrefour",
+  "Coca-Cola",
+  "Lionsgate",
+  "Universal",
+  "Vistra",
+  "VML",
+];
+
 describe("Clients", () => {
   it("renders a text-free logo marquee for client social proof", () => {
     render(<Clients {...clientsProps} />);
 
-    const logoList = screen.getByRole("list", { name: "Client logos" });
+    const [logoList] = screen.getAllByRole("list", { name: "Client logos" });
     const logos = within(logoList).getAllByRole("img");
 
     expect(screen.queryByRole("heading", { level: 2, name: clientsProps.title })).not.toBeInTheDocument();
     expect(screen.queryByText(clientsProps.badge)).not.toBeInTheDocument();
     expect(screen.queryByText(clientsProps.items[0].description)).not.toBeInTheDocument();
-    expect(logos).toHaveLength(clientsProps.items.length);
+    expect(logos).toHaveLength(clientLabelsWithLogo.length);
     expect(screen.getByRole("img", { name: "Canva logo" })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: "VML logo" })).toBeInTheDocument();
+  });
+
+  it("skips cards for client entries that do not have a logo asset", () => {
+    render(<Clients {...clientsProps} />);
+
+    const [logoList] = screen.getAllByRole("list", { name: "Client logos" });
+    const logos = within(logoList).getAllByRole("img");
+
+    expect(logos).toHaveLength(clientLabelsWithLogo.length);
+    expect(screen.queryByRole("img", { name: "Holt logo" })).not.toBeInTheDocument();
   });
 });

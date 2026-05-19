@@ -1,6 +1,6 @@
 "use client";
 
-import Clients from "@/components/HomePage/Clients";
+//import Clients from "@/components/HomePage/Clients";
 import FAQ from "@/components/HomePage/FAQ";
 import Features from "@/components/HomePage/Features";
 import Hero from "@/components/HomePage/Hero";
@@ -9,7 +9,7 @@ import Pricing from "@/components/Pricing";
 import Problems from "@/components/HomePage/Problems";
 import { CTA } from "@/components/HomePage/CTA";
 import {
-  ClientsProps,
+  //ClientsProps,
   FeatureItems,
   HomePageFaqProps,
   HeroProps,
@@ -23,7 +23,7 @@ export default function Home() {
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
       <Hero {...HeroProps} />
       <Problems {...ProblemsProps} />
-      <Clients {...ClientsProps} />
+      {/** <Clients {...ClientsProps} /> */}
       <Solution {...SolutionProps} />
       <Features {...FeatureItems} />
       <Pricing {...PricingProps} />
