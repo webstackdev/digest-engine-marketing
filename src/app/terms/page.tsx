@@ -68,16 +68,12 @@ export default function TermsPage() {
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
       <PageSection id="terms-hero" classes="px-6 py-10 sm:px-10 sm:py-12">
-        <div className="max-w-4xl space-y-5">
-          <span className="inline-flex w-fit items-center rounded-full border border-trim-offset bg-page-base px-4 py-2 text-sm font-medium text-content-offset shadow-soft backdrop-blur-[18px]">
-            Terms of Service
-          </span>
-
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-primary sm:text-5xl lg:text-6xl">
+        <div className="space-y-5">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-secondary">
             Standard terms for using {brand.name}
           </h1>
 
-          <p className="max-w-3xl text-lg leading-8 text-content-active">
+          <p className="text-lg leading-8 text-content-active">
             By accessing or using {brand.name}, you agree to be bound by these Terms of Service. Please read them carefully, as they govern your access to the platform, account responsibilities, billing, content rights, and acceptable use.
           </p>
 
@@ -91,11 +87,14 @@ export default function TermsPage() {
             "You keep ownership of your content, and we only process it to operate the service.",
             "Paid access may be subject to recurring billing and plan-specific limits.",
             "This draft should be reviewed by counsel before being treated as final legal text.",
-          ].map((item) => (
+          ].map((item, index) => (
             <div
               key={item}
-              className="rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"
+              className="flex items-start gap-5 rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"
             >
+              <span className="text-3xl font-semibold tracking-tight text-trim-offset">
+                0{index + 1}
+              </span>
               <p className="text-base font-semibold tracking-tight text-content-active">{item}</p>
             </div>
           ))}
@@ -103,12 +102,12 @@ export default function TermsPage() {
       </PageSection>
 
       <PageSection id="terms-policy" classes="px-6 py-8 sm:px-8 sm:py-10">
-        <div className="max-w-3xl">
+        <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
             Policy details
           </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
-            Typical SaaS terms of service
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl">
+            Digest Engine Terms of Service
           </h2>
           <p className="mt-3 text-base leading-7 text-content-offset">
             Please read these terms carefully to understand your rights and obligations when using the service.
@@ -135,30 +134,28 @@ export default function TermsPage() {
       </PageSection>
 
       <PageSection id="terms-contact" classes="px-6 py-8 sm:px-8 sm:py-10">
-        <div className="max-w-3xl rounded-4xl border border-trim-offset bg-page-base p-6 shadow-card sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
-            Contact
-          </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
-            Questions about contracts, plans, or legal terms?
-          </h2>
-          <p className="mt-3 text-base leading-7 text-content-offset">
-            Contact the {brand.name} team through the signup page or your existing customer channel if you need an order form, enterprise terms, or clarifications about service usage.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/signup"
-              className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"
-            >
-              Contact sales
-            </Link>
-            <Link
-              href="/privacy"
-              className="inline-flex items-center justify-center rounded-full border border-trim-offset px-5 py-3 text-base font-semibold text-content-active no-underline transition-colors hover:text-content-offset"
-            >
-              View privacy policy
-            </Link>
-          </div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
+          Contact
+        </p>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+          Questions about contracts, plans, or legal terms?
+        </h2>
+        <p className="mt-3 text-base leading-7 text-content-offset">
+          Contact the {brand.name} team through the signup page or your existing customer channel if you need an order form, enterprise terms, or clarifications about service usage.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/signup"
+            className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"
+          >
+            Contact sales
+          </Link>
+          <Link
+            href="/privacy"
+            className="inline-flex items-center justify-center rounded-full bg-secondary hover:bg-secondary/90 px-5 py-3 text-base font-semibold text-content-inverse no-underline transition-colors"
+          >
+            View privacy policy
+          </Link>
         </div>
       </PageSection>
     </main>
