@@ -30,7 +30,7 @@ export default function SignupPage() {
       <PageSection id="signup-hero" classes="px-6 py-10 sm:px-10 sm:py-12">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
           <div className="flex flex-col gap-6">
-            <span className="w-fit rounded-full border border-trim-offset bg-page-base px-4 py-2 text-sm font-medium text-content-offset shadow-soft backdrop-blur-[18px]">
+            <span className="w-fit rounded-full bg-secondary px-4 py-2 font-medium text-content-inverse">
               Sign up
             </span>
 
@@ -47,7 +47,7 @@ export default function SignupPage() {
             <div className="flex flex-wrap gap-3">
               <Button
                 asChild
-                variant="outline"
+                variant="secondary"
                 size="lg"
                 className="h-12 rounded-full px-6 text-lg font-semibold"
               >
@@ -56,7 +56,7 @@ export default function SignupPage() {
 
               <Button
                 asChild
-                variant="outline"
+                variant="default"
                 size="lg"
                 className="h-12 rounded-full px-6 text-lg font-semibold"
               >
@@ -83,14 +83,14 @@ export default function SignupPage() {
       </PageSection>
 
       <PageSection id="signup-next-steps" classes="px-6 py-8 sm:px-8 sm:py-10">
-        <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
+        <div>
+          <p className="font-semibold uppercase tracking-widest text-content-offset">
             What happens next
           </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl">
             A typical rollout starts small and gets useful quickly
           </h2>
-          <p className="mt-3 text-base leading-7 text-content-offset">
+          <p className="mt-3 leading-7 text-content-offset">
             Most teams begin with one editorial workflow, one source mix, and one issue cycle. That is enough to see whether the ranking and review loop fit your process.
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function SignupPage() {
               key={step}
               className="rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary">
                 Step 0{index + 1}
               </p>
               <p className="mt-4 text-base font-semibold tracking-tight text-content-active">
