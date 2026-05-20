@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { PageMapItem } from "nextra";
 import { getPageMap } from "nextra/page-map";
 import { generateStaticParamsFor, importPage } from "nextra/pages";
@@ -5,6 +6,7 @@ import { cache } from "react";
 import { isValidElement, type ReactNode } from "react";
 
 import { PageSection } from "@/components/Section";
+import { brand } from "@/lib/props";
 
 import {
   DocsPageSidebar,
@@ -14,6 +16,11 @@ import {
 
 type DocsRouteParams = {
   mdxPath: string[];
+};
+
+type DocsMetadata = Metadata & {
+  title?: string;
+  description?: string;
 };
 
 const docsBasePath = "/docs";
@@ -93,6 +100,27 @@ function getHeadingText(value: ReactNode): string {
   return "";
 }
 
+function buildDocsMetadata(metadata: DocsMetadata): Metadata {
+  const title = metadata.title ?? "Documentation";
+  const description = metadata.description ?? brand.tagline;
+
+  return {
+    ...metadata,
+    title,
+    description,
+    openGraph: {
+      ...metadata.openGraph,
+      title: metadata.openGraph?.title ?? title,
+      description: metadata.openGraph?.description ?? description,
+    },
+    twitter: {
+      ...metadata.twitter,
+      title: metadata.twitter?.title ?? title,
+      description: metadata.twitter?.description ?? description,
+    },
+  };
+}
+
 export async function generateStaticParams(): Promise<DocsRouteParams[]> {
   const params = await getDocsStaticParams();
 
@@ -102,10 +130,22 @@ export async function generateStaticParams(): Promise<DocsRouteParams[]> {
     .map(([, ...mdxPath]) => ({ mdxPath }));
 }
 
+export async function generateMetadata(props: {
+  params: Promise<DocsRouteParams>;
+}): Promise<Metadata> {
+  const params = await props.params;
+  const slug = params.mdxPath.join("/");
+  const { metadata } = (await importDocsPage(slug)) as {
+    metadata: DocsMetadata;
+  };
+
+  return buildDocsMetadata(metadata);
+}
+
 export default async function Page(props: { params: Promise<DocsRouteParams> }) {
   const params = await props.params;
   const slug = params.mdxPath.join("/");
-  const [{ default: MDXPage, metadata, toc }, pageMap] = await Promise.all([
+  const [{ default: MDXPage, toc }, pageMap] = await Promise.all([
     importDocsPage(slug),
     getDocsPageMap(),
   ]);
@@ -120,13 +160,11 @@ export default async function Page(props: { params: Promise<DocsRouteParams> }) 
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
       <PageSection id="docs-content" classes="px-6 py-8 sm:px-10 sm:py-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
-          <article className="nextra-body-typesetting-article min-w-0 wrap-break-word text-content-active">
-            <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-content-offset">
-              <span className="rounded-full border border-trim-offset bg-page-base px-3 py-1 shadow-soft backdrop-blur-[18px]">
+          <article className="min-w-0 wrap-break-word text-content-active">
+            <div className="mb-6 flex flex-wrap items-center">
+              <span className="rounded-full bg-secondary text-content-inverse px-4 py-1">
                 Documentation
               </span>
-              <span className="hidden h-1 w-1 rounded-full bg-content-offset sm:block" />
-              <span>{metadata.title}</span>
             </div>
             <MDXPage {...props} params={params} />
           </article>

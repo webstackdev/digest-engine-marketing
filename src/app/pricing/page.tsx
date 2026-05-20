@@ -46,7 +46,7 @@ export default function PricingPage() {
             </span>
 
             <div className="space-y-5">
-              <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-secondary sm:text-5xl lg:text-6xl">
+              <h1 className="max-w-3xl text-4xl sm:text-5xl font-semibold tracking-tight text-secondary">
                 {PricingPageProps.title}
               </h1>
 

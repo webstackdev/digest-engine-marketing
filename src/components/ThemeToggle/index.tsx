@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 
 const THEME_STORAGE_KEY = "marketing-theme";
+const THEME_CHANGE_EVENT = "marketing-theme-change";
 
 type Theme = "light" | "dark";
 
@@ -15,6 +17,7 @@ function applyTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
   window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
 }
 
 function readTheme(): Theme {
@@ -33,7 +36,23 @@ function readTheme(): Theme {
   return "light";
 }
 
-function getInitialTheme(): Theme {
+function subscribeToThemeChange(onStoreChange: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === null || event.key === THEME_STORAGE_KEY) {
+      onStoreChange();
+    }
+  };
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(THEME_CHANGE_EVENT, onStoreChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(THEME_CHANGE_EVENT, onStoreChange);
+  };
+}
+
+function getThemeSnapshot(): Theme {
   if (typeof window === "undefined") {
     return "light";
   }
@@ -41,11 +60,19 @@ function getInitialTheme(): Theme {
   return readTheme();
 }
 
+function getServerThemeSnapshot(): Theme {
+  return "light";
+}
+
 /**
  * Toggles the marketing site between the light and dark document themes.
  */
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const theme = useSyncExternalStore(
+    subscribeToThemeChange,
+    getThemeSnapshot,
+    getServerThemeSnapshot,
+  );
 
   useEffect(() => {
     applyTheme(theme);
@@ -54,7 +81,6 @@ export function ThemeToggle() {
   const handleClick = () => {
     const nextTheme = theme === "light" ? "dark" : "light";
 
-    setTheme(nextTheme);
     applyTheme(nextTheme);
   };
 
@@ -67,7 +93,6 @@ export function ThemeToggle() {
       aria-label={label}
       title={label}
       onClick={handleClick}
-      suppressHydrationWarning
       className="inline-flex size-11 items-center justify-center bg-page-offset text-secondary transition-colors hover:text-secondary-offset"
     >
       <Icon aria-hidden="true" className="size-6" strokeWidth={1.9} />

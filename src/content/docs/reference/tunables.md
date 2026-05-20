@@ -1,68 +1,226 @@
-# Tunables
+# System Tunables & Configuration
 
-This document collects all parameters, thresholds, and variables that change how the system behaves. Most global tunables are configured via environment variables and loaded into Django settings, while project-specific algorithms use `ProjectConfig`.
+Use this page when you need the knobs that change how Digest Engine behaves without changing code: model selection, relevance thresholds, project-level scoring behavior, URL configuration, retention windows, and integration toggles.
 
-## How Settings Are Read
+This page is intentionally focused on durable configuration concepts and the currently documented setting names, not one specific deployment style. The exact settings loader, environment injection method, and runtime file layout live in the separate application repo, so this document should stay useful even as the implementation moves forward.
 
-1. Environment variables set at the Docker Compose / Kubernetes pod level.
-2. Loaded in `digest_engine/settings/base.py` and combined with defaults.
-3. Consumed via `django.conf.settings` across the project.
+## Two Kinds Of Tunables
 
-## LLM & Embeddings
+Digest Engine has two broad configuration layers.
 
-These map directly to global inference capability.
+### Global Runtime Settings
 
-* `EMBEDDING_PROVIDER`: Options include `local` (HuggingFace `sentence-transformers`), `ollama`, or `openai`/`openrouter`.
-* `EMBEDDING_MODEL`: The identifier for the dense vector model.
-* `OLLAMA_URL`: Local instance of Ollama, defaulting to `http://ollama:11434`.
-* `OPENROUTER_API_KEY`: Fallback or primary inference provider key for OpenRouter or OpenAI compatible APIs.
-* `OPENROUTER_API_BASE`: Endpoint for inference.
+These are deployment-level controls that shape behavior across the whole system.
 
-## Relevance & Scoring Thresholds
+Examples include:
 
-Relevance rules divide candidate articles into clear-match, ambiguous, and clear-non-match bands. See [Algorithms](algorithms.md) for how the pipeline evaluates these.
+- model provider settings
+- base URLs
+- messaging or channel configuration
+- observability retention windows
+- external integration credentials
 
-* **Similarity Thresholds**: Embedding cosine similarity above `0.85` assumes auto-relevant. Below `0.5` assumes irrelevant. The `0.5 - 0.85` band asks the LLM.
+These are usually environment-driven rather than changed one project at a time.
+
+### Project-Scoped Settings
+
+These are per-project controls that let one project behave differently from another.
+
+Examples include:
+
+- authority decay behavior
+- whether topic-centroid recomputation happens immediately after feedback
+- other project-specific editorial or ranking behavior
+
+These belong to the project configuration model rather than to global deployment configuration.
+
+## What Good Tunables Look Like
+
+Useful tunables have a few properties:
+
+- they control meaningful behavior, not arbitrary implementation noise
+- they are stable enough to document clearly
+- they have a predictable scope: global or project-specific
+- they are observable enough that operators can tell whether changing them helped or hurt
+
+If a setting cannot be explained in terms of user-visible behavior, operational cost, or system safety, it may not be a good candidate for long-term documentation.
+
+## Model And Embedding Settings
+
+These settings control the system's global inference and semantic-retrieval behavior.
+
+Currently documented examples include:
+
+- `EMBEDDING_PROVIDER`
+- `EMBEDDING_MODEL`
+- `OLLAMA_URL`
+- `OPENROUTER_API_KEY`
+- `OPENROUTER_API_BASE`
+
+These settings matter because they affect:
+
+- which embedding system is used
+- where inference requests are routed
+- how model-backed skills and semantic operations behave across the whole deployment
+
+For the algorithmic impact of these choices, see [**Core Algorithms**](algorithms.md).
+
+## Relevance Thresholds
+
+One of the most important tuning surfaces is the relevance banding model.
+
+Digest Engine uses threshold bands to separate:
+
+- clearly relevant content
+- clearly irrelevant content
+- ambiguous content that may need an LLM tie-break
+
+The currently documented thresholds are:
+
+- high-confidence relevant at or above `0.85`
+- clear non-match below `0.50`
+- ambiguous handling in the band between them
+
+These thresholds matter because they directly influence corpus quality, downstream workload, and how much inference budget is spent on borderline content.
 
 ## Deduplication Thresholds
 
-* Usually implemented via nearest-neighbor distance (e.g., threshold `< 0.05` means near duplication).
+Deduplication also depends on tunable similarity behavior.
 
-## Authority Weights
+The currently documented rule of thumb is that very small nearest-neighbor distance can be treated as near-duplicate behavior, for example a threshold like `< 0.05`.
 
-Configured per-project in `ProjectConfig`:
+This is an especially sensitive area because changing duplicate sensitivity affects:
 
-* `authority_decay_rate` (default: 0.95): The rate at which an entity's authority metric decays over time without recent mentions.
+- how noisy the content corpus becomes
+- whether syndicated or rewritten variants accumulate
+- how trustworthy theme and trend outputs feel later
 
-## Topic Centroid
+## Project-Level Scoring Controls
 
-Configured per-project in `ProjectConfig`:
+Some of the most important tunables live at the project level because editorial intent differs across projects.
 
-* `recompute_topic_centroid_on_feedback_save` (default: True): Determines if a user's thumbs up/down immediately recomputes the vector centroid representing the project's topic.
+### Authority Decay
 
-## URL Settings
+The currently documented project-level setting here is:
 
-* `NEWSLETTER_API_INTERNAL_URL`: Internal frontend-to-backend base URL used by the Next.js app for API and WebSocket traffic. In Docker Compose this is usually `http://nginx`.
-* `NEWSLETTER_PUBLIC_URL`: Public backend base URL used when Django builds absolute links for emails and OAuth callbacks.
-* `NEWSLETTER_API_BASE_URL`: Deprecated compatibility fallback. If present, it is used as the default for both explicit URL settings until those are configured separately.
-* `FRONTEND_BASE_URL`: Where the Next.js app sits.
+- `authority_decay_rate` with a documented default of `0.95`
 
-## Observability Retention
+This controls how quickly old authority fades without reinforcing new mentions.
 
-Keeps the database from ballooning over time.
+### Topic Centroid Recompute Behavior
 
-* `OBSERVABILITY_SNAPSHOT_RETENTION_DAYS` (default: 90)
-* `OBSERVABILITY_TREND_TASK_RUN_RETENTION_DAYS` (default: 30)
-* `OBSERVABILITY_REVIEW_QUEUE_RETENTION_DAYS` (default: 30)
+The currently documented project-level setting here is:
 
-## OAuth Provider Toggles
+- `recompute_topic_centroid_on_feedback_save` with a documented default of `True`
 
-Requires specific API keys to be populated to become available:
+This controls whether explicit feedback immediately shifts the project's semantic center.
 
-* **LinkedIn**: `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET`, `LINKEDIN_OAUTH_SCOPES`
-* **Reddit**: `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, `REDDIT_USER_AGENT`
+These settings matter because they shape how fast a project adapts to editorial behavior over time.
 
-## Channels / Messaging
+## URL And Routing Settings
 
-* `CHANNEL_LAYER_URL`: URL to the Redis instance used by Django Channels for ASGI web socket propagation (e.g., `redis://redis:6379/1`).
-* `MESSAGING_ENABLED` (frontend/build feature flags).
+Base URL settings determine how different system surfaces refer to each other and how external users or providers reach the product.
+
+Currently documented examples include:
+
+- `NEWSLETTER_API_INTERNAL_URL`
+- `NEWSLETTER_PUBLIC_URL`
+- `NEWSLETTER_API_BASE_URL`
+- `FRONTEND_BASE_URL`
+
+The exact deployment topology may vary, but the conceptual distinction stays stable:
+
+- some URLs are meant for internal service-to-service traffic
+- some URLs are meant for public-facing links, callbacks, or browser access
+
+For the API-side meaning of those boundaries, see [**API Reference**](api.md).
+
+## Observability Retention Settings
+
+Observability settings matter because retained workflow and audit history can grow quickly if left unmanaged.
+
+Currently documented retention-related settings include:
+
+- `OBSERVABILITY_SNAPSHOT_RETENTION_DAYS`
+- `OBSERVABILITY_TREND_TASK_RUN_RETENTION_DAYS`
+- `OBSERVABILITY_REVIEW_QUEUE_RETENTION_DAYS`
+
+These settings define how long internal operational history is kept before pruning.
+
+For the operational reasoning behind those knobs, see [**Logging & Observability**](logging-and-observability.md).
+
+## External Integration Toggles And Credentials
+
+Some capabilities exist only when the relevant provider configuration is present.
+
+Currently documented examples include:
+
+- `LINKEDIN_CLIENT_ID`
+- `LINKEDIN_CLIENT_SECRET`
+- `LINKEDIN_OAUTH_SCOPES`
+- `REDDIT_CLIENT_ID`
+- `REDDIT_CLIENT_SECRET`
+- `REDDIT_USER_AGENT`
+
+These are less like editorial tuning knobs and more like capability gates. If the credentials are not present, the associated integration surface should not be assumed to exist.
+
+## Messaging And Real-Time Settings
+
+Some settings support message propagation or real-time features rather than core HTTP request handling.
+
+Currently documented examples include:
+
+- `CHANNEL_LAYER_URL`
+- `MESSAGING_ENABLED`
+
+These settings matter when the deployment includes real-time or channel-based behavior. They are not central to every workflow, but they are important when interactive messaging or socket-driven features are in use.
+
+## How To Think About A Configuration Change
+
+Before changing a tunable, ask a few questions:
+
+1. Is this a global runtime setting or a project-specific one?
+2. What user-visible or operator-visible behavior should change?
+3. Which page explains the affected behavior: algorithms, API, pipeline, or observability?
+4. How will you tell whether the change improved the system?
+5. Could the change increase review load, corpus noise, or operational cost?
+
+This keeps tuning from becoming guesswork.
+
+## Migration Boundary
+
+The runtime is moving toward Ninja for the primary API surface and Taskiq for background execution, but that does not invalidate the tunable categories documented here.
+
+What may change during migration is:
+
+- where settings are loaded in code
+- which runtime components consume them first
+- how some execution paths are wired internally
+
+What should remain stable in this document is:
+
+- the meaning of the setting categories
+- the difference between global and project-scoped controls
+- the documented setting names that other reference pages rely on
+
+## Implementation Boundary
+
+The exact settings module layout, default-value implementation, environment loader, and validation behavior live in the separate application repo.
+
+This page should therefore stay focused on:
+
+- what kinds of behavior are tunable
+- which setting names are currently documented and important
+- whether a setting is global or project-scoped
+- why an operator or contributor would change it
+
+If this page drifts into deployment-specific startup mechanics or hardcoded infrastructure assumptions, it will become stale faster than the rest of the reference guide.
+
+## What To Read Next
+
+- [**Core Algorithms**](algorithms.md): Use this when a tunable affects relevance, deduplication, authority, centroid drift, or trends.
+- [**API Reference**](api.md): Use this when URL or routing settings change how API surfaces are consumed.
+- [**Logging & Observability**](logging-and-observability.md): Use this when retention settings or runtime visibility controls are involved.
+- [**Ingestion Pipeline**](pipeline.md): Use this when a configuration change affects how content moves through per-item or batch processing.
+
+If you can identify which behavior a setting changes, whether that setting is global or project-specific, and how you will observe the result, most tuning decisions become much safer.

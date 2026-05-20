@@ -3,20 +3,20 @@
     "type": "separator",
     "title": "Getting Started"
   },
-  "getting-started-saas": "Cloud Setup (SaaS)",
-  "getting-started-selfhost": "Self-Hosted Deployment",
+  "getting-started-saas": "Getting Started (Hosted SaaS)",
+  "getting-started-selfhost": "Getting Started (Self-Hosted)",
   "--- Workspace ---": {
     "type": "separator",
     "title": "Content Management"
   },
-  "projects-and-content": "Projects & Content Library",
-  "newsletter-intake": "Newsletter Intake Channels",
-  "newsletter-drafts": "Managing Newsletter Drafts",
+  "projects-and-content": "Projects and Content",
+  "newsletter-intake": "Newsletter Intake",
+  "newsletter-drafts": "Newsletter Drafts",
   "--- Intelligence ---": {
     "type": "separator",
     "title": "Curation & Analytics"
   },
-  "entities-and-authority": "Entities & Authority Scoring",
-  "themes-and-trends": "Themes & Trend Discovery",
-  "feedback-and-tuning": "Feedback Loop & Tuning"
+  "entities-and-authority": "Entities and Authority",
+  "themes-and-trends": "Themes and Trends",
+  "feedback-and-tuning": "Feedback and Tuning"
 }

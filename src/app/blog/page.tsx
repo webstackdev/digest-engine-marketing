@@ -106,7 +106,7 @@ export default async function BlogHomePage() {
           <Link
             key={post.href}
             href={post.href}
-            className="group overflow-hidden rounded-3xl border border-trim-offset bg-page-base shadow-card transition-transform duration-200 hover:-translate-y-1"
+            className="group overflow-hidden rounded-3xl border border-trim-offset bg-page-offset shadow-card transition-transform duration-200 hover:-translate-y-1"
           >
             <article className="flex h-full flex-col">
               <div className="relative aspect-4/3 overflow-hidden bg-slate-100">

@@ -1,26 +1,42 @@
 # Admin Overview
 
-Welcome to the operator's manual for Digest Engine. This guide is assuming you are running the system, not writing code for it.
+This guide is for the people who administer Digest Engine inside an organization: team leads, operations owners, editors-in-chief, and workspace admins responsible for access, content intake, and day-to-day oversight. It is not meant to be a developer manual.
 
-## Component Map
-* **Django (API & Workers)**: Python core running the REST API.
-* **Celery Worker**: Asynchronous task runner for LangGraph skills and entity extraction.
-* **Celery Beat**: Cron scheduler for trend gathering and fetching RSS/Reddit plugins.
-* **PostgreSQL**: Holds all standard application state and configuration.
-* **Redis**: Acts as the message broker for Celery and the WebSockets channel layer.
-* **Qdrant**: The Vector Database storing the high-dimensional embeddings for Cosine relevance calculations.
-* **Ollama** (Optional): A containerized local LLM server for generating embeddings locally without paying OpenAI/OpenRouter.
-* **Nginx**: Reverse proxy to route `/api/` traffic to Django and `/` traffic to Next.js.
-* **Next.js**: The frontend App Router.
+Use this section when you need to answer questions like:
 
-## Request Path
-Browser -> Nginx -> Next.js (for HTML) -> Nginx -> Django Gunicorn -> Postgres.
+- Who should have access to which projects?
+- How do we onboard a new team or configure a new workspace?
+- Where do we manage sources, trusted senders, and newsletter intake?
+- What should we review regularly to keep the system running smoothly for editors?
+- What information should we collect before escalating an issue to IT, a hosting provider, or platform support?
 
-## Ingestion Path
-Beat triggers fetch -> Celery Worker -> Fetches RSS array -> Django DB -> Triggers Embedding -> Saves to Qdrant -> Enqueues LangGraph Pipeline -> Celery Worker Executes Skills.
+## Start Here
 
-## AI Pipeline Path
-Orchestrated by LangGraph inside a Celery task. Calls out to the specific `OPENROUTER_API_BASE` or Local Ollama instance. State transitions are saved continuously to Postgres mapping to `SkillResult`s.
+If you are new to administering Digest Engine for your organization, begin with these pages:
 
-## Realtime Path
-Browser -> Nginx (WebSocket Upgrade) -> Django Daphne ASGI -> Redis `CHANNEL_LAYER` -> Broadcast to users.
+- [**Installation Guide**](installation.md): Use this when your organization is getting its first workspace ready for real use.
+- [**Initial Configuration**](configuration.md): Review the key setup choices that affect how your organization uses the product.
+- [**Users & Access Management**](users-and-access.md): Set roles, manage membership, and control who can work inside each project.
+
+## Access & Intake
+
+These pages help you manage the parts of the product that affect onboarding, permissions, and intake workflows:
+
+- [**Users & Access Management**](users-and-access.md): Add people, manage roles, and keep project access aligned with responsibilities.
+- [**Sources & Allowlists**](sources-and-allowlist.md): Control which content sources feed the system and which senders are trusted for newsletter intake.
+
+## Operations & Support
+
+These pages are useful for the people responsible for ongoing oversight, continuity, and issue triage:
+
+- [**Daily Operations**](operations.md): Review the recurring checks and admin tasks that keep editorial workflows moving.
+- [**Backups & Data Retention**](backups-and-retention.md): Understand what data should be protected, how long it is kept, and what to plan for in recovery scenarios.
+- [**Troubleshooting & Logs**](troubleshooting.md): Use this when something is not working and you need to narrow down the issue before escalating.
+
+## Suggested Reading Paths
+
+- **New organization admin**: Start with [**Installation Guide**](installation.md), [**Initial Configuration**](configuration.md), and [**Users & Access Management**](users-and-access.md).
+- **Editorial operations owner**: Read [**Sources & Allowlists**](sources-and-allowlist.md), [**Daily Operations**](operations.md), and [**Troubleshooting & Logs**](troubleshooting.md).
+- **Business continuity and oversight**: Read [**Backups & Data Retention**](backups-and-retention.md) together with [**Troubleshooting & Logs**](troubleshooting.md).
+
+Some pages in this section may still involve coordination with IT, your hosting provider, platform support, or a technical team member. Use this overview as the starting point for the administrative side of Digest Engine: people, process, permissions, and support readiness.

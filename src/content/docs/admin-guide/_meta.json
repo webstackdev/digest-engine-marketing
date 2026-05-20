@@ -4,7 +4,7 @@
   "configuration": "Initial Configuration",
   "--- Setup ---": {
     "type": "separator",
-    "title": "Access & Infrastructure"
+    "title": "Access & Intake"
   },
   "users-and-access": "Users & Access Management",
   "sources-and-allowlist": "Sources & Allowlists",

@@ -1,61 +1,165 @@
 # Local Development
 
-Digest Engine uses a **two-workflow split** to isolate fast local iteration from full full-stack fidelity.
+Use this page for the local workflow in **this repository**.
 
-## The Two-Workflow Split
+This repo is the standalone Digest Engine marketing and documentation site. It is not the full application runtime repo, so the local development loop here is much simpler than the product app's backend, worker, and deployment workflow.
 
-1. **Host-Side Track**: Used for fast linting, typechecking, and unit tests WITHOUT spinning up Docker.
-2. **Docker Track**: Used for running the application, seeing the UI, background workers, and Postgres.
+If you need Django, Ninja, Taskiq, ingestion, or production-runtime setup, use the application repo's local-development guidance instead. For this repo, the source of truth is the pnpm-based Next.js workflow described below.
 
-## Host-Side Track
+## What You Are Running Here
 
-When you run commands on your local OS (e.g., `just lint`, `just test`, `just frontend-lint`):
+This workspace contains:
 
-- Django reads from `.env.test`.
-- `DATABASE_URL` defaults to `sqlite:///:memory:` for instantaneous migrations/tests.
-- No Redis or Qdrant is required for basic unit test stubs.
-- `uv` manages the shared local Python environment, while `pants` runs backend linting, Pyright typechecking, and pytest.
+- the public marketing site
+- pricing and signup pages
+- the docs and blog experience
+- shared frontend utilities for attribution, consent, analytics, and theme behavior
 
-Bootstrap a fresh clone with `./scripts/bootstrap_dev.sh` on Linux or macOS. On other platforms, install `uv` and `pants` first and then run `just install` from the repo root.
+This workspace does **not** contain the full deployable application stack, background workers, or backend service topology.
 
-Backend command split:
+## Requirements
 
-- `just backend-lint` runs `pants lint` for Ruff, `pants check` for Pyright, then keeps the existing template, YAML, and `manage.py check` validation steps.
-- `just backend-test` runs `pants test` with the `.env.test` variables forwarded into the hermetic test processes.
-- `just backend-test-coverage` runs `pants test --use-coverage` and writes coverage reports under `dist/coverage/python/`.
+Use the versions documented in the repository README:
 
-## Docker Track
+- Node.js `24.8` or newer
+- pnpm `11.1` or newer
 
-When you want to run the app:
+## First-Time Setup
 
-```bash
-just build
-just dev
-```
-
-`just dev` runs the full Docker Compose stack in the foreground and keeps streaming service logs. Leave it running in the first terminal.
-
-Open a second terminal for follow-up commands against the running stack:
+Install dependencies from the repository root:
 
 ```bash
-just seed
+pnpm install
 ```
 
-After seeding completes, open <http://localhost:8080/> in your browser.
+That is the only required bootstrap step for this repo.
 
-## Celery Beat Schedule
+## Daily Development Loop
 
-The Celery beat schedule file (`celerybeat-schedule`) is written to `.cache/` to prevent dirtying the project root or colliding between host/container environments.
-
-## Frontend Dev Loop
-
-For iterating purely on the Next.js app while the backend runs in Docker:
+For normal frontend and docs work, start the Next.js development server from the repository root:
 
 ```bash
-cd frontend && npm run dev
+pnpm run dev
 ```
 
-## When to Use Which Workflow
+Use that loop when you are:
 
-- **Writing code, running tests, checking types**: Host-side (`just lint`, `just test`).
-- **Testing LLMs, seeing the UI, testing ingestion, full pipelines**: Docker Track (`just dev`).
+- editing marketing pages
+- working on docs or blog route behavior
+- adjusting MDX rendering or metadata behavior
+- changing shared UI components
+- checking styling changes in the browser
+
+## Core Validation Commands
+
+The main local commands in this repo are:
+
+- `pnpm run dev`
+- `pnpm run build`
+- `pnpm run start`
+- `pnpm run typecheck`
+- `pnpm run lint`
+- `pnpm run test`
+- `pnpm run format:check`
+
+Prefer the narrowest command that proves your change is correct before running the full set.
+
+## Focused Validation
+
+For most day-to-day work, use targeted checks instead of always running the entire suite.
+
+Examples:
+
+- run a single Vitest file with `pnpm run test -- <path>`
+- run `pnpm run typecheck` after changing shared types, route code, or component props
+- run `pnpm run lint` when changing JSX, TypeScript, or CSS classes across a wider slice
+- run `pnpm run build` when changing route behavior, MDX loading, or metadata paths that must survive production compilation
+
+This repo already has colocated tests for routes, components, and shared helpers, so use the nearest affected test first.
+
+## Typical Local Workflows
+
+### Editing Marketing Pages Or Components
+
+Use this path when changing landing pages, shared layout, pricing content, or section components:
+
+1. Start with `pnpm run dev`.
+2. Make the UI change in `src/app/` or `src/components/`.
+3. Run the closest component or route test if one exists.
+4. Finish with `pnpm run typecheck` or `pnpm run lint` when the change touches shared code.
+
+### Editing Docs Or Blog Behavior
+
+Use this path when changing MDX content, metadata flow, markdown rendering, or docs navigation:
+
+1. Start with `pnpm run dev`.
+2. Update the relevant files in `src/content/`, `src/app/docs/`, `src/app/blog/`, or the shared MDX rendering surface.
+3. Run the narrowest relevant test, such as a route or sidebar test.
+4. Run `pnpm run build` if the change affects static generation, metadata, or content loading behavior.
+
+### Editing Shared Helpers
+
+Use this path when changing attribution, consent, theme, props, or utility helpers in `src/lib/`:
+
+1. Update the helper and its colocated test.
+2. Run `pnpm run test -- <path>` for the affected helper.
+3. Run `pnpm run typecheck` if the helper is imported broadly.
+
+## Build Verification
+
+Use a production build when you need to confirm that the site still compiles with static content and route generation:
+
+```bash
+pnpm run build
+```
+
+That is especially important after changes to:
+
+- docs or blog route wiring
+- metadata generation
+- MDX content loading
+- global layout behavior
+- sitemap-relevant pages
+
+The build also runs the sitemap generation step through the existing `postbuild` script.
+
+## What Not To Expect In This Repo
+
+Do not expect this repo's local workflow to include:
+
+- Docker Compose for the full application stack
+- Python environment bootstrapping
+- `just` commands for backend validation
+- local Postgres, Redis, Qdrant, or worker orchestration
+- application seeding flows
+
+Those belong to the separate application repo, not this marketing/docs repository.
+
+## When To Switch To The App Repo
+
+Move to the application repo when the work depends on:
+
+- backend APIs
+- Ninja handlers or schema changes
+- Taskiq jobs or ingestion flows
+- runtime auth, database, or queue behavior
+- deployment and production rollout validation
+
+This repo can document those systems, but it does not run them locally.
+
+## A Practical Checklist
+
+Before considering a local change ready for review, make sure you have:
+
+1. Used the repo-root pnpm workflow rather than stale app-repo commands.
+2. Run the narrowest relevant test or validation command for the changed slice.
+3. Used `pnpm run build` when route generation or MDX behavior changed.
+4. Confirmed the docs in this repo still match the frontend that actually ships here.
+
+## What To Read Next
+
+- [**Frontend Conventions**](frontend-conventions.md): Use this when deciding where frontend code should live.
+- [**Testing & QA**](testing.md): Use this when choosing the right validation scope for a change.
+- [**Deployment & CI/CD**](deployment.md): Use this when a change affects what ships from this repo versus the separate application repo.
+
+If you keep local development guidance grounded in the actual standalone Next.js workflow here, contributors do not waste time looking for backend or Docker surfaces that this repo does not own.
