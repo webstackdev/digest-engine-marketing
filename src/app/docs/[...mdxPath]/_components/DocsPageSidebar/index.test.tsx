@@ -1,19 +1,28 @@
-import { renderToStaticMarkup } from "react-dom/server";
+// @vitest-environment jsdom
+
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { DocsPageSidebar } from "./index";
 
 describe("DocsPageSidebar", () => {
-  it("renders file navigation and tab controls", () => {
-    const markup = renderToStaticMarkup(
+  it("renders file navigation as a single-open accordion and normalizes section labels", () => {
+    const { container } = render(
       <DocsPageSidebar
-        currentPath="/docs/reference/pipeline"
+        currentPath="/docs/admin-guide/configuration"
         navigation={[
           {
-            title: "Reference",
+            title: "admin-guide",
+            items: [
+              { title: "Overview", href: "/docs/admin-guide/overview" },
+              { title: "Configuration", href: "/docs/admin-guide/configuration" },
+            ],
+          },
+          {
+            title: "reference",
             items: [
               { title: "Overview", href: "/docs/reference/overview" },
-              { title: "Pipeline", href: "/docs/reference/pipeline" },
+              { title: "Glossary", href: "/docs/reference/glossary" },
             ],
           },
         ]}
@@ -23,8 +32,19 @@ describe("DocsPageSidebar", () => {
       />,
     );
 
-    expect(markup).toContain("Files");
-    expect(markup).toContain("Table of Contents");
-    expect(markup).toContain('href="/docs/reference/pipeline"');
+    fireEvent.click(screen.getByRole("button", { name: "Files" }));
+
+    const adminGuideSection = screen.getByText("admin guide").closest("details");
+    const referenceSection = screen.getByText("reference").closest("details");
+
+    expect(screen.getByRole("button", { name: "Table of Contents" })).toBeTruthy();
+    expect(adminGuideSection?.hasAttribute("open")).toBe(true);
+    expect(referenceSection?.hasAttribute("open")).toBe(false);
+    expect(container.innerHTML.includes('href="/docs/admin-guide/configuration"')).toBe(true);
+
+    fireEvent.click(screen.getByText("reference"));
+
+    expect(referenceSection?.hasAttribute("open")).toBe(true);
+    expect(adminGuideSection?.hasAttribute("open")).toBe(false);
   });
 });

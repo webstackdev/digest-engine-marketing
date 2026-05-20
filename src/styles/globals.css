@@ -65,16 +65,8 @@
     color: var(--color-page-inverse);
   }
 
-  .nextra-body-typesetting-article {
-    max-width: none !important;
-  }
-
   .nextra-content {
     width: 100%;
-  }
-
-  .nextra-body-typesetting-article > * {
-    max-width: none !important;
   }
 
   ::-webkit-scrollbar {

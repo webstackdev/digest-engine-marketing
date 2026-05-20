@@ -28,6 +28,28 @@ type Props = {
   toc: Heading[];
 };
 
+function itemMatchesPath(items: DocsSidebarItem[], currentPath: string): boolean {
+  return items.some((item) => {
+    if (item.href === currentPath) {
+      return true;
+    }
+
+    if (item.children?.length) {
+      return itemMatchesPath(item.children, currentPath);
+    }
+
+    return false;
+  });
+}
+
+function findOpenSection(navigation: DocsSidebarSection[], currentPath: string): string | null {
+  return navigation.find((section) => itemMatchesPath(section.items, currentPath))?.title ?? null;
+}
+
+function formatSectionTitle(title: string): string {
+  return title.replaceAll("-", " ");
+}
+
 function NavigationTree({
   currentPath,
   items,
@@ -64,7 +86,7 @@ function NavigationTree({
               className={cn(
                 "block rounded-2xl px-3 py-2 text-sm leading-6 transition-colors",
                 isActive
-                  ? "bg-secondary text-primary shadow-soft"
+                  ? "bg-secondary text-content-inverse"
                   : "text-content-active hover:bg-page-offset hover:text-primary",
               )}
             >
@@ -78,48 +100,70 @@ function NavigationTree({
 }
 
 export function DocsPageSidebar({ currentPath, navigation, toc }: Props) {
-  const [activeTab, setActiveTab] = useState<"files" | "toc">("files");
+  const [activeTab, setActiveTab] = useState<"files" | "toc">("toc");
+  const sectionForCurrentPath = findOpenSection(navigation, currentPath) ?? navigation[0]?.title ?? null;
+  const [openSectionState, setOpenSectionState] = useState<{
+    path: string;
+    title: string | null;
+  }>(() => ({ path: currentPath, title: sectionForCurrentPath }));
+  const openSection =
+    openSectionState.path === currentPath &&
+    navigation.some((section) => section.title === openSectionState.title)
+      ? openSectionState.title
+      : sectionForCurrentPath;
 
   return (
     <aside className="self-start">
-      <div className="overflow-hidden rounded-3xl border border-trim-offset bg-page-base shadow-card backdrop-blur-[18px]">
-        <div className="grid grid-cols-2 border-b border-trim-offset bg-page-offset p-2">
+      <div className="overflow-hidden rounded-3xl border border-trim-offset bg-page-base/40">
+        <div className="grid grid-cols-2 mt-4 mx-4">
           <button
             type="button"
             className={cn(
-              "rounded-2xl px-4 py-2 text-sm font-semibold transition-colors",
-              activeTab === "files"
-                ? "bg-secondary text-primary shadow-soft"
-                : "text-content-offset hover:text-primary",
-            )}
-            onClick={() => setActiveTab("files")}
-          >
-            Files
-          </button>
-          <button
-            type="button"
-            className={cn(
-              "rounded-2xl px-4 py-2 text-sm font-semibold transition-colors",
+              "rounded-2xl px-2 py-2 text-sm font-semibold transition-colors",
               activeTab === "toc"
-                ? "bg-secondary text-primary shadow-soft"
+                ? "bg-secondary text-content-inverse shadow-soft"
                 : "text-content-offset hover:text-primary",
             )}
             onClick={() => setActiveTab("toc")}
           >
             Table of Contents
           </button>
+          <button
+            type="button"
+            className={cn(
+              "rounded-2xl px-2 py-2 text-sm font-semibold transition-colors",
+              activeTab === "files"
+                ? "bg-secondary text-content-inverse shadow-soft"
+                : "text-content-offset hover:text-primary",
+            )}
+            onClick={() => setActiveTab("files")}
+          >
+            Files
+          </button>
         </div>
 
-        <div className="max-h-128 overflow-y-auto p-4">
+        <div className="overflow-y-auto p-4">
           {activeTab === "files" ? (
-            <div className="space-y-5">
+            <div className="space-y-3">
               {navigation.map((section) => (
-                <section key={section.title} className="space-y-3">
-                  <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-content-offset">
-                    {section.title}
-                  </h2>
-                  <NavigationTree currentPath={currentPath} items={section.items} />
-                </section>
+                <details
+                  key={section.title}
+                  open={openSection === section.title}
+                  className="rounded-3xl border border-trim-offset bg-page-base"
+                >
+                  <summary
+                    className="cursor-pointer list-none rounded-3xl px-4 py-3 text-xs font-semibold uppercase tracking-wider text-content-offset transition-colors hover:text-primary [&::-webkit-details-marker]:hidden"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setOpenSectionState({ path: currentPath, title: section.title });
+                    }}
+                  >
+                    {formatSectionTitle(section.title)}
+                  </summary>
+                  <div className="px-4 pb-4">
+                    <NavigationTree currentPath={currentPath} items={section.items} />
+                  </div>
+                </details>
               ))}
             </div>
           ) : toc.length ? (

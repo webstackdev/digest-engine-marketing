@@ -108,7 +108,7 @@ export default async function BlogArticlePage(props: { params: Promise<BlogRoute
             </div>
           </header>
 
-          <div className="nextra-body-typesetting-article min-w-0 wrap-break-word text-content">
+          <div className="min-w-0 wrap-break-word text-content">
             <MDXPage {...props} params={params} />
           </div>
         </div>
