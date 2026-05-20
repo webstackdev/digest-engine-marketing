@@ -91,7 +91,7 @@ export function Footer() {
         <div className="flex w-full max-w-56 flex-col gap-3 justify-center lg:justify-self-center">
           <Button
             asChild
-            className="h-11 w-full rounded-full px-5 text-sm font-semibold bg-primary transition-colors hover:bg-primary-offset"
+            className="h-11 w-full rounded-full px-5 font-semibold bg-primary hover:bg-primary-offset transition-colors"
           >
             <Link href="/signup">Start Your First Project</Link>
           </Button>
@@ -99,7 +99,7 @@ export function Footer() {
           <Button
             asChild
             variant="outline"
-            className="h-11 w-full rounded-full px-5 text-sm font-semibold bg-secondary transition-colors hover:bg-secondary/90"
+            className="h-11 w-full rounded-full px-5 text-content-inverse hover:text-content-inverse font-semibold bg-secondary hover:bg-secondary/90 transition-colors"
           >
             <Link href="/docs">Read the docs</Link>
           </Button>
