@@ -73,4 +73,26 @@ describe("Docs catch-all page", () => {
     expect(markup).toContain("Table of Contents");
     expect(markup).toContain("Reference doc");
   });
+
+  it("maps docs frontmatter into next metadata", async () => {
+    mockGenerateStaticParamsFor.mockReturnValue(vi.fn().mockResolvedValue([]));
+    mockImportPage.mockResolvedValue({
+      metadata: {
+        title: "Pipeline",
+        description: "How the pipeline works.",
+      },
+    });
+
+    const { generateMetadata } = await import("./page");
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ mdxPath: ["reference", "pipeline"] }),
+    });
+
+    expect(metadata.title).toBe("Pipeline");
+    expect(metadata.description).toBe("How the pipeline works.");
+    expect(metadata.openGraph).toMatchObject({
+      title: "Pipeline",
+      description: "How the pipeline works.",
+    });
+  });
 });

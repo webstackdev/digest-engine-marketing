@@ -52,8 +52,30 @@ describe("Blog catch-all page", () => {
     );
 
     expect(mockImportPage).toHaveBeenCalledWith(["blog", "authority-aware-ranking"]);
-    expect(markup).toContain("Authority-Aware Ranking");
     expect(markup).toContain("Sample blog body");
     expect(markup).toContain("May 15, 2026");
+  });
+
+  it("maps blog frontmatter into next metadata", async () => {
+    mockGenerateStaticParamsFor.mockReturnValue(vi.fn().mockResolvedValue([]));
+    mockImportPage.mockResolvedValue({
+      metadata: {
+        title: "Authority-Aware Ranking",
+        description: "A real post.",
+      },
+    });
+
+    const { generateMetadata } = await import("./page");
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ mdxPath: ["authority-aware-ranking"] }),
+    });
+
+    expect(metadata.title).toBe("Authority-Aware Ranking");
+    expect(metadata.description).toBe("A real post.");
+    expect(metadata.openGraph).toMatchObject({
+      type: "article",
+      title: "Authority-Aware Ranking",
+      description: "A real post.",
+    });
   });
 });

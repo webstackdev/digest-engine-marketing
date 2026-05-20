@@ -82,7 +82,7 @@ export default function DocsHomePage() {
             <Link
               key={title}
               href={href}
-              className="block rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card backdrop-blur-[18px] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-card-strong"
+              className="block rounded-3xl border border-trim-offset bg-page-offset p-6 shadow-card transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-card-strong"
             >
               <article>
                 <div className="flex justify-start">
