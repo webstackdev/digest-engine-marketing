@@ -52,19 +52,13 @@ export default function CookiesPage() {
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
       <PageSection id="cookies-hero" classes="px-6 py-10 sm:px-10 sm:py-12">
-        <div className="max-w-4xl space-y-5">
-          <span className="inline-flex w-fit items-center rounded-full border border-trim-offset bg-page-base px-4 py-2 text-sm font-medium text-content-offset shadow-soft backdrop-blur-[18px]">
-            Cookie Policy
-          </span>
-
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-primary sm:text-5xl lg:text-6xl">
+        <div className="space-y-5">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-secondary">
             How {brand.name} uses cookies and similar technologies
           </h1>
 
-          <p className="max-w-3xl text-lg leading-8 text-content-active">
-            This page provides standard SaaS-style cookie policy copy describing how site and
-            product experiences may use cookies for security, functionality, analytics, and
-            optional marketing-related purposes.
+          <p className="text-lg leading-8 text-content-active">
+            This policy outlines how {brand.name} uses cookies and similar technologies for security, functionality, analytics, and marketing. Please read it to understand how we set and manage these tools.
           </p>
 
           <p className="text-sm text-content-offset">Effective date: May 16, 2026</p>
@@ -77,11 +71,14 @@ export default function CookiesPage() {
             "Necessary cookies help the service stay secure and usable.",
             "Optional analytics and marketing cookies should follow local consent rules.",
             "Users can typically manage cookie settings through browsers or consent tools.",
-          ].map((item) => (
+          ].map((item, index) => (
             <div
               key={item}
-              className="rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"
+              className="flex items-start gap-5 rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"
             >
+              <span className="text-3xl font-semibold tracking-tight text-trim-offset">
+                0{index + 1}
+              </span>
               <p className="text-base font-semibold tracking-tight text-content-active">{item}</p>
             </div>
           ))}
@@ -89,15 +86,15 @@ export default function CookiesPage() {
       </PageSection>
 
       <PageSection id="cookies-policy" classes="px-6 py-8 sm:px-8 sm:py-10">
-        <div className="max-w-3xl">
+        <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
             Policy details
           </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
-            Typical cookie policy terms for a SaaS product
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl">
+            Digest Engine Cookie Policy
           </h2>
           <p className="mt-3 text-base leading-7 text-content-offset">
-            This copy is intentionally general and should be reviewed with counsel before you rely on it as final legal or consent language.
+            Please read this policy to learn more about the tools we use and your choices regarding them.
           </p>
         </div>
 
@@ -121,30 +118,28 @@ export default function CookiesPage() {
       </PageSection>
 
       <PageSection id="cookies-contact" classes="px-6 py-8 sm:px-8 sm:py-10">
-        <div className="max-w-3xl rounded-4xl border border-trim-offset bg-page-base p-6 shadow-card sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
-            Contact
-          </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
-            Questions about consent, tracking, or cookie settings?
-          </h2>
-          <p className="mt-3 text-base leading-7 text-content-offset">
-            Contact the {brand.name} team through the signup page or your existing customer channel if you need more detail about cookies, consent handling, or third-party tools used with the service.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/privacy"
-              className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"
-            >
-              View privacy policy
-            </Link>
-            <Link
-              href="/terms"
-              className="inline-flex items-center justify-center rounded-full border border-trim-offset px-5 py-3 text-base font-semibold text-content-active no-underline transition-colors hover:text-content-offset"
-            >
-              View terms
-            </Link>
-          </div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
+          Contact
+        </p>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+          Questions about consent, tracking, or cookie settings?
+        </h2>
+        <p className="mt-3 text-base leading-7 text-content-offset">
+          Contact the {brand.name} team through the signup page or your existing customer channel if you need more detail about cookies, consent handling, or third-party tools used with the service.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/privacy"
+            className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"
+          >
+            View privacy policy
+          </Link>
+          <Link
+            href="/terms"
+            className="inline-flex items-center justify-center rounded-full bg-secondary hover:bg-secondary/90 px-5 py-3 text-base font-semibold text-content-inverse no-underline transition-colors"
+          >
+            View terms
+          </Link>
         </div>
       </PageSection>
     </main>
