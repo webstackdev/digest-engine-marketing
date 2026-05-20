@@ -52,19 +52,14 @@ export default function PrivacyPage() {
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
       <PageSection id="privacy-hero" classes="px-6 py-10 sm:px-10 sm:py-12">
-        <div className="max-w-4xl space-y-5">
-          <span className="inline-flex w-fit items-center rounded-full border border-trim-offset bg-page-base px-4 py-2 text-sm font-medium text-content-offset shadow-soft backdrop-blur-[18px]">
-            Privacy Policy
-          </span>
-
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-primary sm:text-5xl lg:text-6xl">
+        <div className="space-y-5">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-secondary">
             Privacy terms for using {brand.name}
           </h1>
 
-          <p className="max-w-3xl text-lg leading-8 text-content-active">
-            This page describes the standard ways a SaaS product like {brand.name} collects,
-            uses, stores, and protects personal information in connection with accounts,
-            billing, support, and product usage.
+          <p className="text-lg leading-8 text-content-active">
+            We are committed to protecting your privacy. This policy outlines how {brand.name} collects,
+            uses, safeguards, and processes your personal information when you interact with our platform and services.
           </p>
 
           <p className="text-sm text-content-offset">Effective date: May 16, 2026</p>
@@ -89,15 +84,15 @@ export default function PrivacyPage() {
       </PageSection>
 
       <PageSection id="privacy-policy" classes="px-6 py-8 sm:px-8 sm:py-10">
-        <div className="max-w-3xl">
+        <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
             Policy details
           </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
-            Standard privacy terms for a SaaS workflow
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl">
+            Digest Engine Privacy Terms
           </h2>
           <p className="mt-3 text-base leading-7 text-content-offset">
-            This copy is intentionally general and should be reviewed with counsel before you rely on it as final legal text.
+            Please read this policy carefully to understand our practices regarding your data and how we handle it.
           </p>
         </div>
 
@@ -121,30 +116,28 @@ export default function PrivacyPage() {
       </PageSection>
 
       <PageSection id="privacy-contact" classes="px-6 py-8 sm:px-8 sm:py-10">
-        <div className="max-w-3xl rounded-4xl border border-trim-offset bg-page-base p-6 shadow-card sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
-            Contact
-          </p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
-            Questions about privacy or data handling?
-          </h2>
-          <p className="mt-3 text-base leading-7 text-content-offset">
-            Contact the {brand.name} team through the signup page or your existing customer support channel for privacy-related questions, subprocessors, or deletion requests.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/signup"
-              className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"
-            >
-              Contact sales
-            </Link>
-            <Link
-              href="/docs/reference/overview"
-              className="inline-flex items-center justify-center rounded-full border border-trim-offset px-5 py-3 text-base font-semibold text-content-active no-underline transition-colors hover:text-content-offset"
-            >
-              Read the docs
-            </Link>
-          </div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
+          Contact
+        </p>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+          Questions about privacy or data handling?
+        </h2>
+        <p className="mt-3 text-base leading-7 text-content-offset">
+          Contact the {brand.name} team through the signup page or your existing customer support channel for privacy-related questions, subprocessors, or deletion requests.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/signup"
+            className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"
+          >
+            Contact sales
+          </Link>
+          <Link
+            href="/docs/reference/overview"
+            className="inline-flex items-center justify-center rounded-full bg-secondary hover:bg-secondary/90 px-5 py-3 text-base font-semibold text-content-inverse no-underline transition-colors"
+          >
+            Read the docs
+          </Link>
         </div>
       </PageSection>
     </main>

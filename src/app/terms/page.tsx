@@ -78,7 +78,7 @@ export default function TermsPage() {
           </h1>
 
           <p className="max-w-3xl text-lg leading-8 text-content-active">
-            These terms outline the typical contractual rules for access to a SaaS platform like {brand.name}, including account responsibilities, billing, content rights, acceptable use, disclaimers, and limitations of liability.
+            By accessing or using {brand.name}, you agree to be bound by these Terms of Service. Please read them carefully, as they govern your access to the platform, account responsibilities, billing, content rights, and acceptable use.
           </p>
 
           <p className="text-sm text-content-offset">Effective date: May 16, 2026</p>
@@ -111,7 +111,7 @@ export default function TermsPage() {
             Typical SaaS terms of service
           </h2>
           <p className="mt-3 text-base leading-7 text-content-offset">
-            This copy is intentionally general and should be reviewed with counsel before you rely on it as final contract language.
+            Please read these terms carefully to understand your rights and obligations when using the service.
           </p>
         </div>
 
