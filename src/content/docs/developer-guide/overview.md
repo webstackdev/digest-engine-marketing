@@ -18,7 +18,7 @@ This developer guide is the right place to answer questions like:
 
 - [**System Architecture**](architecture.md): Start here when you need the big picture for request flow, async processing, ingestion, and frontend/backend boundaries.
 - [**Contributing Guidelines**](contributing.md): Read this before making changes so your branch, validation flow, and prompt-skill updates follow repo expectations.
-- [**Backend Conventions**](backend-conventions.md): Use this when working in Django, DRF, Celery, ingestion, or project-scoped backend code.
+- [**Backend Conventions**](backend-conventions.md): Use this when working in Django, Ninja API handlers, Taskiq jobs, ingestion, or project-scoped backend code.
 - [**Frontend Conventions**](frontend-conventions.md): Use this when touching App Router routes, shared frontend types, component structure, or UI tests.
 
 ## Getting Started
