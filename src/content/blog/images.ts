@@ -1,23 +1,23 @@
 import type { StaticImageData } from "next/image";
 
-import authorityAwareRankingHeroImage from "@/content/blog/authority-aware-ranking/hero.svg";
-import authorityAwareRankingPreviewImage from "@/content/blog/authority-aware-ranking/preview.svg";
-import competitiveIntelligenceBuiltInHeroImage from "@/content/blog/competitive-intelligence-built-in/hero.svg";
-import competitiveIntelligenceBuiltInPreviewImage from "@/content/blog/competitive-intelligence-built-in/preview.svg";
-import composableAiSkillsHeroImage from "@/content/blog/composable-ai-skills/hero.svg";
-import composableAiSkillsPreviewImage from "@/content/blog/composable-ai-skills/preview.svg";
-import draftAssemblyNotJustCurationHeroImage from "@/content/blog/draft-assembly-not-just-curation/hero.svg";
-import draftAssemblyNotJustCurationPreviewImage from "@/content/blog/draft-assembly-not-just-curation/preview.svg";
-import humanReviewByDefaultHeroImage from "@/content/blog/human-review-by-default/hero.svg";
-import humanReviewByDefaultPreviewImage from "@/content/blog/human-review-by-default/preview.svg";
-import perProjectRelevanceTrainingHeroImage from "@/content/blog/per-project-relevance-training/hero.svg";
-import perProjectRelevanceTrainingPreviewImage from "@/content/blog/per-project-relevance-training/preview.svg";
-import selfHostableBringYourOwnModelsHeroImage from "@/content/blog/self-hostable-bring-your-own-models/hero.svg";
-import selfHostableBringYourOwnModelsPreviewImage from "@/content/blog/self-hostable-bring-your-own-models/preview.svg";
-import trendVelocityNotTrendVolumeHeroImage from "@/content/blog/trend-velocity-not-trend-volume/hero.svg";
-import trendVelocityNotTrendVolumePreviewImage from "@/content/blog/trend-velocity-not-trend-volume/preview.svg";
-import unifiedEntityProfilesHeroImage from "@/content/blog/unified-entity-profiles/hero.svg";
-import unifiedEntityProfilesPreviewImage from "@/content/blog/unified-entity-profiles/preview.svg";
+import authorityAwareRankingHeroImage from "@/content/blog/authority-aware-ranking/hero.jpg";
+import authorityAwareRankingPreviewImage from "@/content/blog/authority-aware-ranking/preview.jpg";
+import competitiveIntelligenceBuiltInHeroImage from "@/content/blog/competitive-intelligence-built-in/hero.jpg";
+import competitiveIntelligenceBuiltInPreviewImage from "@/content/blog/competitive-intelligence-built-in/preview.jpg";
+import composableAiSkillsHeroImage from "@/content/blog/composable-ai-skills/hero.jpg";
+import composableAiSkillsPreviewImage from "@/content/blog/composable-ai-skills/preview.jpg";
+import draftAssemblyNotJustCurationHeroImage from "@/content/blog/draft-assembly-not-just-curation/hero.jpg";
+import draftAssemblyNotJustCurationPreviewImage from "@/content/blog/draft-assembly-not-just-curation/preview.jpg";
+import humanReviewByDefaultHeroImage from "@/content/blog/human-review-by-default/hero.jpg";
+import humanReviewByDefaultPreviewImage from "@/content/blog/human-review-by-default/preview.jpg";
+import perProjectRelevanceTrainingHeroImage from "@/content/blog/per-project-relevance-training/hero.jpg";
+import perProjectRelevanceTrainingPreviewImage from "@/content/blog/per-project-relevance-training/preview.jpg";
+import selfHostableBringYourOwnModelsHeroImage from "@/content/blog/self-hostable-bring-your-own-models/hero.jpg";
+import selfHostableBringYourOwnModelsPreviewImage from "@/content/blog/self-hostable-bring-your-own-models/preview.jpg";
+import trendVelocityNotTrendVolumeHeroImage from "@/content/blog/trend-velocity-not-trend-volume/hero.jpg";
+import trendVelocityNotTrendVolumePreviewImage from "@/content/blog/trend-velocity-not-trend-volume/preview.jpg";
+import unifiedEntityProfilesHeroImage from "@/content/blog/unified-entity-profiles/hero.jpg";
+import unifiedEntityProfilesPreviewImage from "@/content/blog/unified-entity-profiles/preview.jpg";
 
 export const blogHeroImages: Record<string, StaticImageData> = {
   "authority-aware-ranking": authorityAwareRankingHeroImage,

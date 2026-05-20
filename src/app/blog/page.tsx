@@ -83,20 +83,19 @@ export default async function BlogHomePage() {
   const posts = buildBlogCards(pageMap);
 
   return (
-    <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 pb-16 pt-24">
+    <main className="relative mx-auto flex w-full flex-col gap-8 pb-16 pt-24">
       <PageSection
-        classes="border border-slate-200 bg-linear-to-br from-orange-50 via-white to-amber-50 px-6 py-10 sm:px-10 sm:py-12"
-        shadowClass="shadow-[0_30px_80px_-48px_rgba(146,64,14,0.6)]"
+        classes="px-6 py-10 sm:px-10 sm:py-12"
       >
-        <div className="max-w-3xl space-y-5">
-          <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white px-4 py-2 text-sm font-medium text-orange-700 shadow-sm">
+        <div className="space-y-5">
+          <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 font-medium text-content-inverse">
             <Newspaper className="h-4 w-4" aria-hidden="true" />
             Blog
           </span>
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-secondary">
             Notes, experiments, and launch stories from the {brand.name} team.
           </h1>
-          <p className="max-w-2xl text-lg leading-8 text-slate-700">
+          <p className="text-lg leading-8 text-content-active">
             This route stays visually independent from the docs area. Each post can bring its own imagery, voice, and long-form layout while the index page stays optimized for browsing.
           </p>
         </div>
@@ -107,7 +106,7 @@ export default async function BlogHomePage() {
           <Link
             key={post.href}
             href={post.href}
-            className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_24px_70px_-44px_rgba(15,23,42,0.45)] transition-transform duration-200 hover:-translate-y-1"
+            className="group overflow-hidden rounded-3xl border border-trim-offset bg-page-base shadow-card transition-transform duration-200 hover:-translate-y-1"
           >
             <article className="flex h-full flex-col">
               <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
@@ -121,13 +120,13 @@ export default async function BlogHomePage() {
               </div>
               <div className="flex flex-1 flex-col gap-4 px-6 py-6">
                 {post.publishedAt ? (
-                  <p className="text-sm font-medium text-orange-700">{post.publishedAt}</p>
+                  <p className="text-sm font-medium text-content-offset">{post.publishedAt}</p>
                 ) : null}
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold tracking-tight text-slate-950">{post.title}</h2>
-                  <p className="text-base leading-7 text-slate-600">{post.description}</p>
+                  <h2 className="text-2xl font-semibold tracking-tight text-secondary">{post.title}</h2>
+                  <p className="text-base leading-7 text-content-active">{post.description}</p>
                 </div>
-                <div className="mt-auto flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <div className="mt-auto flex items-center gap-2 text-sm font-semibold text-secondary">
                   Read article
                   <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
                 </div>

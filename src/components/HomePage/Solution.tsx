@@ -15,7 +15,7 @@ const Solution = ({ title, description, steps }: ISolutionProps) => {
           <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
             {title}
           </h2>
-          <p className="max-w-4xl text-lg leading-8 text-content-offset sm:text-xl">
+          <p className="max-w-4xl text-lg leading-8 text-primary sm:text-xl">
             {description}
           </p>
         </header>

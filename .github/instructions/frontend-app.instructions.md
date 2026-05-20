@@ -39,7 +39,7 @@ applyTo:
 ## Validation
 
 - Prefer focused checks first:
-  - `cd frontend && npm run test:run`
+  - `cd frontend && npm run test`
   - `cd frontend && npm run typecheck`
   - `just frontend-lint`
 

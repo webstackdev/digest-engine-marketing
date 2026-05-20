@@ -52,7 +52,7 @@ pnpm run start
 pnpm run typecheck
 pnpm run lint
 pnpm run lint:style
-pnpm run test:run
+pnpm run test
 pnpm run format:check
 ```
 

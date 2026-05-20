@@ -35,5 +35,5 @@ Use this skill to add the smallest effective tests around the changed behavior.
 ## References
 
 - Backend commands are captured in `justfile` as `just backend-test`, `just backend-test-coverage`, and `just backend-lint`.
-- Frontend commands are captured in `frontend/package.json` and the repo `justfile` as `npm run test:run`, `npm run test:coverage`, and `just frontend-lint`.
+- Frontend commands are captured in `frontend/package.json` and the repo `justfile` as `npm run test`, `npm run test:coverage`, and `just frontend-lint`.
 - Use `python manage.py check` after Django-side structural changes.

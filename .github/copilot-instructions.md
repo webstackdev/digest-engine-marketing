@@ -71,7 +71,7 @@ You are working in Digest Engine, a Django + DRF + Celery + Qdrant backend with 
 	- `pytest core/tests/...`
 	- `python manage.py check`
 	- `just backend-lint`
-	- `cd frontend && npm run test:run`
+	- `cd frontend && npm run test`
 	- `cd frontend && npm run typecheck`
 	- `just frontend-lint`
 - Prefer existing `just` tasks when they cover the needed validation flow.
