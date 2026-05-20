@@ -31,7 +31,7 @@ const Pricing: React.FC<IPricingProps> = ({
               type="button"
               className={cn(
                 "relative flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-colors",
-                isYearly ? "text-primary" : "text-content-offset",
+                isYearly ? "text-secondary-inverse" : "text-content-offset",
               )}
               onClick={() => setIsYearly(true)}
             >
@@ -39,7 +39,7 @@ const Pricing: React.FC<IPricingProps> = ({
                 <span className="absolute inset-0 -z-10 rounded-full border border-trim-offset bg-secondary shadow-soft backdrop-blur-[18px]" />
               )}
               Yearly
-              <span className="text-primary">
+              <span className={isYearly ? "text-secondary-inverse" : "text-primary"}>
                 Save {annualDiscount}%
               </span>
             </button>
@@ -47,7 +47,7 @@ const Pricing: React.FC<IPricingProps> = ({
               type="button"
               className={cn(
                 "relative flex items-center rounded-full px-5 py-2 text-sm font-semibold transition-colors",
-                !isYearly ? "text-content-active" : "text-content-offset",
+                !isYearly ? "text-secondary-inverse" : "text-content-offset",
               )}
               onClick={() => setIsYearly(false)}
             >
@@ -67,7 +67,7 @@ const Pricing: React.FC<IPricingProps> = ({
         {plans.map((plan) => {
           const buttonClass = plan.isPopular
             ? "text-primary-inverse bg-primary hover:bg-primary"
-            : "border-trim-offset text-primary backdrop-blur-[18px] bg-secondary hover:bg-page-base";
+            : "border-trim-offset text-secondary-inverse backdrop-blur-[18px] bg-secondary hover:bg-page-base text-secondary-inverse";
 
           return (
             <div
@@ -86,7 +86,7 @@ const Pricing: React.FC<IPricingProps> = ({
                       {plan.name}
                     </p>
                     {plan.isPopular && (
-                      <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-primary">
+                      <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-secondary-inverse">
                         Popular
                       </span>
                     )}

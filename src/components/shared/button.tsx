@@ -14,7 +14,7 @@ const buttonVariants = cva(
         outline:
           "border border-trim-offset bg-page-base shadow-xs hover:bg-accent hover:text-page-inverse",
         secondary:
-          "bg-secondary text-secondary-inverse hover:bg-secondary",
+          "bg-secondary text-secondary-inverse hover:bg-secondary/90",
         ghost:
           "hover:bg-accent hover:text-page-inverse",
         link: "text-primary underline-offset-4 hover:underline",
