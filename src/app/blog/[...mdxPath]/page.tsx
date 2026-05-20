@@ -55,9 +55,9 @@ export default async function BlogArticlePage(props: { params: Promise<BlogRoute
   };
 
   return (
-    <main className="relative mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-24 sm:px-6 lg:px-8">
-      <article className="overflow-hidden rounded-4xl border border-slate-200 bg-white shadow-[0_32px_90px_-56px_rgba(15,23,42,0.55)]">
-        <div className="relative aspect-2/1 bg-slate-100">
+    <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 pt-24">
+      <article className="overflow-hidden rounded-4xl border border-trim-offset bg-page-base shadow-card">
+        <div className="relative aspect-2/1">
           {heroImage ? (
             <Image
               src={heroImage}
@@ -88,7 +88,7 @@ export default async function BlogArticlePage(props: { params: Promise<BlogRoute
             </div>
           </header>
 
-          <div className="nextra-body-typesetting-article min-w-0 wrap-break-word text-slate-800">
+          <div className="nextra-body-typesetting-article min-w-0 wrap-break-word text-content">
             <MDXPage {...props} params={params} />
           </div>
         </div>
