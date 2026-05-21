@@ -92,7 +92,7 @@ export default function TermsPage() {
               key={item}
               className="flex items-start gap-5 rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"
             >
-              <span className="text-3xl font-semibold tracking-tight text-trim-offset">
+              <span className="mt-2 sm:mt-0 text-3xl font-semibold tracking-tight text-trim-offset">
                 0{index + 1}
               </span>
               <p className="text-base font-semibold tracking-tight text-content-active">{item}</p>
@@ -137,13 +137,13 @@ export default function TermsPage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
           Contact
         </p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl">
           Questions about contracts, plans, or legal terms?
         </h2>
         <p className="mt-3 text-base leading-7 text-content-offset">
           Contact the {brand.name} team through the signup page or your existing customer channel if you need an order form, enterprise terms, or clarifications about service usage.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3 justify-center sm:justify-start">
           <Link
             href="/signup"
             className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"

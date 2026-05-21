@@ -96,7 +96,7 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4">
+        <div className="mt-4 sm:mt-8 grid gap-4">
           {privacySections.map((section) => (
             <section
               key={section.title}
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
           Contact
         </p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-content-active sm:text-3xl">
+        <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-secondary">
           Questions about privacy or data handling?
         </h2>
         <p className="mt-3 text-base leading-7 text-content-offset">
