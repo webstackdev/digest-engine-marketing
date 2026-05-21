@@ -91,6 +91,37 @@ export interface ICtaProps {
   highlights: ICTAHighlight[];
 }
 
+export interface IFooterProps {
+  description: string;
+  primaryAction: ICtaAction;
+  secondaryAction: ICtaAction;
+}
+
+export interface ITourPageItem {
+  title: string;
+  description: string;
+}
+
+export interface ITourPageProps {
+  metadataDescription: string;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroDescription: string;
+  primaryAction: ICtaAction;
+  secondaryAction: ICtaAction;
+  highlightsHeading: string;
+  highlights: string[];
+  workflowEyebrow: string;
+  workflowTitle: string;
+  workflowDescription: string;
+  steps: ITourPageItem[];
+  capabilitiesEyebrow: string;
+  capabilitiesTitle: string;
+  capabilitiesDescription: string;
+  capabilitiesLink: ICtaAction;
+  capabilities: ITourPageItem[];
+}
+
 export interface IHomePageFaqItem {
   question: string;
   answer: ReactNode;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PageSection } from "../Section";
 import { Button } from "../shared/button";
 import logo from "@/assets/images/logo.svg";
-import { brand } from "@/lib/props";
+import { brand, FooterProps } from "@/lib/props";
 
 const productLinks = [
   { href: "/tour", label: "How It Works" },
@@ -24,6 +24,8 @@ const legalLinks = [
  * Marketing site footer navigation.
  */
 export function Footer() {
+  const { description, primaryAction, secondaryAction } = FooterProps;
+
   return (
     <PageSection as="footer" id="marketing-footer" classes="my-6 py-6 sm:py-8 px-6 sm:px-12">
       <div className="grid gap-8 lg:grid-cols-[4fr_1fr_1fr_1fr]">
@@ -46,54 +48,54 @@ export function Footer() {
           </Link>
 
           <p className="m-0 max-w-xl text-sm leading-7 text-content-offset sm:text-base">
-            Train one project on your editorial taste and start each issue
-            with a ranked shortlist, summaries, and a draft outline instead
-            of a research scramble.
+            {description}
           </p>
         </div>
 
-        <nav aria-label="Footer product links" className="flex flex-col gap-4">
-          <p className="m-0 text-xs font-semibold uppercase tracking-widest text-content-active">
-            Explore
-          </p>
-          <ul className="m-0 flex list-none flex-col gap-3 p-0">
-            {productLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-sm text-content-offset no-underline transition-colors hover:text-content-active"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className="grid grid-cols-2 gap-8 lg:contents">
+          <nav aria-label="Footer product links" className="flex flex-col gap-4">
+            <p className="m-0 text-xs font-semibold uppercase tracking-widest text-content-active">
+              Explore
+            </p>
+            <ul className="m-0 flex list-none flex-col gap-3 p-0">
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-content-offset no-underline transition-colors hover:text-content-active"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <nav aria-label="Footer legal links" className="flex flex-col gap-4">
-          <p className="m-0 text-xs font-semibold uppercase tracking-widest text-content-active">
-            Legal
-          </p>
-          <ul className="m-0 flex list-none flex-col gap-3 p-0">
-            {legalLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-sm text-content-offset no-underline transition-colors hover:text-content-active"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <nav aria-label="Footer legal links" className="flex flex-col gap-4">
+            <p className="m-0 text-xs font-semibold uppercase tracking-widest text-content-active">
+              Legal
+            </p>
+            <ul className="m-0 flex list-none flex-col gap-3 p-0">
+              {legalLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-content-offset no-underline transition-colors hover:text-content-active"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
 
-        <div className="flex w-full max-w-56 flex-col gap-3 justify-center lg:justify-self-center">
+        <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-3 lg:max-w-56 lg:justify-self-center">
           <Button
             asChild
             className="h-11 w-full rounded-full px-5 font-semibold bg-primary hover:bg-primary-offset transition-colors"
           >
-            <Link href="/signup">Start Your First Project</Link>
+            <Link href={primaryAction.link}>{primaryAction.text}</Link>
           </Button>
 
           <Button
@@ -101,7 +103,7 @@ export function Footer() {
             variant="outline"
             className="h-11 w-full rounded-full px-5 text-content-inverse hover:text-content-inverse font-semibold bg-secondary hover:bg-secondary/90 transition-colors"
           >
-            <Link href="/docs">Read the docs</Link>
+            <Link href={secondaryAction.link}>{secondaryAction.text}</Link>
           </Button>
         </div>
       </div>
