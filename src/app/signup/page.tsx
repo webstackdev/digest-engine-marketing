@@ -44,7 +44,7 @@ export default function SignupPage() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
               <Button
                 asChild
                 variant="secondary"
@@ -95,7 +95,7 @@ export default function SignupPage() {
           </p>
         </div>
 
-        <ol className="mt-8 grid gap-4 md:grid-cols-3" aria-label="Signup next steps">
+        <ol className="mt-4 sm:mt-8 grid gap-4 md:grid-cols-3" aria-label="Signup next steps">
           {signupNextSteps.map((step, index) => (
             <li
               key={step}
