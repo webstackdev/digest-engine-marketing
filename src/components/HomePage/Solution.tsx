@@ -10,8 +10,8 @@ import { PageSection } from "../Section";
 const Solution = ({ title, description, steps }: ISolutionProps) => {
   return (
     <PageSection classes="px-8 sm:px-12 py-8 sm:py-10">
-      <div className="grid gap-8 text-content-active">
-        <header className="max-w-4xl space-y-4">
+      <div className="grid gap-6 sm:gap-8 text-content-active">
+        <header className="max-w-4xl space-y-2 sm:space-y-4">
           <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
             {title}
           </h2>
@@ -22,7 +22,7 @@ const Solution = ({ title, description, steps }: ISolutionProps) => {
 
         <ol
           aria-label="How Digest Engine works"
-          className="grid gap-4 md:grid-cols-2"
+          className="grid gap-4 sm:gap-6 md:grid-cols-2"
         >
           {steps.map((step) => (
             <li
@@ -35,17 +35,15 @@ const Solution = ({ title, description, steps }: ISolutionProps) => {
                   alt="Workflow step illustration"
                   width={90}
                   height={90}
-                  className="h-[90px] w-[90px] shrink-0 rounded-2xl object-cover"
+                  className="h-22.5 w-22.5 rounded-2xl  border border-trim-offset object-cover"
                 />
-                <div className="space-y-3">
-                  <h3 className="text-2xl font-semibold tracking-tight">
-                    {step.title}
-                  </h3>
-                  <p className="text-base leading-7 text-content-offset">
-                    {step.description}
-                  </p>
-                </div>
+                <h3 className="sm:m-6 text-2xl font-semibold tracking-tight">
+                  {step.title}
+                </h3>
               </div>
+              <p className="m-4 sm:m-2 text-base leading-7 text-content-offset">
+                {step.description}
+              </p>
             </li>
           ))}
         </ol>

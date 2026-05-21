@@ -5,6 +5,8 @@ import "@testing-library/jest-dom/vitest";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import { FooterProps } from "@/lib/props";
+
 import { Footer } from "./index";
 
 vi.mock("next/image", () => ({
@@ -39,5 +41,23 @@ describe("Footer", () => {
     expect(within(productNav).getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs");
     expect(within(legalNav).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
     expect(within(legalNav).getByRole("link", { name: "Compliance" })).toHaveAttribute("href", "/compliance");
+    expect(within(footer).getByText(FooterProps.description)).toBeInTheDocument();
+  });
+
+  it("keeps the brand copy ahead of nav groups and CTA links in document order", () => {
+    const { container } = render(<Footer />);
+
+    const footer = container.querySelector("footer");
+
+    expect(footer).not.toBeNull();
+
+    const summary = within(footer as HTMLElement).getByText(FooterProps.description);
+    const exploreHeading = within(footer as HTMLElement).getByText("Explore");
+    const startProjectLink = within(footer as HTMLElement).getByRole("link", {
+      name: FooterProps.primaryAction.text,
+    });
+
+    expect(summary.compareDocumentPosition(exploreHeading)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(exploreHeading.compareDocumentPosition(startProjectLink)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 });

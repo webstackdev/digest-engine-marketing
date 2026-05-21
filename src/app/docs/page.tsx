@@ -57,7 +57,7 @@ export default function DocsHomePage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
             <Button
               asChild
               variant="default"

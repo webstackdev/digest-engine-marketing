@@ -16,7 +16,7 @@ const FeatureCard: FC<IFeatureItem> = ({ title, image, description, link }) => {
             alt="Feature illustration"
             width={90}
             height={90}
-            className="h-22.5 w-22.5 rounded-2xl border border-trim-offset object-cover shadow-soft"
+            className="h-22.5 w-22.5 rounded-2xl border border-trim-offset object-cover"
           />
           <div className="flex flex-col gap-2">
             <span className="text-xs font-semibold uppercase tracking-widest text-primary">

@@ -98,7 +98,7 @@ export default function CookiesPage() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4">
+        <div className="mt-4 sm:mt-8 grid gap-4">
           {cookieSections.map((section) => (
             <section
               key={section.title}

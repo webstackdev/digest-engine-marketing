@@ -56,6 +56,13 @@ describe("Header", () => {
     expect(themeToggleIndex).toBeLessThan(loginIndex);
   });
 
+  it("allows the brand cluster to shrink on mobile widths", () => {
+    const markup = renderToStaticMarkup(<Header />);
+
+    expect(markup).toContain("flex min-w-0 items-center gap-2 text-content-active no-underline sm:gap-3");
+    expect(markup).toContain("min-w-0 truncate text-lg font-semibold tracking-tight text-secondary");
+  });
+
   it("opens the mobile navigation menu from the hamburger button", async () => {
     container = document.createElement("div");
     document.body.append(container);

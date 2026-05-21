@@ -55,7 +55,7 @@ export default function PricingPage() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
               <Button
                 asChild
                 variant="default"
@@ -76,7 +76,7 @@ export default function PricingPage() {
             </div>
           </div>
 
-          <div className=" h-full flex flex-col justify-center gap-8">
+          <div className=" h-full flex flex-col justify-center gap-4 sm:gap-8">
             {PricingPageProps.highlights.map((highlight) => (
               <div
                 key={highlight}
@@ -172,7 +172,7 @@ export default function PricingPage() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        <div className="mt-4 sm:mt-8 grid gap-4 lg:grid-cols-3">
           {PricingPageProps.faqs.map((faq) => (
             <article
               key={faq.question}

@@ -17,50 +17,51 @@ const Pricing: React.FC<IPricingProps> = ({
 
   return (
     <PageSection id="pricing" classes="px-6 py-8 sm:px-8 sm:py-10">
-      <div className="flex flex-col gap-1 mb-4">
-        <div className="flex items-start justify-between gap-4">
-          <h2 className="min-w-0 flex-1 font-semibold tracking-tight text-4xl sm:text-5xl text-secondary">
+      <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-6">
+        <div className="min-w-0 flex-1 space-y-3">
+          <h2 className="font-semibold tracking-tight text-4xl text-secondary sm:text-5xl">
             {title}
           </h2>
-          <div
-            className={cn(
-              "relative shrink-0 self-start flex items-center gap-3 rounded-full border border-trim-offset bg-page-base px-2 py-2 shadow-soft backdrop-blur-[18px]",
-            )}
-          >
-            <button
-              type="button"
-              className={cn(
-                "relative flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-colors",
-                isYearly ? "text-secondary-inverse" : "text-content-offset",
-              )}
-              onClick={() => setIsYearly(true)}
-            >
-              {isYearly && (
-                <span className="absolute inset-0 -z-10 rounded-full border border-trim-offset bg-secondary shadow-soft backdrop-blur-[18px]" />
-              )}
-              Yearly
-              <span className={isYearly ? "text-secondary-inverse" : "text-primary"}>
-                Save {annualDiscount}%
-              </span>
-            </button>
-            <button
-              type="button"
-              className={cn(
-                "relative flex items-center rounded-full px-5 py-2 text-sm font-semibold transition-colors",
-                !isYearly ? "text-secondary-inverse" : "text-content-offset",
-              )}
-              onClick={() => setIsYearly(false)}
-            >
-              {!isYearly && (
-                <span className="absolute inset-0 -z-10 rounded-full border border-trim-offset bg-secondary shadow-soft backdrop-blur-[18px]" />
-              )}
-              Monthly
-            </button>
-          </div>
+          <p className="text-base leading-7 text-primary">
+            {description}
+          </p>
         </div>
-        <p className="mt-3 text-base leading-7 text-primary">
-          {description}
-        </p>
+
+        <div
+          className={cn(
+            "relative flex w-full items-center justify-center gap-3 rounded-full border border-trim-offset bg-page-base px-2 py-2 shadow-soft backdrop-blur-[18px] sm:w-auto sm:justify-start",
+          )}
+        >
+          <button
+            type="button"
+            className={cn(
+              "relative flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-colors",
+              isYearly ? "text-secondary-inverse" : "text-content-offset",
+            )}
+            onClick={() => setIsYearly(true)}
+          >
+            {isYearly && (
+              <span className="absolute inset-0 -z-10 rounded-full border border-trim-offset bg-secondary shadow-soft backdrop-blur-[18px]" />
+            )}
+            Yearly
+            <span className={isYearly ? "text-secondary-inverse" : "text-primary"}>
+              Save {annualDiscount}%
+            </span>
+          </button>
+          <button
+            type="button"
+            className={cn(
+              "relative flex items-center rounded-full px-5 py-2 text-sm font-semibold transition-colors",
+              !isYearly ? "text-secondary-inverse" : "text-content-offset",
+            )}
+            onClick={() => setIsYearly(false)}
+          >
+            {!isYearly && (
+              <span className="absolute inset-0 -z-10 rounded-full border border-trim-offset bg-secondary shadow-soft backdrop-blur-[18px]" />
+            )}
+            Monthly
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
@@ -92,14 +93,14 @@ const Pricing: React.FC<IPricingProps> = ({
                     )}
                   </div>
                   <div>
-                    <h3 className="text-4xl font-semibold tracking-tight text-content-active">
+                    <h3 className="text-4xl font-semibold tracking-tight text-secondary">
                       $
                       {isYearly
                         ? Math.round(
                             plan.monthlyPrice * (1 - annualDiscount / 100),
                           )
                         : plan.monthlyPrice}
-                      <span className="text-base font-medium text-content-offset">
+                      <span className="text-base font-medium text-secondary">
                         /mo
                       </span>
                     </h3>

@@ -14,6 +14,7 @@ import solutionImage04 from "@/assets/images/solutions-04.jpg";
 
 import {
   ICtaProps,
+  IFooterProps,
   IFeaturesProps,
   IClientsProps,
   IHomePageFaqProps,
@@ -22,6 +23,7 @@ import {
   IHeroProps,
   IProblemsProps,
   ISolutionProps,
+  ITourPageProps,
 } from "./types";
 
 export const brand = {
@@ -38,6 +40,95 @@ export const HeroProps: IHeroProps = {
     text: "Start Your First Project",
     link: "/signup",
   },
+};
+
+export const FooterProps: IFooterProps = {
+  description:
+    "Train one project on your editorial taste and start each issue with a ranked shortlist, summaries, and a draft outline instead of a research scramble.",
+  primaryAction: {
+    text: "Start Your First Project",
+    link: "/signup",
+  },
+  secondaryAction: {
+    text: "Read the docs",
+    link: "/docs",
+  },
+};
+
+export const TourPageProps: ITourPageProps = {
+  metadataDescription:
+    "A quick walkthrough of how Digest Engine ingests, ranks, reviews, and turns source material into editorial output.",
+  heroEyebrow: "Product tour",
+  heroTitle: `See how ${brand.name} turns raw signals into editorial-ready intelligence.`,
+  heroDescription:
+    "This is the fast walk-through: sources come in, AI ranks and enriches them per project, editors review the results, and teams publish with more context and less manual triage.",
+  primaryAction: {
+    text: "Start Your First Project",
+    link: "/signup",
+  },
+  secondaryAction: {
+    text: "View pricing",
+    link: "/pricing",
+  },
+  highlightsHeading: "What teams get",
+  highlights: [
+    "One intake layer for newsletters, feeds, and web sources.",
+    "Relevance tuned to each project instead of one global ranking.",
+    "Clear review checkpoints before summaries or outputs go live.",
+    "Entity-aware context that helps stories connect across time.",
+  ],
+  workflowEyebrow: "Workflow",
+  workflowTitle: "Three stages from source intake to finished output.",
+  workflowDescription:
+    "The platform is designed to reduce repetitive triage without hiding the editorial reasoning.",
+  steps: [
+    {
+      title: "Ingest the sources that already matter",
+      description:
+        "Bring in newsletters, RSS feeds, websites, and internal sources without forcing every team into the same editorial workflow.",
+    },
+    {
+      title: "Score what matters per project",
+      description:
+        "Digest Engine ranks relevance against each project's goals, so the strongest signals rise without burying niche but important work.",
+    },
+    {
+      title: "Review, refine, and publish with context",
+      description:
+        "Editors keep the final say with transparent summaries, entity context, review queues, and handoff-ready outputs.",
+    },
+  ],
+  capabilitiesEyebrow: "Capabilities",
+  capabilitiesTitle:
+    "Built for teams that need stronger signals, not just more summaries.",
+  capabilitiesDescription:
+    "The tour page is intentionally compact, but these are the patterns that tend to matter most in production.",
+  capabilitiesLink: {
+    text: "Explore the docs",
+    link: "/docs/reference/overview",
+  },
+  capabilities: [
+    {
+      title: "Project-aware ranking",
+      description:
+        "Each team can train relevance independently instead of sharing one generic scoring model.",
+    },
+    {
+      title: "Human review by default",
+      description:
+        "The workflow surfaces confidence and uncertainty so editors can intervene before anything ships.",
+    },
+    {
+      title: "Composable AI skills",
+      description:
+        "Classification, summarization, extraction, and scoring can be mixed without locking you into one model stack.",
+    },
+    {
+      title: "Traceable source context",
+      description:
+        "Every recommendation can be tied back to source material, entities, and ranking evidence.",
+    },
+  ],
 };
 
 export const CtaProps: ICtaProps = {
@@ -77,7 +168,7 @@ export const CtaProps: ICtaProps = {
 };
 
 export const ProblemsProps: IProblemsProps = {
-  eyebrow: "The real struggle of curation isn't finding content.",
+  eyebrow: "The real struggle of curation isn't finding content",
   title:
     "Spotting real news that's trustworthy, engaging, and not already flooding your subscribers' feeds.",
   description:

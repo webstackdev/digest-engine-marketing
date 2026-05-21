@@ -143,7 +143,7 @@ export default function CompliancePage() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 sm:mt-8 grid gap-4 sm:grid-cols-2">
           {securityHighlights.map((highlight) => {
             const Icon = highlight.icon;
 
@@ -182,7 +182,7 @@ export default function CompliancePage() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-5">
+        <div className="mt-4 sm:mt-8 grid gap-4 lg:grid-cols-5">
           {frameworkStatuses.map((framework) => (
             <article
               key={framework.name}
@@ -215,7 +215,7 @@ export default function CompliancePage() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
+        <div className="mt-4 sm:mt-8 grid gap-4 lg:grid-cols-2">
           {buyerReviewSections.map((section, index) => (
             <section
               key={section.title}
@@ -251,7 +251,7 @@ export default function CompliancePage() {
         <p className="mt-3 text-base leading-7 text-content-offset">
           Contact the {brand.name} team if you need a security questionnaire, DPA discussion, architecture summary, or a buyer-ready version of this trust center with verified control details.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3 justify-center sm:justify-start">
           <Link
             href="/signup"
             className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"

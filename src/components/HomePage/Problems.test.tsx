@@ -86,4 +86,11 @@ describe("Problems", () => {
       }),
     ).toBeInTheDocument();
   });
+
+  it("stacks the illustration above the copy on mobile widths", () => {
+    const { container } = render(<Problems {...problemsProps} />);
+
+    expect(container.innerHTML).toContain("flex flex-col gap-6 md:flex-row md:items-start md:gap-12");
+    expect(container.innerHTML).toContain("mx-auto shrink-0 overflow-hidden rounded-3xl md:mx-0");
+  });
 });
