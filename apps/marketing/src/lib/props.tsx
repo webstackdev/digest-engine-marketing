@@ -18,12 +18,9 @@ import {
   IFeaturesProps,
   IClientsProps,
   IHomePageFaqProps,
-  IPricingProps,
-  IPricingPageProps,
   IHeroProps,
   IProblemsProps,
   ISolutionProps,
-  ITourPageProps,
 } from "./types";
 
 export const brand = {
@@ -53,82 +50,6 @@ export const FooterProps: IFooterProps = {
     text: "Read the docs",
     link: "/docs",
   },
-};
-
-export const TourPageProps: ITourPageProps = {
-  metadataDescription:
-    "A quick walkthrough of how Digest Engine ingests, ranks, reviews, and turns source material into editorial output.",
-  heroEyebrow: "Product tour",
-  heroTitle: `See how ${brand.name} turns raw signals into editorial-ready intelligence.`,
-  heroDescription:
-    "This is the fast walk-through: sources come in, AI ranks and enriches them per project, editors review the results, and teams publish with more context and less manual triage.",
-  primaryAction: {
-    text: "Start Your First Project",
-    link: "/signup",
-  },
-  secondaryAction: {
-    text: "View pricing",
-    link: "/pricing",
-  },
-  highlightsHeading: "What teams get",
-  highlights: [
-    "One intake layer for newsletters, feeds, and web sources.",
-    "Relevance tuned to each project instead of one global ranking.",
-    "Clear review checkpoints before summaries or outputs go live.",
-    "Entity-aware context that helps stories connect across time.",
-  ],
-  workflowEyebrow: "Workflow",
-  workflowTitle: "Three stages from source intake to finished output.",
-  workflowDescription:
-    "The platform is designed to reduce repetitive triage without hiding the editorial reasoning.",
-  steps: [
-    {
-      title: "Ingest the sources that already matter",
-      description:
-        "Bring in newsletters, RSS feeds, websites, and internal sources without forcing every team into the same editorial workflow.",
-    },
-    {
-      title: "Score what matters per project",
-      description:
-        "Digest Engine ranks relevance against each project's goals, so the strongest signals rise without burying niche but important work.",
-    },
-    {
-      title: "Review, refine, and publish with context",
-      description:
-        "Editors keep the final say with transparent summaries, entity context, review queues, and handoff-ready outputs.",
-    },
-  ],
-  capabilitiesEyebrow: "Capabilities",
-  capabilitiesTitle:
-    "Built for teams that need stronger signals, not just more summaries.",
-  capabilitiesDescription:
-    "The tour page is intentionally compact, but these are the patterns that tend to matter most in production.",
-  capabilitiesLink: {
-    text: "Explore the docs",
-    link: "/docs/reference/overview",
-  },
-  capabilities: [
-    {
-      title: "Project-aware ranking",
-      description:
-        "Each team can train relevance independently instead of sharing one generic scoring model.",
-    },
-    {
-      title: "Human review by default",
-      description:
-        "The workflow surfaces confidence and uncertainty so editors can intervene before anything ships.",
-    },
-    {
-      title: "Composable AI skills",
-      description:
-        "Classification, summarization, extraction, and scoring can be mixed without locking you into one model stack.",
-    },
-    {
-      title: "Traceable source context",
-      description:
-        "Every recommendation can be tied back to source material, entities, and ranking evidence.",
-    },
-  ],
 };
 
 export const CtaProps: ICtaProps = {
@@ -330,54 +251,6 @@ export const FeatureItems: IFeaturesProps = {
   ],
 };
 
-export const PricingProps: IPricingProps = {
-  title: "Pick the operating model that fits your stack",
-  description: "Start open source, move to a hosted workflow later, or keep the whole pipeline in your own infrastructure from day one.",
-  annualDiscount: 20,
-  plans: [
-    {
-      name: "Team",
-      monthlyPrice: 149,
-      description: "A shared editorial workspace for small newsletter teams shipping every week.",
-      features: ["3 editor seats", "Review queue tooling", "Reference corpus training", "Priority updates"],
-      link: "/signup",
-      buttonLabel: "Request access",
-      buttonVariant: "outline",
-      isPopular: false,
-    },
-    {
-      name: "Hosted",
-      monthlyPrice: 399,
-      description: "Managed infrastructure for editors who want the workflow without running the ops layer.",
-      features: ["Managed upgrades", "Inbound newsletter parsing", "Team collaboration", "Email support"],
-      link: "/signup",
-      buttonLabel: "Join waitlist",
-      buttonVariant: "default",
-      isPopular: true,
-    },
-    {
-      name: "Enterprise",
-      monthlyPrice: 1499,
-      description: "Private deployment, custom plugins, and security review for larger media or research orgs.",
-      features: ["VPC or on-prem", "Custom source plugins", "SLA-backed support", "Migration help"],
-      link: "/signup",
-      buttonLabel: "Contact Sales",
-      buttonVariant: "outline",
-      isPopular: false,
-    },
-    {
-      name: "Open Source",
-      monthlyPrice: 0,
-      description: "For teams that want full control and are happy to run the stack themselves.",
-      features: ["Unlimited projects", "Docker Compose setup", "Bring your own models", "Community support"],
-      link: "https://github.com/webstackdev/digest-engine",
-      buttonLabel: "Start self-hosting",
-      buttonVariant: "outline",
-      isPopular: false,
-    },
-  ],
-};
-
 export const HomePageFaqProps: IHomePageFaqProps = {
   eyebrow: "FAQ",
   title: "Questions teams ask before they trust this with their workflow",
@@ -455,64 +328,3 @@ export const HomePageFaqProps: IHomePageFaqProps = {
   ],
 };
 
-export const PricingPageProps: IPricingPageProps = {
-  eyebrow: "Pricing",
-  title: "Pricing that fits the way your newsroom actually works",
-  description:
-    "Start with the open-source stack, move into a shared editorial workspace, or hand off the infrastructure entirely. Every tier keeps the project-scoped workflow intact so you do not have to relearn the product as you grow.",
-  highlights: [
-    "Open source foundation",
-    "Project-scoped ranking and review",
-    "Upgrade without changing your workflow",
-  ],
-  matrixHeading: "Compare plans at a glance",
-  matrixDescription:
-    "Use this matrix as a starting point for evaluation. We can tune packaging and limits later, but these examples show how the plans differ in practice.",
-  matrixColumns: ["Open Source", "Team", "Hosted", "Enterprise"],
-  matrixRows: [
-    {
-      feature: "Deployment",
-      values: ["Self-hosted", "Shared cloud", "Managed hosting", "Private cloud or on-prem"],
-    },
-    {
-      feature: "Editor seats",
-      values: ["Unlimited", "Up to 3", "Up to 10", "Custom"],
-    },
-    {
-      feature: "Review queue",
-      values: ["Included", "Included", "Included", "Included"],
-    },
-    {
-      feature: "Inbound newsletter parsing",
-      values: ["Manual setup", "Guided setup", "Included", "Included"],
-    },
-    {
-      feature: "Model configuration",
-      values: ["Bring your own", "Shared presets", "Managed defaults", "Custom model policy"],
-    },
-    {
-      feature: "Support",
-      values: ["Community", "Priority email", "Managed support", "SLA + onboarding"],
-    },
-  ],
-  faqHeading: "Pricing FAQ",
-  faqDescription:
-    "These are the questions most teams ask before choosing a plan. We can refine the details once you decide how hands-on you want to be.",
-  faqs: [
-    {
-      question: "Can we start open source and upgrade later?",
-      answer:
-        "Yes. The workflow stays consistent across plans, so teams can start self-hosted and move into Team, Hosted, or Enterprise when they want less operational overhead.",
-    },
-    {
-      question: "Do all plans support project-specific ranking?",
-      answer:
-        "Yes. Project-scoped relevance, review queues, and source configuration are part of the core product rather than premium-only add-ons.",
-    },
-    {
-      question: "Can we use our own models and data sources?",
-      answer:
-        "Yes. The open-source and enterprise paths are especially flexible, but every tier is designed to work with the sources and model setup that match your editorial process.",
-    },
-  ],
-};

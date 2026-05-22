@@ -6,7 +6,7 @@ import { CTA } from "@/components/HomePage/CTA";
 import Pricing from "@/components/Pricing";
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
-import { PricingProps } from "@/lib/props";
+import { getPricingComponentContent } from "@/sanity/queries/pricingComponent";
 import { getPricingPageContent } from "@/sanity/queries/pricingPage";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -19,7 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PricingPage() {
-  const content = await getPricingPageContent();
+  const [content, pricingComponentContent] = await Promise.all([
+    getPricingPageContent(),
+    getPricingComponentContent(),
+  ]);
 
   const renderMatrixValue = (value: string) => {
     if (value === "Included") {
@@ -98,7 +101,7 @@ export default async function PricingPage() {
         </div>
       </PageSection>
 
-      <Pricing {...PricingProps} />
+      <Pricing content={pricingComponentContent} />
 
       <PageSection id="pricing-matrix" classes="px-6 py-8 sm:px-8 sm:py-10">
         <div className="max-w-3xl">

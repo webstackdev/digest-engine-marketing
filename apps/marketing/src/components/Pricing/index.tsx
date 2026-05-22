@@ -1,19 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
-import { Button } from "@/components/shared/button";
-import { cn } from "@/lib/utils";
-import { PageSection } from "../Section";
-import { IPricingProps } from "@/lib/types";
+import { useState } from "react";
 
-const Pricing: React.FC<IPricingProps> = ({
-  title,
-  description,
-  plans,
-  annualDiscount,
-}) => {
+import { Button } from "@/components/shared/button";
+import type { PricingComponentContent } from "@/sanity/queries/pricingComponent";
+import { cn } from "@/lib/utils";
+
+import { PageSection } from "../Section";
+
+interface PricingComponentProps {
+  content: PricingComponentContent;
+}
+
+export default function Pricing({ content }: PricingComponentProps) {
   const [isYearly, setIsYearly] = useState(false);
+  const { title, description, plans, annualDiscount } = content;
 
   return (
     <PageSection id="pricing" classes="px-6 py-8 sm:px-8 sm:py-10">
@@ -157,5 +159,4 @@ const Pricing: React.FC<IPricingProps> = ({
       </div>
     </PageSection>
   );
-};
-export default Pricing;
+}

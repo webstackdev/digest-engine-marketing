@@ -6,7 +6,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import type { IPricingProps } from "@/lib/types";
+import type { PricingComponentContent } from "@/sanity/queries/pricingComponent";
 
 import Pricing from "./index";
 
@@ -16,7 +16,7 @@ vi.mock("next/link", () => ({
   ),
 }));
 
-const pricingProps: IPricingProps = {
+const pricingContent: PricingComponentContent = {
   title: "Pricing that grows with your workflow",
   description: "A short pricing summary.",
   annualDiscount: 20,
@@ -46,19 +46,19 @@ const pricingProps: IPricingProps = {
 
 describe("Pricing", () => {
   it("renders plan CTAs with the configured destinations", () => {
-    render(<Pricing {...pricingProps} />);
+    render(<Pricing content={pricingContent} />);
 
     const openSourceLink = screen.getByRole("link", {
-      name: pricingProps.plans[0].buttonLabel,
+      name: pricingContent.plans[0].buttonLabel,
     });
     const hostedLink = screen.getByRole("link", {
-      name: pricingProps.plans[1].buttonLabel,
+      name: pricingContent.plans[1].buttonLabel,
     });
 
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: pricingProps.title,
+        name: pricingContent.title,
       }),
     ).toBeInTheDocument();
     expect(openSourceLink).toHaveAttribute(
@@ -71,7 +71,7 @@ describe("Pricing", () => {
   it("updates plan pricing when the billing cadence changes", async () => {
     const user = userEvent.setup();
 
-    render(<Pricing {...pricingProps} />);
+    render(<Pricing content={pricingContent} />);
 
     expect(screen.queryAllByText("$399").length).toBeGreaterThan(0);
     expect(screen.queryAllByText("$319")).toHaveLength(0);

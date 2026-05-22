@@ -1,11 +1,41 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { defaultPricingComponentContent } from "@/sanity/queries/pricingComponent";
+
+vi.mock("@/sanity/queries/pricingComponent", () => ({
+  defaultPricingComponentContent: {
+    title: "Pick the operating model that fits your stack",
+    description:
+      "Start open source, move to a hosted workflow later, or keep the whole pipeline in your own infrastructure from day one.",
+    annualDiscount: 20,
+    plans: [
+      {
+        name: "Hosted",
+        monthlyPrice: 399,
+        description: "Managed plan.",
+        features: ["Managed upgrades", "Email support"],
+        link: "/signup",
+        buttonLabel: "Join waitlist",
+        buttonVariant: "default",
+        isPopular: true,
+      },
+    ],
+  },
+  getPricingComponentContent: vi.fn(),
+}));
+
+import { getPricingComponentContent } from "@/sanity/queries/pricingComponent";
 
 import Home from "./page";
 
 describe("Marketing home page", () => {
-  it("renders the Digest Engine landing page sections in the expected order", () => {
-    const markup = renderToStaticMarkup(<Home />);
+  beforeEach(() => {
+    vi.mocked(getPricingComponentContent).mockResolvedValue(defaultPricingComponentContent);
+  });
+
+  it("renders the Digest Engine landing page sections in the expected order", async () => {
+    const markup = renderToStaticMarkup(await Home());
     const featuresIndex = markup.indexOf('id="features"');
     //const clientsIndex = markup.indexOf('id="clients"');
     const pricingIndex = markup.indexOf('id="pricing"');

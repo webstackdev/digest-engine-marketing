@@ -97,31 +97,6 @@ export interface IFooterProps {
   secondaryAction: ICtaAction;
 }
 
-export interface ITourPageItem {
-  title: string;
-  description: string;
-}
-
-export interface ITourPageProps {
-  metadataDescription: string;
-  heroEyebrow: string;
-  heroTitle: string;
-  heroDescription: string;
-  primaryAction: ICtaAction;
-  secondaryAction: ICtaAction;
-  highlightsHeading: string;
-  highlights: string[];
-  workflowEyebrow: string;
-  workflowTitle: string;
-  workflowDescription: string;
-  steps: ITourPageItem[];
-  capabilitiesEyebrow: string;
-  capabilitiesTitle: string;
-  capabilitiesDescription: string;
-  capabilitiesLink: ICtaAction;
-  capabilities: ITourPageItem[];
-}
-
 export interface IHomePageFaqItem {
   question: string;
   answer: ReactNode;
@@ -134,44 +109,3 @@ export interface IHomePageFaqProps {
   items: IHomePageFaqItem[];
 }
 
-export interface IPricingFeatureMatrixRow {
-  feature: string;
-  values: string[];
-}
-
-export interface IPricingFaqItem {
-  question: string;
-  answer: string;
-}
-
-export interface IPricingPageProps {
-  eyebrow: string;
-  title: string;
-  description: string;
-  highlights: string[];
-  matrixHeading: string;
-  matrixDescription: string;
-  matrixColumns: string[];
-  matrixRows: IPricingFeatureMatrixRow[];
-  faqHeading: string;
-  faqDescription: string;
-  faqs: IPricingFaqItem[];
-}
-
-export interface IPricingPlan {
-  name: string;
-  monthlyPrice: number;
-  description: string;
-  features: string[];
-  link: string;
-  buttonLabel: string;
-  buttonVariant: "default" | "outline";
-  isPopular: boolean;
-}
-
-export interface IPricingProps {
-  title: string;
-  description: string;
-  annualDiscount: number;
-  plans: IPricingPlan[];
-}

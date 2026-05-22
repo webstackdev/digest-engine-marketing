@@ -1,7 +1,40 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { defaultPricingComponentContent } from "@/sanity/queries/pricingComponent";
 import { defaultPricingPageContent } from "@/sanity/queries/pricingPage";
+
+vi.mock("@/sanity/queries/pricingComponent", () => ({
+  defaultPricingComponentContent: {
+    title: "Pick the operating model that fits your stack",
+    description:
+      "Start open source, move to a hosted workflow later, or keep the whole pipeline in your own infrastructure from day one.",
+    annualDiscount: 20,
+    plans: [
+      {
+        name: "Open Source",
+        monthlyPrice: 0,
+        description: "For teams that want full control and are happy to run the stack themselves.",
+        features: ["Unlimited projects", "Community support"],
+        link: "https://github.com/webstackdev/digest-engine",
+        buttonLabel: "Start self-hosting",
+        buttonVariant: "outline",
+        isPopular: false,
+      },
+      {
+        name: "Enterprise",
+        monthlyPrice: 1499,
+        description: "Private deployment, custom plugins, and security review for larger media or research orgs.",
+        features: ["SLA-backed support"],
+        link: "/signup",
+        buttonLabel: "Contact Sales",
+        buttonVariant: "outline",
+        isPopular: false,
+      },
+    ],
+  },
+  getPricingComponentContent: vi.fn(),
+}));
 
 vi.mock("@/sanity/queries/pricingPage", () => ({
   defaultPricingPageContent: {
@@ -73,12 +106,14 @@ vi.mock("@/sanity/queries/pricingPage", () => ({
   getPricingPageContent: vi.fn(),
 }));
 
+import { getPricingComponentContent } from "@/sanity/queries/pricingComponent";
 import { getPricingPageContent } from "@/sanity/queries/pricingPage";
 
 import PricingPage from "./page";
 
 describe("PricingPage", () => {
   beforeEach(() => {
+    vi.mocked(getPricingComponentContent).mockResolvedValue(defaultPricingComponentContent);
     vi.mocked(getPricingPageContent).mockResolvedValue(defaultPricingPageContent);
   });
 
