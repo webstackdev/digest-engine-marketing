@@ -5,17 +5,17 @@ import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { HomePageFaqProps } from "@/lib/props";
+import { defaultHomePageFaqProps } from "@/lib/homePageDefaults";
 
 import FAQ from "./FAQ";
 
 describe("FAQ", () => {
   it("renders a details-based FAQ section with toggleable items", () => {
-    const { container } = render(<FAQ {...HomePageFaqProps} />);
+    const { container } = render(<FAQ {...defaultHomePageFaqProps} />);
     const detailsElements = Array.from(container.querySelectorAll("details"));
 
     expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
-    expect(detailsElements).toHaveLength(HomePageFaqProps.items.length);
+    expect(detailsElements).toHaveLength(defaultHomePageFaqProps.items.length);
 
     for (const element of detailsElements) {
       expect(element.querySelector("summary")).not.toBeNull();
@@ -33,7 +33,7 @@ describe("FAQ", () => {
   });
 
   it("uses the shared page section width contract", () => {
-    const { container } = render(<FAQ {...HomePageFaqProps} />);
+    const { container } = render(<FAQ {...defaultHomePageFaqProps} />);
 
     expect(container.firstElementChild).toHaveClass("w-full");
   });

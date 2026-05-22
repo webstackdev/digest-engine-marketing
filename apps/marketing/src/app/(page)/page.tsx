@@ -6,30 +6,25 @@ import Solution from "@/components/HomePage/Solution";
 import Pricing from "@/components/Pricing";
 import Problems from "@/components/HomePage/Problems";
 import { CTA } from "@/components/HomePage/CTA";
+import { getHomePageContent } from "@/sanity/queries/homePage";
 import { getPricingComponentContent } from "@/sanity/queries/pricingComponent";
-import {
-  CtaProps,
-  //ClientsProps,
-  FeatureItems,
-  HomePageFaqProps,
-  HeroProps,
-  ProblemsProps,
-  SolutionProps,
-} from "@/lib/props";
 
 export default async function Home() {
-  const pricingComponentContent = await getPricingComponentContent();
+  const [homePageContent, pricingComponentContent] = await Promise.all([
+    getHomePageContent(),
+    getPricingComponentContent(),
+  ]);
 
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
-      <Hero {...HeroProps} />
-      <Problems {...ProblemsProps} />
-      {/** <Clients {...ClientsProps} /> */}
-      <Solution {...SolutionProps} />
-      <Features {...FeatureItems} />
+      <Hero {...homePageContent.hero} />
+      <Problems {...homePageContent.problems} />
+      {/** <Clients {...homePageContent.clients} /> */}
+      <Solution {...homePageContent.solution} />
+      <Features {...homePageContent.features} />
       <Pricing content={pricingComponentContent} />
-      <FAQ {...HomePageFaqProps} />
-      <CTA {...CtaProps} />
+      <FAQ {...homePageContent.faq} />
+      <CTA {...homePageContent.cta} />
     </main>
   );
 }

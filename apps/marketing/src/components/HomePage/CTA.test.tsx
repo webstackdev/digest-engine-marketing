@@ -5,7 +5,7 @@ import "@testing-library/jest-dom/vitest";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { CtaProps } from "@/lib/props";
+import { defaultCtaProps } from "@/lib/homePageDefaults";
 
 import { CTA } from "./CTA";
 
@@ -17,7 +17,7 @@ vi.mock("next/link", () => ({
 
 describe("CTA", () => {
   it("renders a signup call to action with a linked primary button", () => {
-    render(<CTA {...CtaProps} />);
+    render(<CTA {...defaultCtaProps} />);
 
     const region = screen.getByRole("region", {
       name: "Homepage call to action",

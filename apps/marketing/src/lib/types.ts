@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { StaticImageData } from "next/image";
 
 export type SectionTag = "section" | "header" | "footer";
+export type MarketingImageSource = StaticImageData | string;
 
 export interface IPageSectionProps<T extends SectionTag> {
   as?: T;
@@ -37,7 +38,7 @@ export interface IProblemsProps {
 export interface ISolutionStep {
   title: string;
   description: string;
-  image: StaticImageData;
+  image: MarketingImageSource;
 }
 
 export interface ISolutionProps {
@@ -49,7 +50,7 @@ export interface ISolutionProps {
 export interface IFeatureItem {
   title: string;
   description: string;
-  image: StaticImageData;
+  image: MarketingImageSource;
   link: string;
 }
 

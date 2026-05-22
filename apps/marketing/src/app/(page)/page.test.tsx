@@ -1,7 +1,19 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  defaultCtaProps,
+  defaultFeatureItems,
+  defaultHeroProps,
+  defaultHomePageFaqProps,
+  defaultProblemsProps,
+  defaultSolutionProps,
+} from "@/lib/homePageDefaults";
 import { defaultPricingComponentContent } from "@/sanity/queries/pricingComponent";
+
+vi.mock("@/sanity/queries/homePage", () => ({
+  getHomePageContent: vi.fn(),
+}));
 
 vi.mock("@/sanity/queries/pricingComponent", () => ({
   defaultPricingComponentContent: {
@@ -25,12 +37,21 @@ vi.mock("@/sanity/queries/pricingComponent", () => ({
   getPricingComponentContent: vi.fn(),
 }));
 
+import { getHomePageContent } from "@/sanity/queries/homePage";
 import { getPricingComponentContent } from "@/sanity/queries/pricingComponent";
 
 import Home from "./page";
 
 describe("Marketing home page", () => {
   beforeEach(() => {
+    vi.mocked(getHomePageContent).mockResolvedValue({
+      hero: defaultHeroProps,
+      problems: defaultProblemsProps,
+      solution: defaultSolutionProps,
+      features: defaultFeatureItems,
+      faq: defaultHomePageFaqProps,
+      cta: defaultCtaProps,
+    });
     vi.mocked(getPricingComponentContent).mockResolvedValue(defaultPricingComponentContent);
   });
 
@@ -43,10 +64,10 @@ describe("Marketing home page", () => {
     const ctaIndex = markup.indexOf('id="cta"');
 
     expect(markup).toContain("pt-24");
-    expect(markup).toContain("The research desk for your newsletter");
-    expect(markup).toContain("Why Digest Engine feels different");
-    expect(markup).toContain("Pick the operating model that fits your stack");
-    expect(markup).toContain("Questions teams ask before they trust this with their workflow");
+    expect(markup).toContain(defaultHeroProps.title);
+    expect(markup).toContain(defaultFeatureItems.title);
+    expect(markup).toContain(defaultPricingComponentContent.title);
+    expect(markup).toContain(defaultHomePageFaqProps.title);
     expect(markup).toContain('aria-label="Homepage call to action"');
     //expect(clientsIndex).toBeGreaterThan(-1);
     expect(featuresIndex).toBeGreaterThan(-1);

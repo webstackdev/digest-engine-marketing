@@ -5,16 +5,16 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { HeroProps } from "@/lib/props";
+import { defaultHeroProps } from "@/lib/homePageDefaults";
 import type { IHeroProps } from "@/lib/types";
 
 import Hero from "./Hero";
 
 const heroPropsWithCta: IHeroProps = {
-  ...HeroProps,
+  ...defaultHeroProps,
   btnGetStarted: {
-    text: HeroProps.btnGetStarted?.text ?? "Get started",
-    link: HeroProps.btnGetStarted?.link ?? "/signup",
+    text: defaultHeroProps.btnGetStarted?.text ?? "Get started",
+    link: defaultHeroProps.btnGetStarted?.link ?? "/signup",
   },
 };
 

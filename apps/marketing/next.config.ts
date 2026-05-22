@@ -14,6 +14,7 @@ const nextConfigWithNextra = withNextra({
   images: {
     unoptimized: true,
     remotePatterns: [
+      { protocol: "https", hostname: "cdn.sanity.io" },
       { protocol: "https", hostname: "torqbit-dev.b-cdn.net" },
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "iframe.mediadelivery.net" },
