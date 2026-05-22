@@ -4,6 +4,12 @@ export default defineType({
   name: "compliancePage",
   title: "Compliance Page",
   type: "document",
+  preview: {
+    select: {
+      title: "metadata.title",
+      subtitle: "metadata.description",
+    },
+  },
   fields: [
     defineField({
       name: "metadata",
