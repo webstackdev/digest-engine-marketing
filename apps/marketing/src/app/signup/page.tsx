@@ -3,42 +3,37 @@ import Link from "next/link";
 
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
+import { getSignupPageContent } from "@/sanity/queries/signupPage";
 import SignupForm from "./_components/SignupForm";
 
-const signupHighlights = [
-  "Project-scoped ranking from day one",
-  "Support for RSS, social, and newsletter sources",
-  "A faster path from shortlist to draft",
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getSignupPageContent();
 
-const signupNextSteps = [
-  "We review your workflow and source mix.",
-  "We point you to the right plan or setup path.",
-  "You start with one project and one issue cycle.",
-];
+  return {
+    title: content.metadata.title,
+    description: content.metadata.description,
+  };
+}
 
-export const metadata: Metadata = {
-  title: "Digest Engine Sign Up",
-  description: "Request access to Digest Engine and tell us how your editorial workflow works today.",
-};
+export default async function SignupPage() {
+  const content = await getSignupPageContent();
 
-export default function SignupPage() {
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
       <PageSection id="signup-hero" classes="px-6 py-10 sm:px-10 sm:py-12">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
           <div className="flex flex-col gap-6">
             <span className="w-fit rounded-full bg-secondary px-4 py-2 font-medium text-content-inverse">
-              Sign up
+              {content.hero.badge}
             </span>
 
             <div className="space-y-5">
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-primary sm:text-5xl lg:text-6xl">
-                Start with a workflow that learns your editorial taste
+                {content.hero.title}
               </h1>
 
               <p className="max-w-2xl text-lg leading-8 text-content-active">
-                Digest Engine is designed for editors who want better sourcing, stronger prioritization, and less blank-page friction. Fill out the form and we will help you start with the right setup.
+                {content.hero.description}
               </p>
             </div>
 
@@ -49,7 +44,7 @@ export default function SignupPage() {
                 size="lg"
                 className="h-12 rounded-full px-6 text-lg font-semibold"
               >
-                <Link href="/pricing">Compare plans</Link>
+                <Link href={content.hero.primaryAction.link}>{content.hero.primaryAction.text}</Link>
               </Button>
 
               <Button
@@ -58,12 +53,12 @@ export default function SignupPage() {
                 size="lg"
                 className="h-12 rounded-full px-6 text-lg font-semibold"
               >
-                <Link href="/docs/reference/overview">Read the docs</Link>
+                <Link href={content.hero.secondaryAction.link}>{content.hero.secondaryAction.text}</Link>
               </Button>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-              {signupHighlights.map((highlight) => (
+              {content.hero.highlights.map((highlight) => (
                 <div
                   key={highlight}
                   className="rounded-3xl border border-trim-offset bg-page-base p-5 shadow-card backdrop-blur-[18px]"
@@ -83,18 +78,18 @@ export default function SignupPage() {
       <PageSection id="signup-next-steps" classes="px-6 py-8 sm:px-8 sm:py-10">
         <div>
           <p className="font-semibold uppercase tracking-widest text-content-offset">
-            What happens next
+            {content.nextStepsSection.eyebrow}
           </p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl">
-            A typical rollout starts small and gets useful quickly
+            {content.nextStepsSection.title}
           </h2>
           <p className="mt-3 leading-7 text-content-offset">
-            Most teams begin with one editorial workflow, one source mix, and one issue cycle. That is enough to see whether the ranking and review loop fit your process.
+            {content.nextStepsSection.description}
           </p>
         </div>
 
         <ol className="mt-4 sm:mt-8 grid gap-4 md:grid-cols-3" aria-label="Signup next steps">
-          {signupNextSteps.map((step, index) => (
+          {content.nextStepsSection.items.map((step, index) => (
             <li
               key={step}
               className="rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"

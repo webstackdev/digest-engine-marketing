@@ -9,6 +9,7 @@ import homePage from "./homePage";
 import pricingComponent from "./pricingComponent";
 import pricingPage from "./pricingPage";
 import privacyPage from "./privacyPage";
+import signupPage from "./signupPage";
 import termsPage from "./termsPage";
 import tourPage from "./tourPage";
 
@@ -23,7 +24,23 @@ export { homePage };
 export { pricingComponent };
 export { pricingPage };
 export { privacyPage };
+export { signupPage };
 export { termsPage };
 export { tourPage };
 
-export const schemaTypes = [blogPage, consentComponent, compliancePage, cookiesPage, docsPage, footerComponent, headerComponent, homePage, pricingComponent, pricingPage, privacyPage, termsPage, tourPage];
+export const schemaTypes = [
+  blogPage,
+  consentComponent,
+  compliancePage,
+  cookiesPage,
+  docsPage,
+  footerComponent,
+  headerComponent,
+  homePage,
+  pricingComponent,
+  pricingPage,
+  privacyPage,
+  signupPage,
+  termsPage,
+  tourPage
+];
