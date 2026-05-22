@@ -6,14 +6,21 @@ import { CTA } from "@/components/HomePage/CTA";
 import Pricing from "@/components/Pricing";
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
-import { brand, CtaProps, PricingPageProps, PricingProps } from "@/lib/props";
+import { PricingProps } from "@/lib/props";
+import { getPricingPageContent } from "@/sanity/queries/pricingPage";
 
-export const metadata: Metadata = {
-  title: `${brand.name} Pricing`,
-  description: "Pricing, plan comparison, and rollout guidance for Digest Engine.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getPricingPageContent();
 
-export default function PricingPage() {
+  return {
+    title: content.metadata.title,
+    description: content.metadata.description,
+  };
+}
+
+export default async function PricingPage() {
+  const content = await getPricingPageContent();
+
   const renderMatrixValue = (value: string) => {
     if (value === "Included") {
       return (
@@ -42,16 +49,16 @@ export default function PricingPage() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
           <div className="flex flex-col gap-6">
             <span className="w-fit rounded-full border border-trim-offset bg-secondary px-8 py-2 font-medium text-content-inverse">
-              {PricingPageProps.eyebrow}
+              {content.hero.eyebrow}
             </span>
 
             <div className="space-y-5">
               <h1 className="max-w-3xl text-4xl sm:text-5xl font-semibold tracking-tight text-secondary">
-                {PricingPageProps.title}
+                {content.hero.title}
               </h1>
 
               <p className="max-w-2xl text-lg leading-8 text-content-active">
-                {PricingPageProps.description}
+                {content.hero.description}
               </p>
             </div>
 
@@ -62,7 +69,7 @@ export default function PricingPage() {
                 size="lg"
                 className="h-12 rounded-full bg-accent px-6 text-lg font-semibold text-primary-inverse transition-colors hover:bg-accent-offset"
               >
-                <Link href="/signup">Start Your First Project</Link>
+                <Link href={content.hero.primaryAction.link}>{content.hero.primaryAction.text}</Link>
               </Button>
 
               <Button
@@ -71,13 +78,13 @@ export default function PricingPage() {
                 size="lg"
                 className="h-12 rounded-full px-6 text-lg font-semibold"
               >
-                <Link href="/docs/reference/overview">Read the docs</Link>
+                <Link href={content.hero.secondaryAction.link}>{content.hero.secondaryAction.text}</Link>
               </Button>
             </div>
           </div>
 
           <div className=" h-full flex flex-col justify-center gap-4 sm:gap-8">
-            {PricingPageProps.highlights.map((highlight) => (
+            {content.highlightsSection.items.map((highlight) => (
               <div
                 key={highlight}
                 className="flex justify-center rounded-3xl bg-page-active p-5"
@@ -96,10 +103,10 @@ export default function PricingPage() {
       <PageSection id="pricing-matrix" classes="px-6 py-8 sm:px-8 sm:py-10">
         <div className="max-w-3xl">
           <h2 className="text-3xl sm:text-4xl text-secondary font-semibold tracking-tight">
-            {PricingPageProps.matrixHeading}
+            {content.matrixSection.heading}
           </h2>
           <p className="mt-3 text-base leading-7 text-content-offset">
-            {PricingPageProps.matrixDescription}
+            {content.matrixSection.description}
           </p>
         </div>
 
@@ -107,7 +114,7 @@ export default function PricingPage() {
           <table aria-label="Pricing feature matrix" className="min-w-full table-fixed border-collapse text-left">
             <colgroup>
               <col className="w-[34%] sm:w-[28%]" />
-              {PricingPageProps.matrixColumns.map((column) => (
+              {content.matrixSection.columns.map((column) => (
                 <col key={column} className="w-[22%] sm:w-[18%]" />
               ))}
             </colgroup>
@@ -121,7 +128,7 @@ export default function PricingPage() {
                     Feature
                   </div>
                 </th>
-                {PricingPageProps.matrixColumns.map((column) => (
+                {content.matrixSection.columns.map((column) => (
                   <th
                     key={column}
                     className="p-0 text-center text-base font-semibold tracking-tight text-content-active sm:text-lg align-middle"
@@ -135,7 +142,7 @@ export default function PricingPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-trim-offset">
-              {PricingPageProps.matrixRows.map((row) => (
+              {content.matrixSection.rows.map((row) => (
                 <tr key={row.feature}>
                   <th
                     className="p-0 align-middle text-base font-semibold tracking-tight text-primary"
@@ -165,15 +172,15 @@ export default function PricingPage() {
       <PageSection id="pricing-faq" classes="px-6 py-8 sm:px-8 sm:py-10">
         <div className="max-w-3xl">
           <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-secondary">
-            {PricingPageProps.faqHeading}
+            {content.faqSection.heading}
           </h2>
           <p className="mt-3 text-base leading-7 text-content-offset">
-            {PricingPageProps.faqDescription}
+            {content.faqSection.description}
           </p>
         </div>
 
         <div className="mt-4 sm:mt-8 grid gap-4 lg:grid-cols-3">
-          {PricingPageProps.faqs.map((faq) => (
+          {content.faqSection.items.map((faq) => (
             <article
               key={faq.question}
               className="rounded-3xl border border-trim-offset bg-page-base p-6 shadow-card"
@@ -189,7 +196,7 @@ export default function PricingPage() {
         </div>
       </PageSection>
 
-      <CTA {...CtaProps} />
+      <CTA {...content.ctaSection} />
     </main>
   );
 }
