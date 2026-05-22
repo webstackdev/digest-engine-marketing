@@ -1,30 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import type { FooterComponentContent } from "@/sanity/queries/footerComponent";
+
 import { PageSection } from "../Section";
 import { Button } from "../shared/button";
 import logo from "@/assets/images/logo.svg";
-import { brand, FooterProps } from "@/lib/props";
+import { brand } from "@/lib/props";
 
-const productLinks = [
-  { href: "/tour", label: "How It Works" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/blog", label: "Blog" },
-  { href: "/docs", label: "Docs" },
-];
-
-const legalLinks = [
-  { href: "/privacy", label: "Privacy" },
-  { href: "/terms", label: "Terms" },
-  { href: "/cookies", label: "Cookies" },
-  { href: "/compliance", label: "Compliance" },
-];
+interface FooterProps {
+  content: FooterComponentContent;
+}
 
 /**
  * Marketing site footer navigation.
  */
-export function Footer() {
-  const { description, primaryAction, secondaryAction } = FooterProps;
+export function Footer({ content }: FooterProps) {
+  const {
+    description,
+    primaryAction,
+    secondaryAction,
+    productLinks,
+    legalLinks,
+  } = content;
 
   return (
     <PageSection as="footer" id="marketing-footer" classes="my-6 py-6 sm:py-8 px-6 sm:px-12">

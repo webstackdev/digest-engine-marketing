@@ -91,12 +91,6 @@ export interface ICtaProps {
   highlights: ICTAHighlight[];
 }
 
-export interface IFooterProps {
-  description: string;
-  primaryAction: ICtaAction;
-  secondaryAction: ICtaAction;
-}
-
 export interface IHomePageFaqItem {
   question: string;
   answer: ReactNode;

@@ -14,7 +14,6 @@ import solutionImage04 from "@/assets/images/solutions-04.jpg";
 
 import {
   ICtaProps,
-  IFooterProps,
   IFeaturesProps,
   IClientsProps,
   IHomePageFaqProps,
@@ -36,19 +35,6 @@ export const HeroProps: IHeroProps = {
   btnGetStarted: {
     text: "Start Your First Project",
     link: "/signup",
-  },
-};
-
-export const FooterProps: IFooterProps = {
-  description:
-    "Train one project on your editorial taste and start each issue with a ranked shortlist, summaries, and a draft outline instead of a research scramble.",
-  primaryAction: {
-    text: "Start Your First Project",
-    link: "/signup",
-  },
-  secondaryAction: {
-    text: "Read the docs",
-    link: "/docs",
   },
 };
 

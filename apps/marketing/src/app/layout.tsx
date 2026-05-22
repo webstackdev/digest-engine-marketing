@@ -9,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import { GoogleTagManagerWithConsent } from "@/components/GoogleTagManagerWithConsent";
 import { Header } from "@/components/Header";
 import { brand } from "@/lib/props";
+import { getFooterComponentContent } from "@/sanity/queries/footerComponent";
 import { getHeaderComponentContent } from "@/sanity/queries/headerComponent";
 import { themeInitScript } from "@/lib/themeInit";
 
@@ -25,6 +26,7 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
+  const footerContent = await getFooterComponentContent();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const headerContent = await getHeaderComponentContent();
 
@@ -46,7 +48,7 @@ export default async function RootLayout({
         <Header content={headerContent} />
         {children}
         <Consent />
-        <Footer />
+        <Footer content={footerContent} />
       </body>
     </html>
   );
