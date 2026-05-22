@@ -9,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import { GoogleTagManagerWithConsent } from "@/components/GoogleTagManagerWithConsent";
 import { Header } from "@/components/Header";
 import { brand } from "@/lib/props";
+import { getConsentComponentContent } from "@/sanity/queries/consentComponent";
 import { getFooterComponentContent } from "@/sanity/queries/footerComponent";
 import { getHeaderComponentContent } from "@/sanity/queries/headerComponent";
 import { themeInitScript } from "@/lib/themeInit";
@@ -26,6 +27,7 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
+  const consentContent = await getConsentComponentContent();
   const footerContent = await getFooterComponentContent();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const headerContent = await getHeaderComponentContent();
@@ -47,7 +49,7 @@ export default async function RootLayout({
         {clarityId && <Clarity clarityId={clarityId} />}
         <Header content={headerContent} />
         {children}
-        <Consent />
+        <Consent content={consentContent} />
         <Footer content={footerContent} />
       </body>
     </html>

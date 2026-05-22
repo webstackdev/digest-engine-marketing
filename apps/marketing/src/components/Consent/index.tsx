@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+
+import type { ConsentComponentContent } from "@/sanity/queries/consentComponent";
 import {
   CONSENT_STORAGE_KEY,
   readConsentPreferences,
@@ -18,11 +20,26 @@ function getInitialIsOpen() {
   return readConsentPreferences() === null;
 }
 
+interface ConsentProps {
+  content: ConsentComponentContent;
+}
+
 /**
  * Presents a site-wide cookie consent modal and stores preferences in local storage.
  */
-export function Consent() {
+export function Consent({ content }: ConsentProps) {
   const [isOpen, setIsOpen] = useState(getInitialIsOpen);
+
+  const {
+    badge,
+    title,
+    description,
+    essentialOption,
+    marketingOption,
+    policyLink,
+    essentialOnlyButtonText,
+    acceptAllButtonText,
+  } = content;
 
   const handleEssentialOnly = () => {
     writeConsentPreferences(false);
@@ -48,7 +65,7 @@ export function Consent() {
       >
         <div className="space-y-4">
           <span className="inline-flex rounded-full border border-trim-offset bg-background px-4 py-2 text-sm font-medium text-content-offset">
-            Cookie preferences
+            {badge}
           </span>
 
           <div className="space-y-3">
@@ -56,41 +73,41 @@ export function Consent() {
               id="cookie-consent-title"
               className="text-2xl font-semibold tracking-tight text-content-active sm:text-3xl"
             >
-              Choose how the site stores consent preferences
+              {title}
             </h2>
             <p className="text-base leading-7 text-content-offset">
-              Essential cookies are always enabled so the site can function correctly. Marketing cookies are optional and are used for campaign measurement and related outreach workflows.
+              {description}
             </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-3xl border border-trim-offset bg-background p-4">
               <p className="text-sm font-semibold uppercase tracking-widest text-content-offset">
-                Essential
+                {essentialOption.eyebrow}
               </p>
-              <p className="mt-2 text-base font-semibold text-content-active">Always active</p>
+              <p className="mt-2 text-base font-semibold text-content-active">{essentialOption.status}</p>
               <p className="mt-2 text-sm leading-6 text-content-offset">
-                Needed for basic site operation, saved preferences, and security-related behavior.
+                {essentialOption.description}
               </p>
             </div>
 
             <div className="rounded-3xl border border-trim-offset bg-background p-4">
               <p className="text-sm font-semibold uppercase tracking-widest text-content-offset">
-                Marketing
+                {marketingOption.eyebrow}
               </p>
-              <p className="mt-2 text-base font-semibold text-content-active">Optional</p>
+              <p className="mt-2 text-base font-semibold text-content-active">{marketingOption.status}</p>
               <p className="mt-2 text-sm leading-6 text-content-offset">
-                Used for campaign attribution, promotional analytics, and similar marketing activities.
+                {marketingOption.description}
               </p>
             </div>
           </div>
 
           <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
             <Link
-              href="/cookies"
+              href={policyLink.href}
               className="text-sm font-semibold text-content-active no-underline transition-colors hover:text-content-offset"
             >
-              Read the cookie policy
+              {policyLink.label}
             </Link>
 
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -99,14 +116,14 @@ export function Consent() {
                 onClick={handleEssentialOnly}
                 className="inline-flex items-center justify-center rounded-full border border-trim-offset px-5 py-3 text-base font-semibold text-content-active transition-colors hover:text-content-offset"
               >
-                Essential only
+                {essentialOnlyButtonText}
               </button>
               <button
                 type="button"
                 onClick={handleAcceptAll}
                 className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-base font-semibold text-primary-inverse transition-colors hover:bg-accent-offset"
               >
-                Accept all cookies
+                {acceptAllButtonText}
               </button>
             </div>
           </div>

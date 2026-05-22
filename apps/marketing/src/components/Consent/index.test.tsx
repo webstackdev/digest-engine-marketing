@@ -4,6 +4,8 @@ import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, describe, expect, it } from "vitest";
 
+import { defaultConsentComponentContent } from "@/sanity/queries/consentComponent";
+
 import { CONSENT_STORAGE_KEY, Consent } from "./index";
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -31,12 +33,12 @@ describe("Consent", () => {
     root = createRoot(container);
 
     await act(async () => {
-      root?.render(<Consent />);
+      root?.render(<Consent content={defaultConsentComponentContent} />);
     });
 
     expect(container.querySelector('[role="dialog"]')).not.toBeNull();
-    expect(container.textContent).toContain("Cookie preferences");
-    expect(container.textContent).toContain("Accept all cookies");
+    expect(container.textContent).toContain(defaultConsentComponentContent.badge);
+    expect(container.textContent).toContain(defaultConsentComponentContent.acceptAllButtonText);
   });
 
   it("stores essential and marketing consent when accepted", async () => {
@@ -45,11 +47,11 @@ describe("Consent", () => {
     root = createRoot(container);
 
     await act(async () => {
-      root?.render(<Consent />);
+      root?.render(<Consent content={defaultConsentComponentContent} />);
     });
 
     const acceptButton = Array.from(container.querySelectorAll("button")).find((button) =>
-      button.textContent?.includes("Accept all cookies"),
+      button.textContent?.includes(defaultConsentComponentContent.acceptAllButtonText),
     );
 
     await act(async () => {
@@ -68,11 +70,11 @@ describe("Consent", () => {
     root = createRoot(container);
 
     await act(async () => {
-      root?.render(<Consent />);
+      root?.render(<Consent content={defaultConsentComponentContent} />);
     });
 
     const essentialOnlyButton = Array.from(container.querySelectorAll("button")).find((button) =>
-      button.textContent?.includes("Essential only"),
+      button.textContent?.includes(defaultConsentComponentContent.essentialOnlyButtonText),
     );
 
     await act(async () => {
@@ -96,7 +98,7 @@ describe("Consent", () => {
     root = createRoot(container);
 
     await act(async () => {
-      root?.render(<Consent />);
+      root?.render(<Consent content={defaultConsentComponentContent} />);
     });
 
     expect(container.querySelector('[role="dialog"]')).toBeNull();
