@@ -114,7 +114,7 @@ export default async function CompliancePage() {
           </p>
         </div>
 
-        <div className="mt-4 sm:mt-8 grid gap-4 lg:grid-cols-5">
+        <div className="mt-4 sm:mt-8 grid gap-4 lg:grid-cols-4">
           {content.frameworksSection.items.map((framework) => (
             <article
               key={framework.name}
