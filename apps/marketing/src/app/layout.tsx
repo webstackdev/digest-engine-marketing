@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Metadata } from "next";
 import Script from "next/script";
+
 import { AttributionCapture } from "@/components/AttributionCapture";
 import { Clarity } from "@/components/Clarity";
 import { Consent } from "@/components/Consent";
@@ -8,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import { GoogleTagManagerWithConsent } from "@/components/GoogleTagManagerWithConsent";
 import { Header } from "@/components/Header";
 import { brand } from "@/lib/props";
+import { getHeaderComponentContent } from "@/sanity/queries/headerComponent";
 import { themeInitScript } from "@/lib/themeInit";
 
 import "../styles/globals.css";
@@ -24,6 +26,7 @@ export default async function RootLayout({
 }) {
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  const headerContent = await getHeaderComponentContent();
 
   return (
     <html
@@ -40,7 +43,7 @@ export default async function RootLayout({
         <AttributionCapture />
         {gtmId && <GoogleTagManagerWithConsent gtmId={gtmId} />}
         {clarityId && <Clarity clarityId={clarityId} />}
-        <Header />
+        <Header content={headerContent} />
         {children}
         <Consent />
         <Footer />

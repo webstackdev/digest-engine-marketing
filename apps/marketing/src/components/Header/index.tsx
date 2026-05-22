@@ -4,23 +4,21 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+
+import type { HeaderComponentContent } from "@/sanity/queries/headerComponent";
+
 import { PageSection } from "../Section";
 import logo from "@/assets/images/logo.svg";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { brand } from "@/lib/props";
 
-const navigationItems = [
-  { href: "/tour", label: "How It Works" },
-  { href: "/blog", label: "Blog" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/docs", label: "Docs" },
-  { href: "/signup", label: "Sign Up" },
-];
+interface HeaderProps {
+  content: HeaderComponentContent;
+}
 
 /**
  * Marketing site header navigation.
  */
-export function Header() {
+export function Header({ content }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const mobileMenuLabel = isMobileMenuOpen
@@ -42,18 +40,18 @@ export function Header() {
           >
             <Image
               src={logo}
-              alt={`${brand.name} logo`}
+              alt="Digest Engine logo"
               className="h-14 w-14 shrink-0 sm:h-16 sm:w-16"
               priority
             />
             <span className="min-w-0 truncate text-lg font-semibold tracking-tight text-secondary hover:text-secondary-offset sm:ml-2 sm:text-3xl">
-              {brand.name}
+              Digest Engine
             </span>
           </Link>
 
           <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 md:gap-4">
             <nav className="hidden items-center gap-6 sm:gap-8 md:flex">
-              {navigationItems.map((item) => (
+              {content.navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -66,28 +64,39 @@ export function Header() {
 
             <ThemeToggle />
 
-            <button
-              type="button"
-              aria-controls="mobile-navigation"
-              aria-expanded={isMobileMenuOpen}
-              aria-label={mobileMenuLabel}
-              title={mobileMenuLabel}
-              onClick={() => setIsMobileMenuOpen((current) => !current)}
-              className="inline-flex size-11 items-center justify-center rounded-full bg-page-offset text-secondary transition-colors hover:text-secondary-offset md:hidden"
-            >
-              {isMobileMenuOpen ? (
+            {isMobileMenuOpen ? (
+              <button
+                type="button"
+                aria-controls="mobile-navigation"
+                aria-expanded="true"
+                aria-label={mobileMenuLabel}
+                title={mobileMenuLabel}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="inline-flex size-11 items-center justify-center rounded-full bg-page-offset text-secondary transition-colors hover:text-secondary-offset md:hidden"
+              >
                 <X aria-hidden="true" className="size-6" strokeWidth={1.9} />
-              ) : (
+                <span className="sr-only">{mobileMenuLabel}</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                aria-controls="mobile-navigation"
+                aria-expanded="false"
+                aria-label={mobileMenuLabel}
+                title={mobileMenuLabel}
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="inline-flex size-11 items-center justify-center rounded-full bg-page-offset text-secondary transition-colors hover:text-secondary-offset md:hidden"
+              >
                 <Menu aria-hidden="true" className="size-6" strokeWidth={1.9} />
-              )}
-              <span className="sr-only">{mobileMenuLabel}</span>
-            </button>
+                <span className="sr-only">{mobileMenuLabel}</span>
+              </button>
+            )}
 
             <Link
               href="/login"
               className="hidden rounded-full bg-accent px-4 py-2 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset sm:text-lg md:inline-flex"
             >
-              Login
+              {content.loginButtonText}
             </Link>
           </div>
         </div>
@@ -98,7 +107,7 @@ export function Header() {
             className="flex flex-col gap-4 border-t border-trim-offset pt-4 md:hidden"
           >
             <nav className="flex flex-col gap-3">
-              {navigationItems.map((item) => (
+              {content.navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -115,7 +124,7 @@ export function Header() {
               onClick={() => setIsMobileMenuOpen(false)}
               className="inline-flex w-full items-center justify-center rounded-full bg-accent px-4 py-2 text-base font-semibold text-primary-inverse no-underline transition-colors hover:bg-accent-offset"
             >
-              Login
+              {content.loginButtonText}
             </Link>
           </div>
         ) : null}

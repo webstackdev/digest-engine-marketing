@@ -5,6 +5,8 @@ import { createRoot, type Root } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { defaultHeaderComponentContent } from "@/sanity/queries/headerComponent";
+
 import { Header } from "./index";
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -36,7 +38,7 @@ afterEach(async () => {
 
 describe("Header", () => {
   it("renders the fixed navigation shell and primary links", () => {
-    const markup = renderToStaticMarkup(<Header />);
+    const markup = renderToStaticMarkup(<Header content={defaultHeaderComponentContent} />);
 
     expect(markup).toContain('id="marketing-nav"');
     expect(markup).toContain('href="/tour"');
@@ -47,7 +49,7 @@ describe("Header", () => {
   });
 
   it("places the theme toggle between the nav links and login", () => {
-    const markup = renderToStaticMarkup(<Header />);
+    const markup = renderToStaticMarkup(<Header content={defaultHeaderComponentContent} />);
     const docsIndex = markup.indexOf('href="/docs"');
     const themeToggleIndex = markup.indexOf('aria-label="Theme toggle"');
     const loginIndex = markup.indexOf('href="/login"');
@@ -57,7 +59,7 @@ describe("Header", () => {
   });
 
   it("allows the brand cluster to shrink on mobile widths", () => {
-    const markup = renderToStaticMarkup(<Header />);
+    const markup = renderToStaticMarkup(<Header content={defaultHeaderComponentContent} />);
 
     expect(markup).toContain("flex min-w-0 items-center gap-2 text-content-active no-underline sm:gap-3");
     expect(markup).toContain("min-w-0 truncate text-lg font-semibold tracking-tight text-secondary");
@@ -69,7 +71,7 @@ describe("Header", () => {
     root = createRoot(container);
 
     await act(async () => {
-      root?.render(<Header />);
+      root?.render(<Header content={defaultHeaderComponentContent} />);
     });
 
     const menuButton = container.querySelector('button[aria-label="Open navigation menu"]');
