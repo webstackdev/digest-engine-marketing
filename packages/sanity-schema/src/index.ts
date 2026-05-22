@@ -1,3 +1,4 @@
+import blogPage from "./blogPage";
 import consentComponent from "./consentComponent";
 import compliancePage from "./compliancePage";
 import cookiesPage from "./cookiesPage";
@@ -11,6 +12,7 @@ import privacyPage from "./privacyPage";
 import termsPage from "./termsPage";
 import tourPage from "./tourPage";
 
+export { blogPage };
 export { consentComponent };
 export { compliancePage };
 export { cookiesPage };
@@ -24,4 +26,4 @@ export { privacyPage };
 export { termsPage };
 export { tourPage };
 
-export const schemaTypes = [consentComponent, compliancePage, cookiesPage, docsPage, footerComponent, headerComponent, homePage, pricingComponent, pricingPage, privacyPage, termsPage, tourPage];
+export const schemaTypes = [blogPage, consentComponent, compliancePage, cookiesPage, docsPage, footerComponent, headerComponent, homePage, pricingComponent, pricingPage, privacyPage, termsPage, tourPage];

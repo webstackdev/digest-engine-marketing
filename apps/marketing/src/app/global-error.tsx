@@ -3,7 +3,6 @@ import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { brand } from "@/lib/props";
 // A natural next step would be to give marketing/src/app/global-error.tsx the same visual treatment so the 404 and error fallback feel like a matched pair.
 /**
  * Renders the top-level fallback UI for uncaught App Router errors.
@@ -47,7 +46,7 @@ export function GlobalErrorContent({
           Error
         </p>
         <h1 className='text-4xl font-semibold tracking-tight text-content-active'>
-          {brand.name} hit an unexpected problem
+          Digest Engine hit an unexpected problem
         </h1>
         <p className='max-w-2xl text-base text-content-offset'>
           We logged the failure and you can retry this page now or head back to the homepage.

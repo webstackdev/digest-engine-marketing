@@ -34,12 +34,12 @@ export function Footer({ content }: FooterProps) {
           >
             <Image
               src={logo}
-              alt={`${brand.name} logo`}
+              alt={"Digest Engine logo"}
               className="h-14 w-14 shrink-0"
             />
             <div>
               <p className="m-0 text-lg font-semibold tracking-tight text-content-active">
-                {brand.name}
+                Digest Engine
               </p>
               <p className="m-0 text-sm text-content-offset">{brand.tagline}</p>
             </div>

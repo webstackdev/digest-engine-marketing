@@ -3,8 +3,6 @@ import Link from "next/link";
 
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
-import { brand } from "@/lib/props";
-
 import SignupForm from "./_components/SignupForm";
 
 const signupHighlights = [
@@ -20,7 +18,7 @@ const signupNextSteps = [
 ];
 
 export const metadata: Metadata = {
-  title: `${brand.name} Sign Up`,
+  title: "Digest Engine Sign Up",
   description: "Request access to Digest Engine and tell us how your editorial workflow works today.",
 };
 

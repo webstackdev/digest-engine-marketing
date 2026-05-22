@@ -17,7 +17,7 @@ import { themeInitScript } from "@/lib/themeInit";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
-  title: brand.name,
+  title: "Digest Engine",
   description: brand.tagline,
 };
 
