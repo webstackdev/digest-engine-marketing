@@ -5,6 +5,7 @@ import {
   Blocks,
   CheckCircle2,
   FileSearch,
+  type LucideIcon,
   MessageSquareQuote,
   Sparkles,
 } from "lucide-react";
@@ -12,27 +13,29 @@ import {
 import { CTA } from "@/components/HomePage/CTA";
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
-import { brand, CtaProps, TourPageProps } from "@/lib/props";
+import {
+  getTourPageContent,
+  type TourCapabilityItem,
+} from "@/sanity/queries/tourPage";
 
-const tourCapabilityIcons = [
-  Sparkles,
-  MessageSquareQuote,
-  Blocks,
-  FileSearch,
-];
-
-export const metadata: Metadata = {
-  title: `${brand.name} Tour`,
-  description: TourPageProps.metadataDescription,
+const capabilityIconMap: Record<TourCapabilityItem["icon"], LucideIcon> = {
+  blocks: Blocks,
+  fileSearch: FileSearch,
+  messageSquareQuote: MessageSquareQuote,
+  sparkles: Sparkles,
 };
 
-export default function TourPage() {
-  const tourSteps = TourPageProps.steps;
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getTourPageContent();
 
-  const tourCapabilities = TourPageProps.capabilities.map((capability, index) => ({
-    ...capability,
-    icon: tourCapabilityIcons[index],
-  }));
+  return {
+    title: content.metadata.title,
+    description: content.metadata.description,
+  };
+}
+
+export default async function TourPage() {
+  const content = await getTourPageContent();
 
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
@@ -40,15 +43,15 @@ export default function TourPage() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
           <div className="flex flex-col gap-6">
             <span className="w-fit rounded-full bg-secondary px-4 py-2 text-sm font-medium text-content-inverse">
-              {TourPageProps.heroEyebrow}
+              {content.hero.eyebrow}
             </span>
 
             <div className="space-y-5">
               <h1 className="max-w-3xl text-4xl sm:text-5xl font-semibold tracking-tight text-secondary">
-                {TourPageProps.heroTitle}
+                {content.hero.title}
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-content-active">
-                {TourPageProps.heroDescription}
+                {content.hero.description}
               </p>
             </div>
 
@@ -59,8 +62,8 @@ export default function TourPage() {
                 size="lg"
                 className="h-12 rounded-full bg-accent px-6 text-lg font-semibold text-primary-inverse transition-colors hover:bg-accent-offset"
               >
-                <Link href={TourPageProps.primaryAction.link}>
-                  {TourPageProps.primaryAction.text}
+                <Link href={content.hero.primaryAction.link}>
+                  {content.hero.primaryAction.text}
                 </Link>
               </Button>
 
@@ -70,8 +73,8 @@ export default function TourPage() {
                 size="lg"
                 className="h-12 rounded-full px-6 text-lg font-semibold"
               >
-                <Link href={TourPageProps.secondaryAction.link}>
-                  {TourPageProps.secondaryAction.text}
+                <Link href={content.hero.secondaryAction.link}>
+                  {content.hero.secondaryAction.text}
                 </Link>
               </Button>
             </div>
@@ -79,13 +82,13 @@ export default function TourPage() {
 
           <div className="rounded-4xl border border-trim-offset bg-page-base p-6">
             <p className="text-sm font-semibold uppercase tracking-widest text-content-offset">
-              {TourPageProps.highlightsHeading}
+              {content.highlightsSection.heading}
             </p>
             <div className="mt-5 space-y-4">
-              {TourPageProps.highlights.map((item) => (
-                <div key={item} className="flex gap-3 rounded-3xl border border-trim-offset bg-page-offset p-4">
+              {content.highlightsSection.items.map((item) => (
+                <div key={item.text} className="flex gap-3 rounded-3xl border border-trim-offset bg-page-offset p-4">
                   <CheckCircle2 className="mt-0.5 h-7 w-7 shrink-0 text-secondary" aria-hidden="true" />
-                  <p className="text-base leading-7 text-content-active">{item}</p>
+                  <p className="text-base leading-7 text-content-active">{item.text}</p>
                 </div>
               ))}
             </div>
@@ -96,18 +99,18 @@ export default function TourPage() {
       <PageSection id="tour-flow" classes="px-6 py-8 sm:px-8 sm:py-10">
         <div className="sm:max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
-            {TourPageProps.workflowEyebrow}
+            {content.workflowSection.eyebrow}
           </p>
           <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-secondary">
-            {TourPageProps.workflowTitle}
+            {content.workflowSection.title}
           </h2>
           <p className="mt-3 text-base leading-7 text-content-offset">
-            {TourPageProps.workflowDescription}
+            {content.workflowSection.description}
           </p>
         </div>
 
         <div className="mt-4 sm:mt-8 grid gap-4 lg:grid-cols-3">
-          {tourSteps.map((step, index) => {
+          {content.workflowSection.steps.map((step, index) => {
             return (
               <article
                 key={step.title}
@@ -130,27 +133,27 @@ export default function TourPage() {
         <div className="grid gap-4 sm:gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-content-offset">
-              {TourPageProps.capabilitiesEyebrow}
+              {content.capabilitiesSection.eyebrow}
             </p>
             <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-secondary">
-              {TourPageProps.capabilitiesTitle}
+              {content.capabilitiesSection.title}
             </h2>
             <p className="mt-3 text-base leading-7 text-content-offset">
-              {TourPageProps.capabilitiesDescription}
+              {content.capabilitiesSection.description}
             </p>
 
             <Link
-              href={TourPageProps.capabilitiesLink.link}
+              href={content.capabilitiesSection.link.link}
               className="mt-6 inline-flex items-center gap-2 text-base font-semibold text-content-active transition-colors hover:text-content-offset"
             >
-              {TourPageProps.capabilitiesLink.text}
+              {content.capabilitiesSection.link.text}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            {tourCapabilities.map((capability) => {
-              const Icon = capability.icon;
+            {content.capabilitiesSection.items.map((capability) => {
+              const Icon = capabilityIconMap[capability.icon] ?? Sparkles;
 
               return (
                 <article
@@ -175,7 +178,7 @@ export default function TourPage() {
         </div>
       </PageSection>
 
-      <CTA {...CtaProps} />
+      <CTA {...content.ctaSection} />
     </main>
   );
 }
