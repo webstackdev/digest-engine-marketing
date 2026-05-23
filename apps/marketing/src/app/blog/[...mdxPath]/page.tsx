@@ -26,6 +26,11 @@ type BlogMetadata = Metadata & {
   publishedAt?: string;
 };
 
+type PortableTextCodeBlock = {
+  code?: string;
+  language?: string;
+};
+
 const getBlogPagesIndex = cache(async () => getBlogContentPages());
 
 function getHeadingText(value: ReactNode): string {
@@ -101,6 +106,18 @@ function createPortableTextComponents(currentSlug: string): PortableTextComponen
       h4: renderHeading("h4"),
       h5: renderHeading("h5"),
       h6: renderHeading("h6"),
+    },
+    types: {
+      code: ({ value }: { value?: PortableTextCodeBlock }) => {
+        const code = value?.code ?? "";
+        const languageClassName = value?.language ? `language-${value.language}` : undefined;
+
+        return (
+          <pre>
+            <code className={languageClassName}>{code}</code>
+          </pre>
+        );
+      },
     },
     marks: {
       link: ({ children, value }) => {
@@ -210,7 +227,7 @@ export default async function BlogArticlePage(props: { params: Promise<BlogRoute
             </div>
           </header>
 
-          <div className="min-w-0 wrap-break-word text-content nextra-content">
+          <div className="min-w-0 wrap-break-word text-content markdown-content">
             <PortableText
               components={createPortableTextComponents(slug)}
               value={page.body as BlogContentBlock[]}

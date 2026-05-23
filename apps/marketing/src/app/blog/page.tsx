@@ -1,29 +1,23 @@
 import type { Metadata } from "next";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
-import type { PageMapItem } from "nextra";
-import { getPageMap } from "nextra/page-map";
-import { cache } from "react";
 import { ArrowRight, Newspaper } from "lucide-react";
-import { blogPreviewImages } from "@/content/blog/images";
 import { PageSection } from "@/components/Section";
 import { getBlogPageContent } from "@/sanity/queries/blogPage";
+import { buildSanityImageUrl } from "@/sanity/image";
+import { getBlogContentPages } from "@/sanity/queries/blogContentPage";
 
 type BlogCard = {
   href: string;
   title: string;
   description: string;
-  previewImage: StaticImageData | string;
+  previewImage: string;
   publishedAt?: string;
 };
 
-type BlogFrontMatter = {
-  title?: string;
+type BlogCardSource = Awaited<ReturnType<typeof getBlogContentPages>>[number] & {
   description?: string;
-  publishedAt?: string;
 };
-
-const getBlogPageMap = cache(async () => getPageMap("/blog"));
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getBlogPageContent();
@@ -34,57 +28,34 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function getFolderTitle(item: PageMapItem): string {
-  if ("frontMatter" in item && item.frontMatter?.title) {
-    return String(item.frontMatter.title);
-  }
-
-  return "name" in item ? item.name : "Article";
-}
-
-function buildBlogCards(items: PageMapItem[], fallbackDescription: string): BlogCard[] {
+function buildBlogCards(items: BlogCardSource[], fallbackDescription: string): BlogCard[] {
   return items.flatMap<BlogCard>((item) => {
-    if ("data" in item) {
-      return [];
-    }
-
-    if ("children" in item) {
-      return buildBlogCards(item.children, fallbackDescription);
-    }
-
-    if (!item.route?.startsWith("/blog/") || item.route === "/blog") {
-      return [];
-    }
-
-    const slug = item.route.replace("/blog/", "");
-    const previewImage = blogPreviewImages[slug];
-
-    const frontMatter = (
-      "frontMatter" in item ? item.frontMatter : undefined
-    ) as BlogFrontMatter | undefined;
+    const previewImage = buildSanityImageUrl(item.previewImage, {
+      width: 880,
+      height: 660,
+      fit: "crop",
+    });
 
     if (!previewImage) {
       return [];
     }
 
-    return [
-      {
-        href: item.route,
-        title: getFolderTitle(item),
-        description: frontMatter?.description ?? fallbackDescription,
-        previewImage,
-        publishedAt: frontMatter?.publishedAt,
-      },
-    ];
+    return [{
+      href: `/blog/${item.slug.current}`,
+      title: item.title,
+      description: item.description ?? fallbackDescription,
+      previewImage,
+      publishedAt: item.publishedAt,
+    }];
   });
 }
 
 export default async function BlogHomePage() {
-  const [content, pageMap] = await Promise.all([
+  const [content, blogContentPages] = await Promise.all([
     getBlogPageContent(),
-    getBlogPageMap(),
+    getBlogContentPages(),
   ]);
-  const posts = buildBlogCards(pageMap, content.postsSection.fallbackDescription);
+  const posts = buildBlogCards(blogContentPages, content.postsSection.fallbackDescription);
 
   return (
     <main className="relative mx-auto flex w-full flex-col gap-8 pb-16 pt-24">

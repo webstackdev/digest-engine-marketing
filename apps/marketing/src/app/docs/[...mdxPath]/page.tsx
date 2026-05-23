@@ -33,6 +33,11 @@ type DocsMetadata = Metadata & {
   description?: string;
 };
 
+type PortableTextCodeBlock = {
+  code?: string;
+  language?: string;
+};
+
 const docsBasePath = "/docs";
 const getDocsPagesIndex = cache(async () => getDocsContentPages());
 
@@ -163,6 +168,18 @@ function createPortableTextComponents(currentSlug: string): PortableTextComponen
       h5: renderHeading("h5"),
       h6: renderHeading("h6"),
     },
+    types: {
+      code: ({ value }: { value?: PortableTextCodeBlock }) => {
+        const code = value?.code ?? "";
+        const languageClassName = value?.language ? `language-${value.language}` : undefined;
+
+        return (
+          <pre>
+            <code className={languageClassName}>{code}</code>
+          </pre>
+        );
+      },
+    },
     marks: {
       link: ({ children, value }) => {
         const definition = getLinkMarkDefinition(value);
@@ -245,7 +262,7 @@ export default async function Page(props: { params: Promise<DocsRouteParams> }) 
   const sidebarSections = buildSidebarSections(pages);
   const serializedToc = buildPortableTextToc(docsContentPage.body);
   const content = (
-    <div className="nextra-content">
+    <div className="markdown-content">
       <PortableText
         components={createPortableTextComponents(slug)}
         value={docsContentPage.body}

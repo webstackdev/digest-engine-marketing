@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "nextra-theme-docs/style.css";
 @import "tw-animate-css";
 @import "./index.css";
 @plugin "@tailwindcss/forms";
@@ -65,7 +64,7 @@
     color: var(--color-page-inverse);
   }
 
-  .nextra-content {
+  .markdown-content {
     width: 100%;
   }
 

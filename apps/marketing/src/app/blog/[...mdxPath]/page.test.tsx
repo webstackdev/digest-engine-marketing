@@ -65,6 +65,12 @@ describe("Blog catch-all page", () => {
             children: [{ _type: "span", _key: "body-span", text: "Sample blog body" }],
             markDefs: [],
           },
+          {
+            _type: "code",
+            _key: "code-block",
+            code: "console.log('hello blog')",
+            language: "ts",
+          },
         ],
     });
 
@@ -76,6 +82,8 @@ describe("Blog catch-all page", () => {
     expect(getBlogContentPage).toHaveBeenCalledWith("authority-aware-ranking");
     expect(markup).toContain("Sample blog body");
     expect(markup).toContain("May 15, 2026");
+    expect(markup).toContain("language-ts");
+    expect(markup).toContain("console.log(&#x27;hello blog&#x27;)");
   });
 
   it("maps Sanity article content into next metadata", async () => {

@@ -53,6 +53,7 @@ export interface BlogContentPage {
 
 export interface BlogContentPageListItem {
   title: string;
+  description?: string;
   slug: {
     current: string;
   };

@@ -75,6 +75,12 @@ describe("Docs catch-all page", () => {
           children: [{ _type: "span", _key: "span-heading", text: "Core Stages" }],
           markDefs: [],
         },
+        {
+          _type: "code",
+          _key: "code-block",
+          code: "print('hello docs')",
+          language: "python",
+        },
       ],
     });
 
@@ -88,6 +94,8 @@ describe("Docs catch-all page", () => {
     expect(markup).toContain("Table of Contents");
     expect(markup).toContain("Ingestion Pipeline");
     expect(markup).toContain("Documentation");
+    expect(markup).toContain("language-python");
+    expect(markup).toContain("print(&#x27;hello docs&#x27;)");
   });
 
   it("builds table of contents anchors and relative links from Portable Text", async () => {

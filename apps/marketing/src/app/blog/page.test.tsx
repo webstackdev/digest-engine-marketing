@@ -3,14 +3,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { defaultBlogPageContent } from "@/sanity/queries/blogPage";
 
-const { mockGetPageMap } = vi.hoisted(() => ({
-  mockGetPageMap: vi.fn(),
-}));
-
-vi.mock("nextra/page-map", () => ({
-  getPageMap: mockGetPageMap,
-}));
-
 vi.mock("@/sanity/queries/blogPage", () => ({
   defaultBlogPageContent: {
     metadata: {
@@ -30,30 +22,36 @@ vi.mock("@/sanity/queries/blogPage", () => ({
   getBlogPageContent: vi.fn(),
 }));
 
+vi.mock("@/sanity/queries/blogContentPage", () => ({
+  getBlogContentPages: vi.fn(),
+}));
+
 import { getBlogPageContent } from "@/sanity/queries/blogPage";
+import { getBlogContentPages } from "@/sanity/queries/blogContentPage";
 
 describe("Blog home page", () => {
   beforeEach(() => {
     vi.resetModules();
-    mockGetPageMap.mockReset();
     vi.mocked(getBlogPageContent).mockResolvedValue(defaultBlogPageContent);
+    vi.mocked(getBlogContentPages).mockReset();
   });
 
-  it("renders article cards from the blog page map", async () => {
-    mockGetPageMap.mockResolvedValue([
+  it("renders article cards from Sanity blog content pages", async () => {
+    vi.mocked(getBlogContentPages).mockResolvedValue([
       {
-        name: "index",
-        route: "/blog",
-        frontMatter: {
-          title: "Blog",
+        title: "Authority-Aware Ranking",
+        description: undefined,
+        publishedAt: "May 15, 2026",
+        slug: {
+          current: "authority-aware-ranking",
         },
-      },
-      {
-        name: "authority-aware-ranking",
-        route: "/blog/authority-aware-ranking",
-        frontMatter: {
-          title: "Authority-Aware Ranking",
-          publishedAt: "May 15, 2026",
+        sourcePath: "authority-aware-ranking/index.mdx",
+        previewImage: {
+          _type: "image",
+          asset: {
+            _type: "reference",
+            _ref: "image-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1000x500-jpg",
+          },
         },
       },
     ]);
@@ -62,7 +60,7 @@ describe("Blog home page", () => {
     const markup = renderToStaticMarkup(await BlogHomePage());
 
     expect(getBlogPageContent).toHaveBeenCalled();
-    expect(mockGetPageMap).toHaveBeenCalledWith("/blog");
+  expect(getBlogContentPages).toHaveBeenCalled();
     expect(markup).toContain("Authority-Aware Ranking");
     expect(markup).toContain('href="/blog/authority-aware-ranking"');
     expect(markup).toContain(defaultBlogPageContent.postsSection.fallbackDescription);
