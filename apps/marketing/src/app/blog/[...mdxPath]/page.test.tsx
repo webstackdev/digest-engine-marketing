@@ -1,32 +1,33 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockGenerateStaticParamsFor, mockImportPage } = vi.hoisted(() => ({
-  mockGenerateStaticParamsFor: vi.fn(),
-  mockImportPage: vi.fn(),
+vi.mock("@/sanity/queries/blogContentPage", () => ({
+  getBlogContentPage: vi.fn(),
+  getBlogContentPages: vi.fn(),
 }));
 
-vi.mock("nextra/pages", () => ({
-  generateStaticParamsFor: mockGenerateStaticParamsFor,
-  importPage: mockImportPage,
-}));
+import {
+  getBlogContentPage,
+  getBlogContentPages,
+} from "@/sanity/queries/blogContentPage";
 
 describe("Blog catch-all page", () => {
   beforeEach(() => {
     vi.resetModules();
-    mockGenerateStaticParamsFor.mockReset();
-    mockImportPage.mockReset();
+    vi.mocked(getBlogContentPage).mockReset();
+    vi.mocked(getBlogContentPages).mockReset();
+    vi.mocked(getBlogContentPages).mockResolvedValue([
+      {
+        title: "Authority-Aware Ranking",
+        description: "A real post.",
+        publishedAt: "May 15, 2026",
+        slug: { current: "authority-aware-ranking" },
+        sourcePath: "authority-aware-ranking/index.mdx",
+      },
+    ]);
   });
 
-  it("filters the blog root route out of catch-all static params", async () => {
-    mockGenerateStaticParamsFor.mockReturnValue(
-      vi.fn().mockResolvedValue([
-        { mdxPath: ["docs", "reference", "overview"] },
-        { mdxPath: ["blog"] },
-        { mdxPath: ["blog", "authority-aware-ranking"] },
-      ]),
-    );
-
+  it("builds static params from Sanity blog article slugs", async () => {
     const { generateStaticParams } = await import("./page");
 
     await expect(generateStaticParams()).resolves.toEqual([
@@ -34,16 +35,37 @@ describe("Blog catch-all page", () => {
     ]);
   });
 
-  it("loads the requested blog article", async () => {
-    mockGenerateStaticParamsFor.mockReturnValue(vi.fn().mockResolvedValue([]));
-    mockImportPage.mockResolvedValue({
-      default: () => <div>Sample blog body</div>,
-      metadata: {
+  it("loads the requested Sanity blog article", async () => {
+    vi.mocked(getBlogContentPage).mockResolvedValue({
         title: "Authority-Aware Ranking",
         description: "A real post.",
-        heroImage: "/hero.svg",
         publishedAt: "May 15, 2026",
-      },
+        slug: { current: "authority-aware-ranking" },
+        sourcePath: "authority-aware-ranking/index.mdx",
+        heroImage: {
+          _type: "image",
+          asset: { _type: "reference", _ref: "image-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1000x500-jpg" },
+        },
+        previewImage: {
+          _type: "image",
+          asset: { _type: "reference", _ref: "image-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-1000x500-jpg" },
+        },
+        body: [
+          {
+            _type: "block",
+            _key: "heading",
+            style: "h1",
+            children: [{ _type: "span", _key: "heading-span", text: "Authority-Aware Ranking" }],
+            markDefs: [],
+          },
+          {
+            _type: "block",
+            _key: "body",
+            style: "normal",
+            children: [{ _type: "span", _key: "body-span", text: "Sample blog body" }],
+            markDefs: [],
+          },
+        ],
     });
 
     const { default: BlogArticlePage } = await import("./page");
@@ -51,18 +73,27 @@ describe("Blog catch-all page", () => {
       await BlogArticlePage({ params: Promise.resolve({ mdxPath: ["authority-aware-ranking"] }) }),
     );
 
-    expect(mockImportPage).toHaveBeenCalledWith(["blog", "authority-aware-ranking"]);
+    expect(getBlogContentPage).toHaveBeenCalledWith("authority-aware-ranking");
     expect(markup).toContain("Sample blog body");
     expect(markup).toContain("May 15, 2026");
   });
 
-  it("maps blog frontmatter into next metadata", async () => {
-    mockGenerateStaticParamsFor.mockReturnValue(vi.fn().mockResolvedValue([]));
-    mockImportPage.mockResolvedValue({
-      metadata: {
+  it("maps Sanity article content into next metadata", async () => {
+    vi.mocked(getBlogContentPage).mockResolvedValue({
         title: "Authority-Aware Ranking",
         description: "A real post.",
-      },
+        publishedAt: "May 15, 2026",
+        slug: { current: "authority-aware-ranking" },
+        sourcePath: "authority-aware-ranking/index.mdx",
+        heroImage: {
+          _type: "image",
+          asset: { _type: "reference", _ref: "image-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1000x500-jpg" },
+        },
+        previewImage: {
+          _type: "image",
+          asset: { _type: "reference", _ref: "image-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-1000x500-jpg" },
+        },
+        body: [],
     });
 
     const { generateMetadata } = await import("./page");
