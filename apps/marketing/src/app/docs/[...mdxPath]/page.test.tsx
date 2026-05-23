@@ -1,64 +1,81 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockGenerateStaticParamsFor, mockGetPageMap, mockImportPage } = vi.hoisted(() => ({
-  mockGenerateStaticParamsFor: vi.fn(),
-  mockGetPageMap: vi.fn(),
-  mockImportPage: vi.fn(),
+vi.mock("@/sanity/queries/docsContentPage", () => ({
+  getDocsContentPage: vi.fn(),
+  getDocsContentPages: vi.fn(),
+  docsSectionOrder: ["user-guide", "developer-guide", "admin-guide", "reference"],
+  docsSectionTitles: {
+    "user-guide": "User Guide",
+    "developer-guide": "Developer Guide",
+    "admin-guide": "Admin Guide",
+    reference: "API Reference",
+  },
 }));
 
-vi.mock("nextra/pages", () => ({
-  generateStaticParamsFor: mockGenerateStaticParamsFor,
-  importPage: mockImportPage,
-}));
-
-vi.mock("nextra/page-map", () => ({
-  getPageMap: mockGetPageMap,
-}));
+import {
+  getDocsContentPage,
+  getDocsContentPages,
+} from "@/sanity/queries/docsContentPage";
 
 describe("Docs catch-all page", () => {
   beforeEach(() => {
     vi.resetModules();
-    mockGenerateStaticParamsFor.mockReset();
-    mockGetPageMap.mockReset();
-    mockImportPage.mockReset();
+    vi.mocked(getDocsContentPage).mockReset();
+    vi.mocked(getDocsContentPages).mockReset();
+    vi.mocked(getDocsContentPage).mockResolvedValue(null);
+    vi.mocked(getDocsContentPages).mockResolvedValue([
+      {
+        title: "Ingestion Pipeline",
+        slug: { current: "reference/pipeline" },
+        sourcePath: "reference/pipeline.md",
+      },
+      {
+        title: "Core Algorithms",
+        slug: { current: "reference/algorithms" },
+        sourcePath: "reference/algorithms.md",
+      },
+    ]);
   });
 
-  it("filters the docs index route out of catch-all static params", async () => {
-    mockGenerateStaticParamsFor.mockReturnValue(
-      vi.fn().mockResolvedValue([
-        { mdxPath: ["docs"] },
-        { mdxPath: ["docs", "reference", "pipeline"] },
-        { mdxPath: ["blog", "some-article"] },
-      ]),
-    );
-
+  it("builds catch-all static params from Sanity docs slugs", async () => {
     const { generateStaticParams } = await import("./page");
 
     await expect(generateStaticParams()).resolves.toEqual([
       { mdxPath: ["reference", "pipeline"] },
+      { mdxPath: ["reference", "algorithms"] },
     ]);
   });
 
-  it("loads the requested MDX page", async () => {
-    mockGenerateStaticParamsFor.mockReturnValue(vi.fn().mockResolvedValue([]));
-    mockGetPageMap.mockResolvedValue([
-      {
-        name: "reference",
-        route: "/docs/reference",
-        children: [
-          {
-            name: "pipeline",
-            route: "/docs/reference/pipeline",
-            frontMatter: { title: "Pipeline" },
-          },
-        ],
-      },
-    ]);
-    mockImportPage.mockResolvedValue({
-      default: () => <div>Reference doc</div>,
-      metadata: { title: "Pipeline", filePath: "reference/pipeline.md" },
-      toc: [{ depth: 2, id: "overview", value: "Overview" }],
+  it("renders the requested Sanity docs page", async () => {
+    vi.mocked(getDocsContentPage).mockResolvedValue({
+      title: "Ingestion Pipeline",
+      description: "How content moves through the system.",
+      slug: { current: "reference/pipeline" },
+      sourcePath: "reference/pipeline.md",
+      body: [
+        {
+          _type: "block",
+          _key: "title",
+          style: "h1",
+          children: [{ _type: "span", _key: "span-title", text: "Ingestion Pipeline" }],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "paragraph",
+          style: "normal",
+          children: [{ _type: "span", _key: "span-paragraph", text: "How content moves through the system." }],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "heading",
+          style: "h2",
+          children: [{ _type: "span", _key: "span-heading", text: "Core Stages" }],
+          markDefs: [],
+        },
+      ],
     });
 
     const { default: Page } = await import("./page");
@@ -66,21 +83,75 @@ describe("Docs catch-all page", () => {
       await Page({ params: Promise.resolve({ mdxPath: ["reference", "pipeline"] }) }),
     );
 
-    expect(mockImportPage).toHaveBeenCalledWith(["docs", "reference", "pipeline"]);
-    expect(mockGetPageMap).toHaveBeenCalledWith("/docs");
     expect(markup).toContain('id="docs-content"');
     expect(markup).toContain("Files");
     expect(markup).toContain("Table of Contents");
-    expect(markup).toContain("Reference doc");
+    expect(markup).toContain("Ingestion Pipeline");
+    expect(markup).toContain("Documentation");
   });
 
-  it("maps docs frontmatter into next metadata", async () => {
-    mockGenerateStaticParamsFor.mockReturnValue(vi.fn().mockResolvedValue([]));
-    mockImportPage.mockResolvedValue({
-      metadata: {
-        title: "Pipeline",
-        description: "How the pipeline works.",
-      },
+  it("builds table of contents anchors and relative links from Portable Text", async () => {
+    vi.mocked(getDocsContentPage).mockResolvedValue({
+      title: "Ingestion Pipeline",
+      description: "How content moves through the system.",
+      slug: { current: "reference/pipeline" },
+      sourcePath: "reference/pipeline.md",
+      body: [
+        {
+          _type: "block",
+          _key: "title",
+          style: "h1",
+          children: [{ _type: "span", _key: "span-title", text: "Ingestion Pipeline" }],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "paragraph",
+          style: "normal",
+          children: [{ _type: "span", _key: "span-paragraph", text: "How content moves through the system." }],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "heading",
+          style: "h2",
+          children: [{ _type: "span", _key: "span-heading", text: "Core Stages" }],
+          markDefs: [],
+        },
+        {
+          _type: "block",
+          _key: "link-paragraph",
+          style: "normal",
+          children: [
+            {
+              _type: "span",
+              _key: "span-link",
+              text: "Core Algorithms",
+              marks: ["algorithms-link"],
+            },
+          ],
+          markDefs: [{ _key: "algorithms-link", _type: "link", href: "algorithms.md" }],
+        },
+      ],
+    });
+
+    const { default: Page } = await import("./page");
+    const markup = renderToStaticMarkup(
+      await Page({ params: Promise.resolve({ mdxPath: ["reference", "pipeline"] }) }),
+    );
+
+    expect(markup).toContain("Ingestion Pipeline");
+    expect(markup).toContain('href="#core-stages"');
+    expect(markup).toContain('href="/docs/reference/algorithms"');
+  });
+
+  it("uses Sanity metadata for migrated docs pages", async () => {
+    vi.mocked(getDocsContentPage).mockResolvedValue({
+      title: "Ingestion Pipeline",
+      description: "How content moves through the system.",
+      slug: { current: "reference/pipeline" },
+      sourcePath: "reference/pipeline.md",
+      body: [],
     });
 
     const { generateMetadata } = await import("./page");
@@ -88,11 +159,7 @@ describe("Docs catch-all page", () => {
       params: Promise.resolve({ mdxPath: ["reference", "pipeline"] }),
     });
 
-    expect(metadata.title).toBe("Pipeline");
-    expect(metadata.description).toBe("How the pipeline works.");
-    expect(metadata.openGraph).toMatchObject({
-      title: "Pipeline",
-      description: "How the pipeline works.",
-    });
+    expect(metadata.title).toBe("Ingestion Pipeline");
+    expect(metadata.description).toBe("How content moves through the system.");
   });
 });

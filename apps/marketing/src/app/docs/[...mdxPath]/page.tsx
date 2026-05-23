@@ -1,12 +1,22 @@
 import type { Metadata } from "next";
-import type { PageMapItem } from "nextra";
-import { getPageMap } from "nextra/page-map";
-import { generateStaticParamsFor, importPage } from "nextra/pages";
+import Link from "next/link";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { cache } from "react";
 import { isValidElement, type ReactNode } from "react";
+import path from "node:path/posix";
+import { notFound } from "next/navigation";
 
 import { PageSection } from "@/components/Section";
 import { brand } from "@/lib/props";
+import {
+  getDocsContentPage,
+  getDocsContentPages,
+  docsSectionOrder,
+  docsSectionTitles,
+  type DocsContentBlock,
+  type DocsContentMarkDef,
+  type DocsContentPageListItem,
+} from "@/sanity/queries/docsContentPage";
 
 import {
   DocsPageSidebar,
@@ -24,65 +34,7 @@ type DocsMetadata = Metadata & {
 };
 
 const docsBasePath = "/docs";
-
-const generateNextraStaticParams = generateStaticParamsFor("mdxPath");
-const getDocsStaticParams = cache(async (): Promise<DocsRouteParams[]> => {
-  return (await generateNextraStaticParams()) as DocsRouteParams[];
-});
-const getDocsPageMap = cache(async () => getPageMap(docsBasePath));
-const importDocsPage = cache(async (slug: string) => {
-  return importPage(["docs", ...slug.split("/").filter(Boolean)]);
-});
-
-function getItemTitle(item: PageMapItem): string {
-  const fallbackTitle = "name" in item ? item.name : "Documentation";
-
-  if ("frontMatter" in item && item.frontMatter) {
-    return item.frontMatter.sidebarTitle ?? item.frontMatter.title ?? fallbackTitle;
-  }
-
-  return fallbackTitle;
-}
-
-function buildSidebarItems(items: PageMapItem[]): DocsSidebarItem[] {
-  return items.flatMap<DocsSidebarItem>((item) => {
-    if ("data" in item) {
-      return [];
-    }
-
-    if ("children" in item) {
-      const children = buildSidebarItems(item.children);
-
-      if (!children.length) {
-        return [];
-      }
-
-      return [{ title: getItemTitle(item), children }];
-    }
-
-    if (!item.route || item.route === docsBasePath) {
-      return [];
-    }
-
-    return [{ title: getItemTitle(item), href: item.route }];
-  });
-}
-
-function buildSidebarSections(items: PageMapItem[]): DocsSidebarSection[] {
-  return items.flatMap((item) => {
-    if ("data" in item || !("children" in item)) {
-      return [];
-    }
-
-    const sectionItems = buildSidebarItems(item.children);
-
-    if (!sectionItems.length) {
-      return [];
-    }
-
-    return [{ title: getItemTitle(item), items: sectionItems }];
-  });
-}
+const getDocsPagesIndex = cache(async () => getDocsContentPages());
 
 function getHeadingText(value: ReactNode): string {
   if (typeof value === "string" || typeof value === "number") {
@@ -121,13 +73,147 @@ function buildDocsMetadata(metadata: DocsMetadata): Metadata {
   };
 }
 
-export async function generateStaticParams(): Promise<DocsRouteParams[]> {
-  const params = await getDocsStaticParams();
+function getPortableTextBlockText(block: DocsContentBlock): string {
+  return block.children?.map((child) => child.text ?? "").join("").trim() ?? "";
+}
 
-  return params
-    .map(({ mdxPath }) => mdxPath.filter(Boolean))
-    .filter((mdxPath) => mdxPath[0] === "docs" && mdxPath.length > 1)
-    .map(([, ...mdxPath]) => ({ mdxPath }));
+function slugifyHeading(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
+
+function buildPortableTextToc(blocks: DocsContentBlock[]) {
+  return blocks.flatMap((block) => {
+    if (block._type !== "block") {
+      return [];
+    }
+
+    const headingStyle = block.style;
+
+    if (!headingStyle || !/^h[2-6]$/.test(headingStyle)) {
+      return [];
+    }
+
+    const value = getPortableTextBlockText(block);
+
+    if (!value) {
+      return [];
+    }
+
+    return [
+      {
+        depth: Number(headingStyle.replace("h", "")) as 2 | 3 | 4 | 5 | 6,
+        id: slugifyHeading(value),
+        value,
+      },
+    ];
+  });
+}
+
+function resolveDocsHref(currentSlug: string, href: string): string {
+  if (!href || href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:") || href.startsWith("tel:")) {
+    return href;
+  }
+
+  if (href.startsWith("/")) {
+    return href.endsWith(".md") ? href.slice(0, -3) : href.endsWith(".mdx") ? href.slice(0, -4) : href;
+  }
+
+  const [rawPath, hash = ""] = href.split("#");
+  const currentDir = path.dirname(currentSlug);
+  const normalizedPath = path.normalize(path.join(currentDir, rawPath));
+  const docsPath = `/docs/${normalizedPath}`.replace(/\.(md|mdx)$/u, "");
+
+  return hash ? `${docsPath}#${hash}` : docsPath;
+}
+
+function getLinkMarkDefinition(value: unknown): DocsContentMarkDef | null {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+
+  const candidate = value as DocsContentMarkDef;
+
+  return candidate._type === "link" ? candidate : null;
+}
+
+function createPortableTextComponents(currentSlug: string): PortableTextComponents {
+  const renderHeading = (Tag: "h1" | "h2" | "h3" | "h4" | "h5" | "h6") => {
+    const HeadingRenderer = ({ children }: { children?: ReactNode }) => {
+      const text = getHeadingText(children);
+      const id = slugifyHeading(text);
+
+      return <Tag id={id}>{children}</Tag>;
+    };
+
+    HeadingRenderer.displayName = `PortableText${Tag.toUpperCase()}`;
+
+    return HeadingRenderer;
+  };
+
+  return {
+    block: {
+      h1: renderHeading("h1"),
+      h2: renderHeading("h2"),
+      h3: renderHeading("h3"),
+      h4: renderHeading("h4"),
+      h5: renderHeading("h5"),
+      h6: renderHeading("h6"),
+    },
+    marks: {
+      link: ({ children, value }) => {
+        const definition = getLinkMarkDefinition(value);
+        const href = resolveDocsHref(currentSlug, definition?.href ?? "");
+
+        if (!href) {
+          return <>{children}</>;
+        }
+
+        if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:") || href.startsWith("tel:")) {
+          return (
+            <a href={href} rel="noreferrer" target="_blank">
+              {children}
+            </a>
+          );
+        }
+
+        return <Link href={href}>{children}</Link>;
+      },
+    },
+  };
+}
+
+function buildSidebarSections(pages: DocsContentPageListItem[]): DocsSidebarSection[] {
+  return docsSectionOrder.flatMap((sectionSlug) => {
+    const sectionItems = pages
+      .filter((page) => page.slug.current.startsWith(`${sectionSlug}/`))
+      .map<DocsSidebarItem>((page) => ({
+        title: page.title,
+        href: `${docsBasePath}/${page.slug.current}`,
+      }));
+
+    if (!sectionItems.length) {
+      return [];
+    }
+
+    return [
+      {
+        title: docsSectionTitles[sectionSlug],
+        items: sectionItems,
+      },
+    ];
+  });
+}
+
+export async function generateStaticParams(): Promise<DocsRouteParams[]> {
+  const pages = await getDocsPagesIndex();
+
+  return pages.map((page) => ({
+    mdxPath: page.slug.current.split("/").filter(Boolean),
+  }));
 }
 
 export async function generateMetadata(props: {
@@ -135,26 +221,37 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const slug = params.mdxPath.join("/");
-  const { metadata } = (await importDocsPage(slug)) as {
-    metadata: DocsMetadata;
-  };
+  const docsContentPage = await getDocsContentPage(slug);
 
-  return buildDocsMetadata(metadata);
+  return buildDocsMetadata({
+    title: docsContentPage?.title,
+    description: docsContentPage?.description,
+  });
 }
 
 export default async function Page(props: { params: Promise<DocsRouteParams> }) {
   const params = await props.params;
   const slug = params.mdxPath.join("/");
-  const [{ default: MDXPage, toc }, pageMap] = await Promise.all([
-    importDocsPage(slug),
-    getDocsPageMap(),
+  const [docsContentPage, pages] = await Promise.all([
+    getDocsContentPage(slug),
+    getDocsPagesIndex(),
   ]);
+
+  if (!docsContentPage) {
+    notFound();
+  }
+
   const currentPath = `${docsBasePath}/${params.mdxPath.join("/")}`;
-  const sidebarSections = buildSidebarSections(pageMap);
-  const serializedToc = toc.map((heading) => ({
-    ...heading,
-    value: getHeadingText(heading.value),
-  }));
+  const sidebarSections = buildSidebarSections(pages);
+  const serializedToc = buildPortableTextToc(docsContentPage.body);
+  const content = (
+    <div className="nextra-content">
+      <PortableText
+        components={createPortableTextComponents(slug)}
+        value={docsContentPage.body}
+      />
+    </div>
+  );
 
   return (
     <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-5 pt-24 md:gap-6">
@@ -166,7 +263,7 @@ export default async function Page(props: { params: Promise<DocsRouteParams> }) 
                 Documentation
               </span>
             </div>
-            <MDXPage {...props} params={params} />
+            {content}
           </article>
 
           <DocsPageSidebar
