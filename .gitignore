@@ -1,4 +1,5 @@
 .env
+SESSION.md
 **/content.json
 **/migrate.mjs
 

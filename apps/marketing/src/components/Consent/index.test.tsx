@@ -36,7 +36,10 @@ describe("Consent", () => {
       root?.render(<Consent content={defaultConsentComponentContent} />);
     });
 
-    expect(container.querySelector('[role="dialog"]')).not.toBeNull();
+    const dialog = container.querySelector('[role="dialog"]');
+
+    expect(dialog).not.toBeNull();
+    expect(dialog?.getAttribute("aria-modal")).toBeNull();
     expect(container.textContent).toContain(defaultConsentComponentContent.badge);
     expect(container.textContent).toContain(defaultConsentComponentContent.acceptAllButtonText);
   });

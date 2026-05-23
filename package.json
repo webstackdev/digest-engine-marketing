@@ -12,6 +12,7 @@
     "dev:marketing": "turbo dev --filter=@digestengine/marketing",
     "dev:studio": "turbo dev --filter=@digestengine/studio",
     "build": "turbo build",
+    "clean": "rm -rf .next .turbo out tsconfig.tsbuildinfo apps/marketing/.next apps/marketing/.turbo apps/marketing/out apps/studio/.next apps/studio/.turbo apps/studio/out",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
