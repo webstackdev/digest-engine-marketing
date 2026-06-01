@@ -8,11 +8,8 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "cdn.sanity.io" },
-      { protocol: "https", hostname: "torqbit-dev.b-cdn.net" },
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "iframe.mediadelivery.net" },
-      { protocol: "https", hostname: "torqbit.b-cdn.net" },
-      { protocol: "https", hostname: "cdn.torqbit.com" },
     ],
   },
 };

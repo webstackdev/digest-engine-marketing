@@ -1,4 +1,4 @@
-const siteUrl = "https://acme.torqbit.com";
+const siteUrl = "https://digestengine.io";
 
 const sitemapConfig = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || siteUrl,

@@ -3,6 +3,8 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { schemaTypes } from "@digestengine/sanity-schema";
 import { LogoComponent } from "./src/components/Logo";
+import { StudioNavbar } from "./src/components/StudioNavbar";
+import { studioTheme } from "./src/studioTheme";
 
 const singletonItems = [
   { type: "homePage", title: "Home Page" },
@@ -39,6 +41,7 @@ export default defineConfig({
   title: "Digest Engine Marketing Studio",
   icon: LogoComponent,
   basePath: "/",
+  theme: studioTheme,
   plugins: [
     structureTool({
       structure: (S) =>
@@ -115,6 +118,7 @@ export default defineConfig({
         })
       ),
       logo: LogoComponent,
+      navbar: StudioNavbar,
     },
   },
 });

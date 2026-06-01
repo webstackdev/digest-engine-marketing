@@ -42,6 +42,30 @@ describe("Consent", () => {
     expect(dialog?.getAttribute("aria-modal")).toBeNull();
     expect(container.textContent).toContain(defaultConsentComponentContent.badge);
     expect(container.textContent).toContain(defaultConsentComponentContent.acceptAllButtonText);
+    expect(
+      container.querySelector('[aria-label="Dismiss cookie preferences"]'),
+    ).not.toBeNull();
+  });
+
+  it("dismisses the banner without storing consent preferences", async () => {
+    container = document.createElement("div");
+    document.body.append(container);
+    root = createRoot(container);
+
+    await act(async () => {
+      root?.render(<Consent content={defaultConsentComponentContent} />);
+    });
+
+    const dismissButton = container.querySelector(
+      '[aria-label="Dismiss cookie preferences"]',
+    );
+
+    await act(async () => {
+      dismissButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(localStorage.getItem(CONSENT_STORAGE_KEY)).toBeNull();
+    expect(container.querySelector('[role="dialog"]')).toBeNull();
   });
 
   it("stores essential and marketing consent when accepted", async () => {
