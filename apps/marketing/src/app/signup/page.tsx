@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
 import { getSignupPageContent } from "@/sanity/queries/signupPage";
+import SignupLoginNotice from "./_components/SignupLoginNotice";
 import SignupForm from "./_components/SignupForm";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,6 +27,8 @@ export default async function SignupPage() {
             <span className="w-fit rounded-full bg-secondary px-4 py-2 font-medium text-content-inverse">
               {content.hero.badge}
             </span>
+
+            <SignupLoginNotice />
 
             <div className="space-y-5">
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-primary sm:text-5xl lg:text-6xl">
