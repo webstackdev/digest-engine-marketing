@@ -6,16 +6,22 @@ vi.mock("@/sanity/queries/blogContentPage", () => ({
   getBlogContentPages: vi.fn(),
 }));
 
+vi.mock("@/sanity/queries/brandSettings", () => ({
+  getBrandSettingsContent: vi.fn(),
+}));
+
 import {
   getBlogContentPage,
   getBlogContentPages,
 } from "@/sanity/queries/blogContentPage";
+import { getBrandSettingsContent } from "@/sanity/queries/brandSettings";
 
 describe("Blog catch-all page", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.mocked(getBlogContentPage).mockReset();
     vi.mocked(getBlogContentPages).mockReset();
+    vi.mocked(getBrandSettingsContent).mockReset();
     vi.mocked(getBlogContentPages).mockResolvedValue([
       {
         title: "Authority-Aware Ranking",
@@ -25,6 +31,9 @@ describe("Blog catch-all page", () => {
         sourcePath: "authority-aware-ranking/index.mdx",
       },
     ]);
+    vi.mocked(getBrandSettingsContent).mockResolvedValue({
+      tagline: "The research desk for your newsletter",
+    });
   });
 
   it("builds static params from Sanity blog article slugs", async () => {
@@ -71,7 +80,7 @@ describe("Blog catch-all page", () => {
             code: "console.log('hello blog')",
             language: "ts",
           },
-        ],
+        ] as never,
     });
 
     const { default: BlogArticlePage } = await import("./page");

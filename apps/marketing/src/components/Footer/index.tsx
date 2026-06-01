@@ -6,16 +6,16 @@ import type { FooterComponentContent } from "@/sanity/queries/footerComponent";
 import { PageSection } from "../Section";
 import { Button } from "../shared/button";
 import logo from "@/assets/images/logo.svg";
-import { brand } from "@/lib/props";
 
 interface FooterProps {
+  brandTagline: string;
   content: FooterComponentContent;
 }
 
 /**
  * Marketing site footer navigation.
  */
-export function Footer({ content }: FooterProps) {
+export function Footer({ brandTagline, content }: FooterProps) {
   const {
     description,
     primaryAction,
@@ -41,7 +41,7 @@ export function Footer({ content }: FooterProps) {
               <p className="m-0 text-lg font-semibold tracking-tight text-content-active">
                 Digest Engine
               </p>
-              <p className="m-0 text-sm text-content-offset">{brand.tagline}</p>
+              <p className="m-0 text-sm text-content-offset">{brandTagline}</p>
             </div>
           </Link>
 

@@ -5,6 +5,7 @@ import "@testing-library/jest-dom/vitest";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import { defaultBrandSettingsContent } from "@/sanity/queries/brandSettings";
 import { defaultFooterComponentContent } from "@/sanity/queries/footerComponent";
 
 import { Footer } from "./index";
@@ -24,7 +25,12 @@ vi.mock("next/link", () => ({
 
 describe("Footer", () => {
   it("renders brand, navigation groups, and legal links", () => {
-    render(<Footer content={defaultFooterComponentContent} />);
+    render(
+      <Footer
+        brandTagline={defaultBrandSettingsContent.tagline}
+        content={defaultFooterComponentContent}
+      />,
+    );
 
     const footer = screen.getByRole("contentinfo");
     const productNav = within(footer).getByRole("navigation", {
@@ -36,6 +42,7 @@ describe("Footer", () => {
 
     expect(footer).toHaveAttribute("id", "marketing-footer");
     expect(within(footer).getByRole("img", { name: "Digest Engine logo" })).toBeInTheDocument();
+    expect(within(footer).getByText(defaultBrandSettingsContent.tagline)).toBeInTheDocument();
     expect(within(footer).getByRole("link", { name: "Start Your First Project" })).toHaveAttribute("href", "/signup");
     expect(within(productNav).getByRole("link", { name: "How It Works" })).toHaveAttribute("href", "/tour");
     expect(within(productNav).getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs");
@@ -45,7 +52,12 @@ describe("Footer", () => {
   });
 
   it("keeps the brand copy ahead of nav groups and CTA links in document order", () => {
-    const { container } = render(<Footer content={defaultFooterComponentContent} />);
+    const { container } = render(
+      <Footer
+        brandTagline={defaultBrandSettingsContent.tagline}
+        content={defaultFooterComponentContent}
+      />,
+    );
 
     const footer = container.querySelector("footer");
 

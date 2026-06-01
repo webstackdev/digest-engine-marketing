@@ -13,16 +13,22 @@ vi.mock("@/sanity/queries/docsContentPage", () => ({
   },
 }));
 
+vi.mock("@/sanity/queries/brandSettings", () => ({
+  getBrandSettingsContent: vi.fn(),
+}));
+
 import {
   getDocsContentPage,
   getDocsContentPages,
 } from "@/sanity/queries/docsContentPage";
+import { getBrandSettingsContent } from "@/sanity/queries/brandSettings";
 
 describe("Docs catch-all page", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.mocked(getDocsContentPage).mockReset();
     vi.mocked(getDocsContentPages).mockReset();
+    vi.mocked(getBrandSettingsContent).mockReset();
     vi.mocked(getDocsContentPage).mockResolvedValue(null);
     vi.mocked(getDocsContentPages).mockResolvedValue([
       {
@@ -36,6 +42,9 @@ describe("Docs catch-all page", () => {
         sourcePath: "reference/algorithms.md",
       },
     ]);
+    vi.mocked(getBrandSettingsContent).mockResolvedValue({
+      tagline: "The research desk for your newsletter",
+    });
   });
 
   it("builds catch-all static params from Sanity docs slugs", async () => {
@@ -81,7 +90,7 @@ describe("Docs catch-all page", () => {
           code: "print('hello docs')",
           language: "python",
         },
-      ],
+      ] as never,
     });
 
     const { default: Page } = await import("./page");

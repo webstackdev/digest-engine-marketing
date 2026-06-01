@@ -6,8 +6,10 @@ import { LogoComponent } from "./src/components/Logo";
 
 const singletonItems = [
   { type: "homePage", title: "Home Page" },
+  { type: "brandSettings", title: "Brand Settings" },
   { type: "headerComponent", title: "Header" },
   { type: "footerComponent", title: "Footer" },
+  { type: "globalErrorPage", title: "Global Error Page" },
   { type: "consentComponent", title: "Consent Banner" },
   { type: "pricingPage", title: "Pricing Page" },
   { type: "pricingComponent", title: "Pricing Plans" },
@@ -50,8 +52,10 @@ export default defineConfig({
                   .title("Core Experience")
                   .items([
                     S.documentTypeListItem("homePage").title("Home Page"),
+                    S.documentTypeListItem("brandSettings").title("Brand Settings"),
                     S.documentTypeListItem("headerComponent").title("Header"),
                     S.documentTypeListItem("footerComponent").title("Footer"),
+                    S.documentTypeListItem("globalErrorPage").title("Global Error Page"),
                     S.documentTypeListItem("consentComponent").title("Consent Banner"),
                   ]),
               ),

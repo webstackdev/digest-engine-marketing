@@ -7,7 +7,7 @@ import { isValidElement, type ReactNode } from "react";
 import path from "node:path/posix";
 import { notFound } from "next/navigation";
 
-import { brand } from "@/lib/props";
+import { getBrandSettingsContent } from "@/sanity/queries/brandSettings";
 import { buildSanityImageUrl } from "@/sanity/image";
 import {
   getBlogContentPage,
@@ -142,8 +142,12 @@ function createPortableTextComponents(currentSlug: string): PortableTextComponen
   };
 }
 
-function buildBlogMetadata(metadata: BlogMetadata, heroImageUrl: string | null): Metadata {
-  const description = metadata.description ?? brand.tagline;
+function buildBlogMetadata(
+  metadata: BlogMetadata,
+  heroImageUrl: string | null,
+  fallbackDescription: string,
+): Metadata {
+  const description = metadata.description ?? fallbackDescription;
 
   return {
     ...metadata,
@@ -178,7 +182,10 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const slug = params.mdxPath.join("/");
-  const page = await getBlogContentPage(slug);
+  const [brandSettingsContent, page] = await Promise.all([
+    getBrandSettingsContent(),
+    getBlogContentPage(slug),
+  ]);
 
   const metadata: BlogMetadata = {
     title: page?.title ?? "Blog",
@@ -187,7 +194,7 @@ export async function generateMetadata(props: {
   };
   const heroImageUrl = buildSanityImageUrl(page?.heroImage, { width: 1440, height: 720, fit: "crop" });
 
-  return buildBlogMetadata(metadata, heroImageUrl);
+  return buildBlogMetadata(metadata, heroImageUrl, brandSettingsContent.tagline);
 }
 
 export default async function BlogArticlePage(props: { params: Promise<BlogRouteParams> }) {

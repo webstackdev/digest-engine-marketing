@@ -60,7 +60,7 @@ export function Consent({ content }: ConsentProps) {
       <div
         role="dialog"
         aria-labelledby="cookie-consent-title"
-        className="pointer-events-auto mx-auto w-full max-w-6xl rounded-4xl border border-trim-offset bg-page-base p-6 shadow-[0_28px_80px_-40px_rgba(15,23,42,0.65)] sm:p-8"
+        className="pointer-events-auto mx-auto w-full bg-page-base p-6 sm:p-8"
       >
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-end">
           <div className="space-y-4">

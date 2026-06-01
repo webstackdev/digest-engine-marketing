@@ -1,4 +1,6 @@
 .env
+CHAT_ASSISTANT.md
+GDPR.md
 SESSION.md
 **/content.json
 **/migrate.mjs

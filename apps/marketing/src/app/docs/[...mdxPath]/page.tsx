@@ -7,7 +7,7 @@ import path from "node:path/posix";
 import { notFound } from "next/navigation";
 
 import { PageSection } from "@/components/Section";
-import { brand } from "@/lib/props";
+import { getBrandSettingsContent } from "@/sanity/queries/brandSettings";
 import {
   getDocsContentPage,
   getDocsContentPages,
@@ -57,9 +57,9 @@ function getHeadingText(value: ReactNode): string {
   return "";
 }
 
-function buildDocsMetadata(metadata: DocsMetadata): Metadata {
+function buildDocsMetadata(metadata: DocsMetadata, fallbackDescription: string): Metadata {
   const title = metadata.title ?? "Documentation";
-  const description = metadata.description ?? brand.tagline;
+  const description = metadata.description ?? fallbackDescription;
 
   return {
     ...metadata,
@@ -238,12 +238,15 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const slug = params.mdxPath.join("/");
-  const docsContentPage = await getDocsContentPage(slug);
+  const [brandSettingsContent, docsContentPage] = await Promise.all([
+    getBrandSettingsContent(),
+    getDocsContentPage(slug),
+  ]);
 
   return buildDocsMetadata({
     title: docsContentPage?.title,
     description: docsContentPage?.description,
-  });
+  }, brandSettingsContent.tagline);
 }
 
 export default async function Page(props: { params: Promise<DocsRouteParams> }) {

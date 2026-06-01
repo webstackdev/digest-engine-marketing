@@ -8,7 +8,7 @@ import { Consent } from "@/components/Consent";
 import { Footer } from "@/components/Footer";
 import { GoogleTagManagerWithConsent } from "@/components/GoogleTagManagerWithConsent";
 import { Header } from "@/components/Header";
-import { brand } from "@/lib/props";
+import { getBrandSettingsContent } from "@/sanity/queries/brandSettings";
 import { getConsentComponentContent } from "@/sanity/queries/consentComponent";
 import { getFooterComponentContent } from "@/sanity/queries/footerComponent";
 import { getHeaderComponentContent } from "@/sanity/queries/headerComponent";
@@ -16,16 +16,21 @@ import { themeInitScript } from "@/lib/themeInit";
 
 import "../styles/globals.css";
 
-export const metadata: Metadata = {
-  title: "Digest Engine",
-  description: brand.tagline,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const brandSettingsContent = await getBrandSettingsContent();
+
+  return {
+    title: "Digest Engine",
+    description: brandSettingsContent.tagline,
+  };
+}
 
 export default async function RootLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const brandSettingsContent = await getBrandSettingsContent();
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
   const consentContent = await getConsentComponentContent();
   const footerContent = await getFooterComponentContent();
@@ -50,7 +55,7 @@ export default async function RootLayout({
         <Header content={headerContent} />
         {children}
         <Consent content={consentContent} />
-        <Footer content={footerContent} />
+        <Footer brandTagline={brandSettingsContent.tagline} content={footerContent} />
       </body>
     </html>
   );

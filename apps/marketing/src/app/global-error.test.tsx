@@ -12,6 +12,83 @@ const sentryMocks = vi.hoisted(() => ({
 
 vi.mock("@sentry/nextjs", () => sentryMocks);
 
+vi.mock("@/sanity/queries/globalErrorPage", () => ({
+  defaultGlobalErrorPageContent: {
+    eyebrow: "Error",
+    title: "Digest Engine hit an unexpected problem",
+    description:
+      "We logged the failure for review. You can retry this route now, head back to the homepage, or use one of the main site paths below.",
+    imageAlt: "Digest Engine error illustration",
+    referenceLabel: "Reference",
+    retryButtonText: "Try again",
+    homeButtonLabel: "Return home",
+    homeButtonHref: "/",
+    recoveryLinks: [
+      {
+        href: "/tour",
+        label: "How It Works",
+        description:
+          "Walk back through the product tour while the failed route reloads in a fresh tab or session.",
+      },
+      {
+        href: "/pricing",
+        label: "Pricing",
+        description:
+          "Double-check the hosted and self-managed rollout paths if that is where you were headed.",
+      },
+      {
+        href: "/docs",
+        label: "Docs",
+        description:
+          "Open the current docs set for setup guidance, product notes, and implementation details.",
+      },
+      {
+        href: "/signup",
+        label: "Sign Up",
+        description:
+          "Return to the evaluation flow if you were trying to request access or start a rollout conversation.",
+      },
+    ],
+  },
+  getGlobalErrorPageContent: vi.fn().mockResolvedValue({
+    eyebrow: "Error",
+    title: "Digest Engine hit an unexpected problem",
+    description:
+      "We logged the failure for review. You can retry this route now, head back to the homepage, or use one of the main site paths below.",
+    imageAlt: "Digest Engine error illustration",
+    referenceLabel: "Reference",
+    retryButtonText: "Try again",
+    homeButtonLabel: "Return home",
+    homeButtonHref: "/",
+    recoveryLinks: [
+      {
+        href: "/tour",
+        label: "How It Works",
+        description:
+          "Walk back through the product tour while the failed route reloads in a fresh tab or session.",
+      },
+      {
+        href: "/pricing",
+        label: "Pricing",
+        description:
+          "Double-check the hosted and self-managed rollout paths if that is where you were headed.",
+      },
+      {
+        href: "/docs",
+        label: "Docs",
+        description:
+          "Open the current docs set for setup guidance, product notes, and implementation details.",
+      },
+      {
+        href: "/signup",
+        label: "Sign Up",
+        description:
+          "Return to the evaluation flow if you were trying to request access or start a rollout conversation.",
+      },
+    ],
+  }),
+}));
+
 import { GlobalErrorContent } from "./global-error";
 
 afterEach(() => {
