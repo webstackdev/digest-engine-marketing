@@ -22,6 +22,10 @@ jobs:
   build-site:
     name: Build site
     runs-on: ubuntu-latest
+    env:
+      SANITY_API_READ_TOKEN: ${{ secrets['SANITY_API_READ_TOKEN'] }}
+      SANITY_API_WRITE_TOKEN: ${{ secrets['SANITY_API_WRITE_TOKEN'] }}
+      SENTRY_AUTH_TOKEN: ${{ secrets['SENTRY_AUTH_TOKEN'] }}
 
     steps:
       - name: Checkout repository
@@ -33,7 +37,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: "22"
+          node-version: "24.8.0"
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 

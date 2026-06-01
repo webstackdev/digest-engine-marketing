@@ -1,5 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "SANITY_API_READ_TOKEN",
+    "SANITY_API_WRITE_TOKEN",
+    "SENTRY_AUTH_TOKEN"
+  ],
   "tasks": {
     "dev": {
       "cache": false,
