@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { PageSection } from "@/components/Section";
 import { Button } from "@/components/shared/button";
@@ -28,7 +29,9 @@ export default async function SignupPage() {
               {content.hero.badge}
             </span>
 
-            <SignupLoginNotice />
+            <Suspense fallback={null}>
+              <SignupLoginNotice />
+            </Suspense>
 
             <div className="space-y-5">
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-primary sm:text-5xl lg:text-6xl">
