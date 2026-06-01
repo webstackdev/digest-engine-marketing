@@ -1,10 +1,15 @@
-# Digest Engine Marketing
+# Digest Engine Marketing Monorepo
 
 ![Digest Engine marketing site header](./readme.jpg)
 
-Standalone marketing site for Digest Engine.
+Monorepo for the Digest Engine marketing site and Sanity Studio.
 
-This repository contains the public website, pricing pages, signup flow, blog, and product documentation content for Digest Engine. It is built with Next.js App Router, Nextra-powered content routes, Tailwind CSS, and Vitest.
+This repository contains two workspace apps:
+
+- `apps/marketing`: the public marketing site, blog, docs, pricing pages, and signup flow.
+- `apps/studio`: the SSR Sanity Studio used to manage marketing content.
+
+Shared Sanity schema definitions live in `packages/sanity-schema` so content modeling stays in one place.
 
 ## Stack
 
@@ -13,6 +18,8 @@ This repository contains the public website, pricing pages, signup flow, blog, a
 - TypeScript
 - Tailwind CSS 4
 - Nextra for blog and docs content
+- Sanity Studio
+- Turborepo
 - Vitest and Testing Library
 - pnpm 11
 
@@ -29,44 +36,53 @@ Install dependencies:
 pnpm install
 ```
 
-Start the development server:
+Start both development servers:
 
 ```bash
 pnpm run dev
 ```
 
-Create a production build:
+Run one app at a time:
+
+```bash
+pnpm run dev:marketing
+pnpm run dev:studio
+```
+
+Create production builds:
 
 ```bash
 pnpm run build
 ```
 
-The build also generates the sitemap via the `postbuild` script.
+The marketing app still generates its sitemap during `postbuild`.
 
 ## Common Commands
 
 ```bash
 pnpm run dev
+pnpm run dev:marketing
+pnpm run dev:studio
 pnpm run build
-pnpm run start
 pnpm run typecheck
 pnpm run lint
-pnpm run lint:style
 pnpm run test
 pnpm run format:check
 ```
 
 ## Project Layout
 
-- `src/app/`: Next.js routes and page entry points
-- `src/components/`: reusable UI and page components
-- `src/content/`: blog and docs source content
-- `src/lib/`: shared helpers, props, and client utilities
-- `src/styles/`: global theme and styling layers
+- `apps/marketing/src/app/`: Next.js routes and page entry points for the static site
+- `apps/marketing/src/components/`: reusable marketing UI and page components
+- `apps/marketing/src/lib/`: shared helpers, props, and client utilities
+- `apps/marketing/src/styles/`: global theme and styling layers
+- `apps/studio/src/app/`: SSR Sanity Studio routes
+- `packages/sanity-schema/src/`: shared Sanity schema definitions
 - `.github/workflows/`: CI workflows for lint, test, build, branch rules, and CodeQL
 
 ## Notes
 
-- This repo is a standalone pnpm project, not a monorepo.
-- Root CI workflows install dependencies with pnpm and run from the repository root.
-- Content for the public docs and blog is stored in-repo and statically built with the site.
+- This repo uses pnpm workspaces and Turborepo.
+- `apps/marketing` is intended for static export deployment.
+- `apps/studio` is intended for SSR deployment on its own Vercel project and subdomain.
+- Content for the public docs and blog stays in-repo with the marketing app.
