@@ -8,6 +8,6 @@
     "./compliancePage": "./src/compliancePage.ts"
   },
   "dependencies": {
-    "sanity": "^5.26.0"
+    "sanity": "^5.29.0"
   }
 }
