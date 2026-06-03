@@ -7,6 +7,8 @@ import {
   type SitemapSingletonDocumentType,
 } from "@/sanity/queries/sitemap";
 
+export const dynamic = "force-static";
+
 type SitemapRouteDefinition = {
   path: string;
   documentType: SitemapSingletonDocumentType;

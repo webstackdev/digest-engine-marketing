@@ -7,6 +7,12 @@ vi.mock("@/sanity/queries/sitemap", () => ({
 import { getSitemapContent } from "@/sanity/queries/sitemap";
 
 describe("Marketing sitemap", () => {
+  it("declares a force-static route for static export builds", async () => {
+    const route = await import("./sitemap");
+
+    expect(route.dynamic).toBe("force-static");
+  });
+
   beforeEach(() => {
     vi.mocked(getSitemapContent).mockReset();
     vi.mocked(getSitemapContent).mockResolvedValue({
