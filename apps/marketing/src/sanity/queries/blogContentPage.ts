@@ -5,7 +5,7 @@ import type { SanityImageObject } from "@/sanity/image";
 const apiVersion = "2026-05-22";
 const dataset = "production";
 const projectId = "wiokyeq0";
-const token = process.env.SANITY_API_READ_TOKEN ?? process.env.SANITY_API_WRITE_TOKEN;
+const token = process.env.SANITY_API_READ_TOKEN?.trim() || process.env.SANITY_API_WRITE_TOKEN?.trim() || undefined;
 
 const client = createClient({
   apiVersion,
