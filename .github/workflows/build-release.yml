@@ -45,4 +45,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build site
+        if: github.actor != 'dependabot[bot]'
         run: pnpm run build
+
+      - name: Build studio only for Dependabot PRs
+        if: github.actor == 'dependabot[bot]'
+        run: pnpm turbo build --filter=@digestengine/studio
