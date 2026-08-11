@@ -2,7 +2,8 @@
 
 import "@testing-library/jest-dom/vitest";
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
+import { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -17,8 +18,17 @@ vi.mock("@next/third-parties/google", () => ({
 
 import { GoogleTagManagerWithConsent } from ".";
 
-afterEach(() => {
+(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+
+afterEach(async () => {
+  cleanup();
   localStorage.clear();
+  // React schedules a passive-effects callback on its scheduler after every
+  // commit with effects, and that callback reads `window` when it runs. Drain
+  // the event loop so any such callback fires before Vitest tears down the
+  // jsdom environment; otherwise it can crash the run after all tests pass
+  // with an unhandled "window is not defined" error.
+  await new Promise((resolve) => setTimeout(resolve, 0));
 });
 
 describe("GoogleTagManagerWithConsent", () => {
@@ -28,7 +38,7 @@ describe("GoogleTagManagerWithConsent", () => {
     expect(screen.queryByTestId("gtm")).not.toBeInTheDocument();
   });
 
-  it("renders GTM when marketing consent is already granted", async () => {
+  it("renders GTM when marketing consent is already granted", () => {
     localStorage.setItem(
       CONSENT_STORAGE_KEY,
       JSON.stringify({ essential: true, marketing: true }),
@@ -36,25 +46,23 @@ describe("GoogleTagManagerWithConsent", () => {
 
     render(<GoogleTagManagerWithConsent gtmId="GTM-TM6JTQFG" />);
 
-    await waitFor(() => {
-      expect(screen.getByTestId("gtm")).toHaveTextContent("GTM-TM6JTQFG");
-    });
+    expect(screen.getByTestId("gtm")).toHaveTextContent("GTM-TM6JTQFG");
   });
 
-  it("renders GTM after marketing consent is granted in-session", async () => {
+  it("renders GTM after marketing consent is granted in-session", () => {
     render(<GoogleTagManagerWithConsent gtmId="GTM-TM6JTQFG" />);
 
-    window.dispatchEvent(
-      new CustomEvent<ConsentPreferences>(MARKETING_CONSENT_CHANGED_EVENT, {
-        detail: {
-          essential: true,
-          marketing: true,
-        },
-      }),
-    );
-
-    await waitFor(() => {
-      expect(screen.getByTestId("gtm")).toHaveTextContent("GTM-TM6JTQFG");
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent<ConsentPreferences>(MARKETING_CONSENT_CHANGED_EVENT, {
+          detail: {
+            essential: true,
+            marketing: true,
+          },
+        }),
+      );
     });
+
+    expect(screen.getByTestId("gtm")).toHaveTextContent("GTM-TM6JTQFG");
   });
 });
